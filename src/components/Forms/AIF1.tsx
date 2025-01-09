@@ -85,7 +85,7 @@ const AIF1 = () => {
         <button
           disabled
           onClick={handlePrevFormStep}
-          className="w-full opacity-30 bg-neutral-500 hover:bg-neutral-600 text-white font-medium py-2 px-4 rounded-md"
+          className="w-full cursor-not-allowed opacity-30 bg-neutral-500 text-white font-medium py-2 px-4 rounded-md"
         >
           Back
         </button>

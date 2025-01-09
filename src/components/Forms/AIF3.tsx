@@ -63,14 +63,8 @@ const AIF3 = () => {
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
-      {/* Reset + Submit Button */}
+      {/* Prev + Submit Button */}
       <div className="flex justify-center items-center gap-4">
-        <button
-          onClick={handleResetForm}
-          className="w-full bg-neutral-500 hover:bg-neutral-600 text-white font-medium py-2 px-4 rounded-md"
-        >
-          Reset
-        </button>
         <button
           onClick={handlePrevFormStep}
           className="w-full bg-neutral-500 hover:bg-neutral-600 text-white font-medium py-2 px-4 rounded-md"
@@ -84,6 +78,12 @@ const AIF3 = () => {
           Submit
         </button>
       </div>
+      <span
+        onClick={handleResetForm}
+        className="w-full flex justify-center text-white hover:text-gray-400 duration-200 transition-colors cursor-pointer"
+      >
+        Reset form
+      </span>
     </>
   );
 };

@@ -62,10 +62,10 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-  
+
     // Log the value to the console for debugging purposes
     console.log(`Input name: ${name}, Input value: ${value}`);
-  
+
     setSpotlightFormData((prevState) => {
       return {
         ...prevState,
@@ -88,7 +88,8 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   // Handle form reset
   const handleResetForm = () => {
     setSpotlightFormData(initialSpotlightFormData);
-    scrollTo(0, 0); // Optionally scroll to top
+    setFormStep(1);
+    scrollTo(0, 0);
   };
   const handleNextFormStep = () => {
     if (formStep < 3) {
