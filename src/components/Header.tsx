@@ -13,6 +13,12 @@ const Header = () => {
           </li>
           <li className="hover:text-green-500 transition-colors">
             <Link to="/testimonial-form">Testimonial Form</Link>
+          </li>{" "}
+          <li className="hover:text-green-500 transition-colors">
+            <Link to="/login">Login</Link>
+          </li>
+          <li className="hover:text-green-500 transition-colors">
+            <Link to="/register">Register</Link>
           </li>
           {/* <li className="hover:text-green-500 transition-colors">
             <Link to="https://a2a-training.netlify.app/">Website</Link>

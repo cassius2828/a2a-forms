@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 const AIF1 = () => {
   const {
     spotlightFormData,
+    setSpotlightFormData,
     handleInputChange,
     handleNextFormStep,
     handlePrevFormStep,
@@ -21,7 +21,7 @@ const AIF1 = () => {
           name="name"
           type="text"
           value={spotlightFormData.name}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="Jane Smith"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
@@ -37,7 +37,7 @@ const AIF1 = () => {
           name="sport"
           type="text"
           value={spotlightFormData.sport}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="Basketball"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
@@ -56,7 +56,7 @@ const AIF1 = () => {
           name="graduationYear"
           type="text"
           value={spotlightFormData.graduationYear}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="2024"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
@@ -75,7 +75,7 @@ const AIF1 = () => {
           name="location"
           type="text"
           value={spotlightFormData.location}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="New York, NY"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />

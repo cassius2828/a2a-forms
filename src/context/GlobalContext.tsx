@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { getUser } from "../services/authService";
 // Define the shape of the context state
 interface GlobalContextType {
   formStep: number;
@@ -9,7 +15,8 @@ interface GlobalContextType {
     React.SetStateAction<typeof initialSpotlightFormData>
   >;
   handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setState: React.Dispatch<React.SetStateAction<any>>
   ) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleResetForm: () => void;
@@ -57,16 +64,18 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [spotlightFormData, setSpotlightFormData] = useState(
     initialSpotlightFormData
   );
+  const [user, setUser] = useState(getUser());
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  const handleInputChange = <T extends object>(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setState: React.Dispatch<React.SetStateAction<T>>
   ) => {
     const { name, value } = e.target;
 
     // Log the value to the console for debugging purposes
     console.log(`Input name: ${name}, Input value: ${value}`);
 
-    setSpotlightFormData((prevState) => {
+    setState((prevState) => {
       return {
         ...prevState,
         [name]: value,
@@ -101,7 +110,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setFormStep((prev) => prev - 1);
     }
   };
-
+  useEffect(() => {
+    console.log(user, " <-- user");
+  }, []);
   return (
     <GlobalContext.Provider
       value={{

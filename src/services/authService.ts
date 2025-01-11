@@ -1,10 +1,11 @@
 import axios from "axios";
+import { RegisterFormState } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 /////////////////////
 // ? POST | User Signup Function
 /////////////////////
-export async function signup(formData) {
+export async function signup(formData: RegisterFormState) {
   try {
     const response = await axios.post(`${BASE_URL}/auth/register`, formData);
 
@@ -63,7 +64,8 @@ export async function login(userCredentials) {
 /////////////////////
 export function getUser() {
   const token = localStorage.getItem("token");
-  const user = JSON.parse(atob(token.split(".")[1]));
+  if (!token) return;
+  const user = JSON.parse(atob(token?.split(".")[1]));
   return user.user;
 }
 
