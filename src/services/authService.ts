@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RegisterFormState } from "../lib/types";
+import { LoginFormState, RegisterFormState } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 /////////////////////
@@ -16,6 +16,7 @@ export async function signup(formData: RegisterFormState) {
 
     if (data.token) {
       // store the token! in localstorage
+      console.log(data.token, " <-- DATA TOKEN");
       localStorage.setItem("token", data.token);
       const user = JSON.parse(atob(data.token.split(".")[1]));
       console.log(user, " <- user in signup!");
@@ -30,7 +31,7 @@ export async function signup(formData: RegisterFormState) {
 /////////////////////
 // User login Function
 /////////////////////
-export async function login(userCredentials) {
+export async function login(userCredentials: LoginFormState) {
   try {
     const response = await axios.post(
       `${BASE_URL}/auth/login`,
@@ -43,19 +44,21 @@ export async function login(userCredentials) {
     );
 
     const data = response.data;
-    if (data.error) {
-      throw new Error(data.error);
-    }
-
+    // if (data.error) {
+    //   throw new Error(data.error);
+    // }
+console.log(response, '<-- response')
     if (data.token) {
       // store the token! in localstorage
       localStorage.setItem("token", data.token);
       const user = JSON.parse(atob(data.token.split(".")[1]));
+   
       return user.user;
     }
   } catch (err) {
-    console.log(err);
-    throw err;
+    console.log(err.response.data);
+   
+    return err.response.data;
   }
 }
 
@@ -64,7 +67,10 @@ export async function login(userCredentials) {
 /////////////////////
 export function getUser() {
   const token = localStorage.getItem("token");
+  console.log(token, " TOKEN");
+  console.log(typeof token, " TOKEN type");
   if (!token) return;
+
   const user = JSON.parse(atob(token?.split(".")[1]));
   return user.user;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import AthleteInfoForm from "./components/Forms/AthleteInfoForm";
 
 import Layout from "./components/Layout";
@@ -7,10 +7,20 @@ import Landing from "./components/Landing";
 import TestimonialForm from "./components/Forms/TestimonialForm";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
+import axios from "axios";
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 400) {
+      // Handle 400 errors globally
+      return Promise.reject(error.response.data); // Pass the data for local handling
+    }
+    return Promise.reject(error); // Handle other errors
+  }
+);
 
 function App() {
-
-
   return (
     <>
       <Layout>

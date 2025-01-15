@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { getUser } from "../services/authService";
+import { UserTokenData } from "../lib/types";
 // Define the shape of the context state
 interface GlobalContextType {
   formStep: number;
@@ -22,6 +23,11 @@ interface GlobalContextType {
   handleResetForm: () => void;
   handlePrevFormStep: () => void;
   handleNextFormStep: () => void;
+  signoutUser: () => void;
+  user: UserTokenData | null;
+  setUser: (
+    data: UserTokenData
+  ) => React.Dispatch<React.SetStateAction<UserTokenData>>;
 }
 
 // Initial form data structure
@@ -49,6 +55,9 @@ const defaultContextValue: GlobalContextType = {
   handleResetForm: () => {}, // Temporary placeholder
   handlePrevFormStep: () => {},
   handleNextFormStep: () => {},
+  signoutUser: () => {},
+  setUser: () => {},
+  user: null,
 };
 
 // Create the context
@@ -65,7 +74,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     initialSpotlightFormData
   );
   const [user, setUser] = useState(getUser());
-
   const handleInputChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     setState: React.Dispatch<React.SetStateAction<T>>
@@ -110,9 +118,20 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setFormStep((prev) => prev - 1);
     }
   };
+
+  const signoutUser = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+      setUser(null);
+    }
+
+    console.log(token);
+    console.log(user);
+  };
   useEffect(() => {
-    console.log(user, " <-- user");
-  }, []);
+    getUser();
+  }, [user]);
   return (
     <GlobalContext.Provider
       value={{
@@ -125,6 +144,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         handleResetForm,
         handleNextFormStep,
         handlePrevFormStep,
+        signoutUser,
+        user,
+        setUser,
       }}
     >
       {children}

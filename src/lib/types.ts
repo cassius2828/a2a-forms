@@ -13,3 +13,14 @@ export type RegisterFormState = {
     email: string;
     password: string;
   };
+
+  export type UserTokenData = {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string | null;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+  };

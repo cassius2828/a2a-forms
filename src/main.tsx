@@ -6,10 +6,10 @@ import { BrowserRouter } from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <GlobalProvider>
+    <GlobalProvider>
+      <BrowserRouter>
         <App />
-      </GlobalProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </GlobalProvider>
   </StrictMode>
 );
