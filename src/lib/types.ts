@@ -24,3 +24,16 @@ export type RegisterFormState = {
     createdAt: string;
     updatedAt: string;
   };
+
+  export type SpotlightFormData = {
+    name: string;
+    sport: string;
+    graduationYear: string;
+    location: string;
+    generalBio: string;
+    actionBio: string;
+    communityImpact: string;
+    profileImage: File | null; // Assuming profile image will be a File object or null
+    actionImage1: File | null; // Assuming action image will be a File object or null
+    actionImage2: File | null; // Assuming action image will be a File object or null
+  };

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useGlobalContext } from "../context/GlobalContext";
+import { useGlobalContext } from "../context/useGlobalContext";
 import { useEffect } from "react";
 
 const Header = () => {
@@ -13,8 +13,14 @@ const Header = () => {
     console.log(user, " <-- USER IN HEADER");
   }, [user]);
   return (
-    <header className="bg-neutral-950 text-white shadow-md py-4">
-      <nav className="max-w-7xl mx-auto px-4 flex items-end justify-between gap-4">
+    <header className="bg-neutral-950 text-white shadow-md pb-4 pt-10">
+      {user && (
+        <span className="absolute top-3 right-8 text-white">
+          Welcome, {user?.first_name}
+        </span>
+      )}
+
+      <nav className=" mx-5 px-4 flex items-end justify-between gap-4">
         <Link to={"/"}>
           <h1 className="text-4xl mr-8">Athlete 2 Athlete</h1>
         </Link>
@@ -27,7 +33,7 @@ const Header = () => {
           </li>{" "}
           {user ? (
             <li
-              onClick={signoutUser}
+              onClick={handleSignOut}
               className="hover:text-green-500 transition-colors"
             >
               Sign Out

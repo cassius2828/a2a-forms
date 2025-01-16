@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useGlobalContext } from "../../context/GlobalContext";
+import { useGlobalContext } from "../../context/useGlobalContext";
+
 import { LoginFormState } from "../../lib/types";
 import { useNavigate } from "react-router-dom";
 import { getUser, login } from "../../services/authService";

@@ -59,7 +59,6 @@ const Landing = () => {
                   />
                 </div>
               </div>
-              ƒ
             </div>
           </div>
         </div>

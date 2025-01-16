@@ -3,7 +3,7 @@ import CharCount from "../CharCount";
 import AIF1 from "./AIF1";
 import AIF2 from "./AIF2";
 import AIF3 from "./AIF3";
-import { useGlobalContext } from "../../context/GlobalContext";
+import { useGlobalContext } from "../../context/useGlobalContext";
 export default function AthleteInfoForm() {
   // Single state for the entire form
   const { spotlightFormData, formStep } = useGlobalContext();

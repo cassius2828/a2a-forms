@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RegisterFormState } from "../../lib/types";
-import { useGlobalContext } from "../../context/GlobalContext";
+import { useGlobalContext } from "../../context/useGlobalContext";
 const initialFormState = {
   firstName: "",
   lastName: "",

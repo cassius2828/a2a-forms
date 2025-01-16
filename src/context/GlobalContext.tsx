@@ -1,14 +1,9 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import { getUser } from "../services/authService";
-import { UserTokenData } from "../lib/types";
+import { SpotlightFormData, UserTokenData } from "../lib/types";
+import { GlobalContext } from "./useGlobalContext";
 // Define the shape of the context state
-interface GlobalContextType {
+export interface GlobalContextType {
   formStep: number;
   setFormStep: React.Dispatch<React.SetStateAction<number>>;
   spotlightFormData: typeof initialSpotlightFormData;
@@ -44,33 +39,14 @@ const initialSpotlightFormData = {
   actionImage2: null,
 };
 
-// Default context value
-const defaultContextValue: GlobalContextType = {
-  formStep: 1,
-  setFormStep: () => {}, // Temporary placeholder, will be overwritten
-  spotlightFormData: initialSpotlightFormData,
-  setSpotlightFormData: () => {}, // Temporary placeholder, will be overwritten
-  handleInputChange: () => {}, // Temporary placeholder
-  handleFileChange: () => {}, // Temporary placeholder
-  handleResetForm: () => {}, // Temporary placeholder
-  handlePrevFormStep: () => {},
-  handleNextFormStep: () => {},
-  signoutUser: () => {},
-  setUser: () => {},
-  user: null,
-};
-
-// Create the context
-const GlobalContext = createContext<GlobalContextType>(defaultContextValue);
-
-// Define a Provider componentƒ
+// Define a Provider component
 interface GlobalProviderProps {
   children: ReactNode;
 }
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [formStep, setFormStep] = useState<number>(1);
-  const [spotlightFormData, setSpotlightFormData] = useState(
+  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
     initialSpotlightFormData
   );
   const [user, setUser] = useState(getUser());
@@ -152,13 +128,4 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       {children}
     </GlobalContext.Provider>
   );
-};
-
-// Custom hook to use the context
-export const useGlobalContext = () => {
-  const context = useContext(GlobalContext);
-  if (!context) {
-    throw new Error("useGlobalContext must be used within an GlobalProvider");
-  }
-  return context;
 };
