@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
+import { postAddSpotlight } from "../../services/formService";
 
 const AIF3 = () => {
   const {
@@ -6,10 +8,89 @@ const AIF3 = () => {
     handleResetForm,
     spotlightFormData,
     handlePrevFormStep,
+    user,
+    setFormError,
+    setFormMessage,
+    formError,
   } = useGlobalContext();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [photos, setPhotos] = useState<(File | null)[]>([null, null, null]);
+  useEffect(() => {
+    // If profileImage exists, replace the 0th index
+    if (spotlightFormData.profileImage) {
+      setPhotos((prev) => {
+        const updatedPhotos = [...prev];
+        updatedPhotos[0] = spotlightFormData.profileImage || null;
+        return updatedPhotos;
+      });
+    }
+
+    // If actionImage1 exists, replace the 1st index
+    if (spotlightFormData.actionImage1) {
+      setPhotos((prev) => {
+        const updatedPhotos = [...prev];
+        updatedPhotos[1] = spotlightFormData.actionImage1 || null;
+        return updatedPhotos;
+      });
+    }
+
+    // If actionImage2 exists, replace the 2nd index
+    if (spotlightFormData.actionImage2) {
+      setPhotos((prev) => {
+        const updatedPhotos = [...prev];
+        updatedPhotos[2] = spotlightFormData.actionImage2 || null;
+        return updatedPhotos;
+      });
+    }
+    console.log(photos, " <-- photos state");
+    console.log(spotlightFormData, " <-- form state");
+  }, [
+    spotlightFormData.profileImage,
+    spotlightFormData.actionImage1,
+    spotlightFormData.actionImage2,
+  ]);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const dataToSendToServer = new FormData();
+    dataToSendToServer.append("firstName", spotlightFormData.firstName);
+    dataToSendToServer.append("lastName", spotlightFormData.lastName);
+    dataToSendToServer.append("sport", spotlightFormData.sport);
+    dataToSendToServer.append(
+      "graduationYear",
+      spotlightFormData.graduationYear
+    );
+    dataToSendToServer.append("location", spotlightFormData.location);
+    dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
+    dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
+    dataToSendToServer.append(
+      "communityImpact",
+      spotlightFormData.communityImpact
+    );
+    if (photos && photos.length > 0) {
+      dataToSendToServer.append("photos", photos);
+    }
+
+    for (const key of dataToSendToServer.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
+
+    try {
+      if (user) {
+        const data = await postAddSpotlight(user.id, dataToSendToServer);
+        if (data.error) {
+          setFormError(data.error);
+        } else {
+          setFormMessage(data);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      console.log(`Unable to submit form data to server `);
+      setFormError(err.error);
+      console.log(formError);
+    }
     console.log(spotlightFormData);
+    console.log(dataToSendToServer, " DTSTS");
   };
   return (
     <>

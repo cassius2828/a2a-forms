@@ -4,6 +4,7 @@ import CharCount from "../CharCount";
 const AIF2 = () => {
   const {
     spotlightFormData,
+    setSpotlightFormData,
     handleInputChange,
     handleNextFormStep,
     handlePrevFormStep,
@@ -24,7 +25,7 @@ const AIF2 = () => {
           name="generalBio"
           maxLength={250}
           value={spotlightFormData.generalBio}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           rows={3}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
           placeholder="Tell us about yourself."
@@ -48,7 +49,7 @@ const AIF2 = () => {
           name="actionBio"
           maxLength={250}
           value={spotlightFormData.actionBio}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           rows={3}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
           placeholder="Describe your actions."
@@ -72,7 +73,7 @@ const AIF2 = () => {
           name="communityImpact"
           maxLength={250}
           value={spotlightFormData.communityImpact}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           rows={3}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
           placeholder="Describe your community involvement."

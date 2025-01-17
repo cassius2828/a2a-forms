@@ -1,14 +1,22 @@
 import axios from "axios";
+import { SpotlightFormData } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const SPOTLIGHT_BASE_URL = BASE_URL + "/spotlights";
-const TESTIMONIALS_BASE_URL = BASE_URL + "/testimonials";
+const SPOTLIGHT_BASE_URL = BASE_URL + "/forms/spotlights";
+const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
 
 ///////////////////////////
 // Athlete Spotlights
 ///////////////////////////
-export const postAddSpotlight = async (formData) => {
+export const postAddSpotlight = async (
+  userId: string,
+  formData: SpotlightFormData
+) => {
+  console.log(formData, ' <-- formdata service')
   try {
-    const response = await axios.post(`${SPOTLIGHT_BASE_URL}`, formData);
+    const response = await axios.post(
+      `${SPOTLIGHT_BASE_URL}/${userId}`,
+      formData
+    );
     return response.data;
   } catch (err) {
     console.error(err);
@@ -17,7 +25,10 @@ export const postAddSpotlight = async (formData) => {
   }
 };
 
-export const putUpdateSpotlight = async (formData, userId) => {
+export const putUpdateSpotlight = async (
+  userId: string,
+  formData: SpotlightFormData
+) => {
   try {
     const response = await axios.put(
       `${SPOTLIGHT_BASE_URL}/${userId}`,

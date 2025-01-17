@@ -47,17 +47,17 @@ export async function login(userCredentials: LoginFormState) {
     // if (data.error) {
     //   throw new Error(data.error);
     // }
-console.log(response, '<-- response')
+    console.log(response, "<-- response");
     if (data.token) {
       // store the token! in localstorage
       localStorage.setItem("token", data.token);
       const user = JSON.parse(atob(data.token.split(".")[1]));
-   
+
       return user.user;
     }
   } catch (err) {
     console.log(err.response.data);
-   
+
     return err.response.data;
   }
 }
@@ -67,8 +67,6 @@ console.log(response, '<-- response')
 /////////////////////
 export function getUser() {
   const token = localStorage.getItem("token");
-  console.log(token, " TOKEN");
-  console.log(typeof token, " TOKEN type");
   if (!token) return;
 
   const user = JSON.parse(atob(token?.split(".")[1]));
