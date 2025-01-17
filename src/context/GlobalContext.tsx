@@ -35,7 +35,7 @@ const initialSpotlightFormData: SpotlightFormData = {
   location: "",
   generalBio: "",
   actionBio: "",
-  communityImpact: "",
+  communityBio: "",
   profileImage: null,
   actionImage1: null,
   actionImage2: null,
@@ -62,14 +62,11 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     setState: React.Dispatch<React.SetStateAction<T>>
   ) => {
     const { name, value } = e.target;
-
-    // Log the value for debugging
-    console.log(`Input name: ${name}, Input value: ${value}`);
-
     setState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    console.log(name, spotlightFormData[name])
   };
 
   // Handle file input changes
@@ -112,7 +109,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       localStorage.removeItem("token");
       setUser(null);
     }
-    console.log(user);
   };
 
   useEffect(() => {

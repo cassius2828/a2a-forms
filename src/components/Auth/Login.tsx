@@ -25,7 +25,7 @@ const Login = () => {
       }
 
       const data = await login(loginForm);
-      console.log(data, " <-- data in login submit");
+ 
       if (data.error) {
         setError(data.error);
       } else {

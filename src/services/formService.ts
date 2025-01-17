@@ -11,7 +11,6 @@ export const postAddSpotlight = async (
   userId: string,
   formData: SpotlightFormData
 ) => {
-  console.log(formData, ' <-- formdata service')
   try {
     const response = await axios.post(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
@@ -60,6 +59,17 @@ export const getAllSpotlights = async () => {
   } catch (err) {
     console.error(err);
     console.log("Failed to fetch all athlete spotlights.");
+    throw err;
+  }
+};
+
+export const getSpotlightByUserId = async (userId: string) => {
+  try {
+    const response = await axios.get(`${SPOTLIGHT_BASE_URL}/${userId}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log("Failed to get spotlight with an id of: ", userId);
     throw err;
   }
 };

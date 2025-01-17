@@ -16,10 +16,9 @@ export async function signup(formData: RegisterFormState) {
 
     if (data.token) {
       // store the token! in localstorage
-      console.log(data.token, " <-- DATA TOKEN");
       localStorage.setItem("token", data.token);
       const user = JSON.parse(atob(data.token.split(".")[1]));
-      console.log(user, " <- user in signup!");
+ 
       return user.user;
     }
   } catch (err) {
@@ -47,7 +46,6 @@ export async function login(userCredentials: LoginFormState) {
     // if (data.error) {
     //   throw new Error(data.error);
     // }
-    console.log(response, "<-- response");
     if (data.token) {
       // store the token! in localstorage
       localStorage.setItem("token", data.token);

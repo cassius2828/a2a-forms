@@ -10,7 +10,7 @@ const Header = () => {
     navigate("/");
   };
   useEffect(() => {
-    console.log(user, " <-- USER IN HEADER");
+ 
   }, [user]);
   return (
     <header className="bg-neutral-950 text-white shadow-md pb-4 pt-10">

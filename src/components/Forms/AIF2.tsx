@@ -31,7 +31,7 @@ const AIF2 = () => {
           placeholder="Tell us about yourself."
         />
         <CharCount
-          length={spotlightFormData.generalBio.length}
+          length={spotlightFormData.generalBio?.length}
           maxCharCount={250}
         />
       </div>
@@ -55,7 +55,7 @@ const AIF2 = () => {
           placeholder="Describe your actions."
         />
         <CharCount
-          length={spotlightFormData.actionBio.length}
+          length={spotlightFormData.actionBio?.length}
           maxCharCount={250}
         />
       </div>
@@ -63,23 +63,23 @@ const AIF2 = () => {
       {/* Community Impact Input */}
       <div>
         <label
-          htmlFor="communityImpact"
+          htmlFor="communityBio"
           className="block text-sm font-medium text-white"
         >
           Community Impact
         </label>
         <textarea
-          id="communityImpact"
-          name="communityImpact"
+          id="communityBio"
+          name="communityBio"
           maxLength={250}
-          value={spotlightFormData.communityImpact}
+          value={spotlightFormData.communityBio}
           onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           rows={3}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
           placeholder="Describe your community involvement."
         />
         <CharCount
-          length={spotlightFormData.communityImpact.length}
+          length={spotlightFormData.communityBio?.length}
           maxCharCount={250}
         />
       </div>

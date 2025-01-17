@@ -8,7 +8,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Header />
-      <main className="flex justify-center items-start bg-neutral-950">{children}</main>
+      <main className="flex justify-center items-start bg-neutral-950 min-h-screen">{children}</main>
       <Footer />
     </>
   );

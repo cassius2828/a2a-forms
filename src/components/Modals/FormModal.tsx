@@ -25,7 +25,7 @@ export default function FormModal({
     }
     if (formMessage) {
       setFormMessage("");
-      handleResetForm()
+    //   handleResetForm()
     }
     setOpen(false);
   };
