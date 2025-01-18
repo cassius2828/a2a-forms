@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../context/useGlobalContext";
 import { useEffect } from "react";
 import {
@@ -86,36 +86,50 @@ export const HeaderV2 = () => {
     signoutUser();
     navigate("/");
   };
+  const location = useLocation();
+  console.log(location.pathname);
   useEffect(() => {
-    console.log(user)
+    console.log(user);
   }, [user]);
   const navigation = [
-    { name: "Athlete Info Form", href: "/spotlight-form", current: false },
-    { name: "Testimonial Form", href: "/testimonial-form", current: false },
-    { name: "My Submissions", href: "/submissions", current: false },
+    {
+      name: "Athlete Info Form",
+      href: "/spotlight-form",
+      current: location.pathname === "/spotlight-form",
+    },
+    {
+      name: "Testimonial Form",
+      href: "/testimonial-form",
+      current: location.pathname === "/testimonial-form",
+    },
+    {
+      name: "My Submissions",
+      href: "/submissions",
+      current: location.pathname === "/submissions",
+    },
     {
       name: "Login",
       href: "/login",
-      current: false,
+      current: location.pathname === "/login",
       condition: !user, // Shows if user is not logged in
     },
     {
       name: "Register",
       href: "/register",
-      current: false,
+      current: location.pathname === "/register",
       condition: !user, // Shows if user is not logged in
     },
     {
       name: "Sign Out",
       href: "/",
-      current: false,
+      // current: location.pathname === "/",
       condition: user, // Shows if user is logged in
       action: handleSignOut, // Add the sign-out handler
     },
     // {
     //   name: "Website",
     //   href: "https://a2a-training.netlify.app/",
-    //   current: false,
+    //   current: location.pathname === "https://a2a-training.netlify.app/",
     // },
   ];
   const userNavigation = [
@@ -133,8 +147,11 @@ export const HeaderV2 = () => {
       <body class="h-full">
       ```
     */}
-      <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
+      <div className=" w-full">
+        <Disclosure
+          as="nav"
+          className="bg-neutral-950 shadow-sm shadow-green-900 fixed z-50 top-0 w-full"
+        >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
@@ -150,7 +167,7 @@ export const HeaderV2 = () => {
                         style={{
                           display:
                             item.condition !== undefined
-                              ? item.condition 
+                              ? item.condition
                                 ? "block"
                                 : "none"
                               : "block",
@@ -161,12 +178,12 @@ export const HeaderV2 = () => {
                         aria-current={item.current ? "page" : undefined}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            ? "bg-gray-800 text-white"
+                            : "text-gray-300 hover:bg-green-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                       >
-                        {item.name}{console.log(item.condition, item.name)}
+                        {item.name}
                       </Link>
                     ))}
                   </div>

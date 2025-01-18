@@ -1,7 +1,7 @@
 import AthleteInfoForm from "./components/Forms/AthleteInfoForm";
 
 import Layout from "./components/Layout";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Landing from "./components/Landing";
 import TestimonialForm from "./components/Forms/TestimonialForm";
 import Register from "./components/Auth/Register";
@@ -9,6 +9,7 @@ import Login from "./components/Auth/Login";
 import axios from "axios";
 import PromptLoginOrRegister from "./components/Auth/PromptLoginOrRegister";
 import { useGlobalContext } from "./context/useGlobalContext";
+import { useEffect } from "react";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -22,7 +23,11 @@ axios.interceptors.response.use(
 );
 
 function App() {
-  const { user } = useGlobalContext();
+  const { user, scrollToTop } = useGlobalContext();
+  const location = useLocation();
+  useEffect(() => {
+    scrollToTop(false);
+  }, [location.pathname]);
   return (
     <>
       <Layout>

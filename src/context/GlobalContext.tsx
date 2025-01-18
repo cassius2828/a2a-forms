@@ -2,6 +2,7 @@ import React, { useState, ReactNode, useEffect } from "react";
 import { getUser } from "../services/authService";
 import { SpotlightFormData, UserTokenData } from "../lib/types";
 import { GlobalContext } from "./useGlobalContext";
+import { useLocation } from "react-router-dom";
 
 // Define the shape of the context state
 export interface GlobalContextType {
@@ -24,6 +25,7 @@ export interface GlobalContextType {
   formError: string;
   setFormMessage: React.Dispatch<React.SetStateAction<string>>;
   setFormError: React.Dispatch<React.SetStateAction<string>>;
+  scrollToTop: (smooth: boolean) => void; // Added scrollToTop function
 }
 
 // Initial form data structure
@@ -55,7 +57,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     initialSpotlightFormData
   );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
-
+ 
   // Handle input changes and update state dynamically
   const handleInputChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -112,9 +114,18 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   };
 
   useEffect(() => {
-
     getUser();
   }, [user]);
+  const scrollToTop = (smooth: boolean) => {
+    if (smooth) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
 
   return (
     <GlobalContext.Provider
@@ -135,6 +146,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         formError,
         setFormMessage,
         setFormError,
+        scrollToTop,
       }}
     >
       {children}
