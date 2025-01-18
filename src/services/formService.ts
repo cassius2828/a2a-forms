@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SpotlightFormData } from "../lib/types";
+import { SpotlightFormData, TestimonialFormData } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const SPOTLIGHT_BASE_URL = BASE_URL + "/forms/spotlights";
 const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
@@ -89,18 +89,27 @@ export const getApprovedSpotlights = async () => {
 // Testimonials
 ///////////////////////////
 
-export const postAddTestimonial = async (formData) => {
+export const postAddTestimonial = async (
+  formData: TestimonialFormData,
+  userId: string | undefined
+) => {
   try {
-    const response = await axios.post(`${TESTIMONIALS_BASE_URL}`, formData);
+    const response = await axios.post(
+      `${TESTIMONIALS_BASE_URL}?userId=${userId || ""}`,
+      formData
+    );
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to create a new athlete Testimonial.");
+    console.log("Failed to create a new client Testimonial.");
     throw err;
   }
 };
 
-export const putUpdateTestimonial = async (formData, userId) => {
+export const putUpdateTestimonial = async (
+  formData: TestimonialFormData,
+  userId: string | number
+) => {
   try {
     const response = await axios.put(
       `${TESTIMONIALS_BASE_URL}/${userId}`,

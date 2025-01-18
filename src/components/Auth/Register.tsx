@@ -10,7 +10,7 @@ const initialFormState = {
   confirmPassword: "",
 };
 import { signup } from "../../services/authService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
   const [registerForm, setRegisterForm] =
     useState<RegisterFormState>(initialFormState);
@@ -33,7 +33,7 @@ const Register = () => {
   return (
     <form
       onSubmit={handleRegisterSubmit}
-      className="w-full md:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20"
+      className="w-full md:w-1/2 lg:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
     >
       <h2 className="text-xl font-semibold text-white mb-4">Sign Up</h2>
 
@@ -45,6 +45,7 @@ const Register = () => {
           First Name
         </label>
         <input
+        required
           type="text"
           id="firstName"
           name="firstName"
@@ -63,6 +64,7 @@ const Register = () => {
           Last Name
         </label>
         <input
+        required
           type="text"
           id="lastName"
           name="lastName"
@@ -78,13 +80,14 @@ const Register = () => {
           Email Address
         </label>
         <input
+        required
           type="email"
           id="email"
           name="email"
           value={registerForm.email}
           onChange={(e) => handleInputChange(e, setRegisterForm)}
           className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Enter your email"
+          placeholder="example@gmail.com"
         />
       </div>
 
@@ -99,7 +102,7 @@ const Register = () => {
           value={registerForm.phone}
           onChange={(e) => handleInputChange(e, setRegisterForm)}
           className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Enter your phone number"
+          placeholder="555 555 5555"
         />
       </div>
 
@@ -111,6 +114,7 @@ const Register = () => {
           Password
         </label>
         <input
+        required
           type="password"
           id="password"
           name="password"
@@ -129,6 +133,7 @@ const Register = () => {
           Confirm Password
         </label>
         <input
+        required
           type="password"
           id="confirmPassword"
           name="confirmPassword"
@@ -145,6 +150,12 @@ const Register = () => {
       >
         Sign Up
       </button>
+      <Link
+        to={"/login"}
+        className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2"
+      >
+        login
+      </Link>
     </form>
   );
 };

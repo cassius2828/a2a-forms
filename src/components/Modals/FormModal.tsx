@@ -5,18 +5,20 @@ export default function FormModal({
   title,
   text,
   error,
+  setFormError,
+  setFormMessage,
+  formError,
+  formMessage,
 }: {
   title: string;
   text: string;
   error: boolean;
+  setFormError: (error: string) => void;
+  setFormMessage: (message: string) => void;
+  formError: string;
+  formMessage: string;
 }) {
-  const {
-    setFormError,
-    setFormMessage,
-    formMessage,
-    formError,
-    handleResetForm,
-  } = useGlobalContext();
+  const { handleResetForm } = useGlobalContext();
   const [open, setOpen] = useState(true);
 
   const closeModal = () => {
@@ -25,7 +27,7 @@ export default function FormModal({
     }
     if (formMessage) {
       setFormMessage("");
-    //   handleResetForm()
+      //   handleResetForm()
     }
     setOpen(false);
   };

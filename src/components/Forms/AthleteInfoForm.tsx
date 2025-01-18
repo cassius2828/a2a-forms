@@ -13,6 +13,8 @@ export default function AthleteInfoForm() {
     setFormStep,
     formError,
     formMessage,
+    setFormError,
+    setFormMessage,
     user,
     spotlightFormData,
   } = useGlobalContext();
@@ -64,6 +66,10 @@ export default function AthleteInfoForm() {
           error={Boolean(formError)}
           title={formError ? " Error: Could not submit form" : "Success!"}
           text={formError ? formError : formMessage}
+          setFormError={setFormError}
+          setFormMessage={setFormMessage}
+          formError={formError}
+          formMessage={formMessage}
         />
       )}
 

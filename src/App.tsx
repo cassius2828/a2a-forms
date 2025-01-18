@@ -1,4 +1,3 @@
-
 import AthleteInfoForm from "./components/Forms/AthleteInfoForm";
 
 import Layout from "./components/Layout";
@@ -8,6 +7,8 @@ import TestimonialForm from "./components/Forms/TestimonialForm";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
 import axios from "axios";
+import PromptLoginOrRegister from "./components/Auth/PromptLoginOrRegister";
+import { useGlobalContext } from "./context/useGlobalContext";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -21,6 +22,7 @@ axios.interceptors.response.use(
 );
 
 function App() {
+  const { user } = useGlobalContext();
   return (
     <>
       <Layout>
@@ -28,7 +30,10 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/spotlight-form" element={<AthleteInfoForm />} />
+          <Route
+            path="/spotlight-form"
+            element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}
+          />
           <Route path="/testimonial-form" element={<TestimonialForm />} />
         </Routes>
       </Layout>

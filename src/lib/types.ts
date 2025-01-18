@@ -1,4 +1,3 @@
-
 // Types for the Register Form State, Login Form State, User Token Data, and Spotlight Form Data
 export type RegisterFormState = {
   firstName: string;
@@ -47,3 +46,8 @@ export interface PhotoUpdateProps {
   handleAccept: (e: React.FormEvent | React.MouseEvent) => void;
   handleDecline: (e: React.FormEvent | React.MouseEvent) => void;
 }
+
+export type TestimonialFormData = {
+  name: string;
+  text: string;
+};
