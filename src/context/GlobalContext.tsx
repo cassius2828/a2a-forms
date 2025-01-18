@@ -66,7 +66,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       ...prevState,
       [name]: value,
     }));
-    console.log(name, spotlightFormData[name])
+    console.log(name, spotlightFormData[name]);
   };
 
   // Handle file input changes
@@ -112,6 +112,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   };
 
   useEffect(() => {
+
     getUser();
   }, [user]);
 

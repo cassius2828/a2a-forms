@@ -65,7 +65,7 @@ export async function login(userCredentials: LoginFormState) {
 /////////////////////
 export function getUser() {
   const token = localStorage.getItem("token");
-  if (!token) return;
+  if (!token) return null;
 
   const user = JSON.parse(atob(token?.split(".")[1]));
   return user.user;
