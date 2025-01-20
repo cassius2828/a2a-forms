@@ -41,13 +41,13 @@ export const putUpdateSpotlight = async (
   }
 };
 
-export const deleteRemoveSpotlight = async (userId) => {
+export const deleteRemoveSpotlight = async (id:string) => {
   try {
-    const response = await axios.delete(`${SPOTLIGHT_BASE_URL}/${userId}`);
+    const response = await axios.delete(`${SPOTLIGHT_BASE_URL}/${id}`);
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to remove athlete spotlight for user ID: ${userId}`);
+    console.log(`Failed to remove athlete spotlight for user ID: ${id}`);
     throw err;
   }
 };
@@ -108,28 +108,28 @@ export const postAddTestimonial = async (
 
 export const putUpdateTestimonial = async (
   formData: TestimonialFormData,
-  userId: string | number
+  id: string
 ) => {
   try {
     const response = await axios.put(
-      `${TESTIMONIALS_BASE_URL}/${userId}`,
+      `${TESTIMONIALS_BASE_URL}/${id}`,
       formData
     );
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to update athlete Testimonial for user ID: ${userId}`);
+    console.log(`Failed to update testimonial with an id of ${id}`);
     throw err;
   }
 };
 
-export const deleteRemoveTestimonial = async (userId) => {
+export const deleteTestimonial = async (id: string) => {
   try {
-    const response = await axios.delete(`${TESTIMONIALS_BASE_URL}/${userId}`);
+    const response = await axios.delete(`${TESTIMONIALS_BASE_URL}/${id}`);
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to remove athlete Testimonial for user ID: ${userId}`);
+    console.log(`Failed to remove athlete Testimonial with an id of: ${id}`);
     throw err;
   }
 };
@@ -152,6 +152,27 @@ export const getApprovedTestimonials = async () => {
   } catch (err) {
     console.error(err);
     console.log("Failed to fetch approved athlete spotlights.");
+    throw err;
+  }
+};
+
+export const getAllUserTestimonials = async (userId: string) => {
+  try {
+    const response = await axios.get(`${TESTIMONIALS_BASE_URL}/${userId}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log("Failed to fetch all user testimonials.");
+    throw err;
+  }
+};
+export const getSingleTestimonial = async (id: string) => {
+  try {
+    const response = await axios.get(`${TESTIMONIALS_BASE_URL}/single/${id}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log("Failed to fetch targeted user testimonials.");
     throw err;
   }
 };

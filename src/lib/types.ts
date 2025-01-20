@@ -51,3 +51,8 @@ export type TestimonialFormData = {
   name: string;
   text: string;
 };
+
+export type BackendDeleteResponseType = {
+  message?: string;
+  error?: string;
+};

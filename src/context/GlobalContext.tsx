@@ -21,6 +21,8 @@ export interface GlobalContextType {
   signoutUser: () => void;
   user: UserTokenData | null;
   setUser: React.Dispatch<React.SetStateAction<UserTokenData | null>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
   formMessage: string;
   formError: string;
   setFormMessage: React.Dispatch<React.SetStateAction<string>>;
@@ -51,13 +53,14 @@ interface GlobalProviderProps {
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   // State Hooks with explicit types
   const [formStep, setFormStep] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formMessage, setFormMessage] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
   const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
     initialSpotlightFormData
   );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
- 
+
   // Handle input changes and update state dynamically
   const handleInputChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -147,6 +150,8 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         setFormMessage,
         setFormError,
         scrollToTop,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

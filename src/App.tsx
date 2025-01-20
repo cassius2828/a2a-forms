@@ -10,6 +10,7 @@ import axios from "axios";
 import PromptLoginOrRegister from "./components/Auth/PromptLoginOrRegister";
 import { useGlobalContext } from "./context/useGlobalContext";
 import { useEffect } from "react";
+import ViewYourSubmissions from "./components/Submissions/ViewYourSubmissions";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -40,6 +41,16 @@ function App() {
             element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}
           />
           <Route path="/testimonial-form" element={<TestimonialForm />} />
+          <Route path="/testimonial-form/:id" element={<TestimonialForm />} />
+          <Route
+            path="/submissions"
+            element={
+              <ViewYourSubmissions
+                testimonialSubmissions={[]}
+                spotlightSubmissions={[]}
+              />
+            }
+          />
         </Routes>
       </Layout>
     </>

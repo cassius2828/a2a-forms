@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CharCount from "../CharCount";
-import { postAddTestimonial } from "../../services/formService";
+import {
+  deleteTestimonial,
+  getSingleTestimonial,
+  postAddTestimonial,
+  putUpdateTestimonial,
+} from "../../services/formService";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import FormModal from "../Modals/FormModal";
 import { TestimonialFormData } from "../../lib/types";
+import { useNavigate, useParams } from "react-router-dom";
+import ConfirmationModal from "../Modals/ConfirmationModal";
+import DefaultLoader from "../Loaders/Default";
 const initialFormState: TestimonialFormData = {
   text: "",
   name: "",
@@ -17,16 +25,19 @@ const TestimonialForm = () => {
     setFormError,
     setFormMessage,
     user,
+    isLoading,
+    setIsLoading,
   } = useGlobalContext();
 
   const [form, setForm] = useState<TestimonialFormData>(initialFormState);
   const [error, setError] = useState<string>();
   const [message, setMessage] = useState<string>();
-
-
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  // Handle form submissions
+  const handlePostTestimonial = async () => {
     try {
       const data = await postAddTestimonial(form, user?.id);
       if (data.error) {
@@ -40,9 +51,59 @@ const TestimonialForm = () => {
       setError(err.error);
     }
   };
+  const handleUpdateTestimonial = async (id: string) => {
+    setIsLoading(true);
+    try {
+      const data = await putUpdateTestimonial(form, id);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setForm(initialFormState);
+        navigate("/submissions");
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (id) {
+      handleUpdateTestimonial(id);
+    } else {
+      handlePostTestimonial();
+    }
+  };
   const handleResetForm = () => {
     setForm(initialFormState);
   };
+  const fetchSingleTestimonial = async (id: string) => {
+    try {
+      const data = await getSingleTestimonial(id);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setForm(data);
+        console.log("Retrieved form data \n", data);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.error);
+    }
+  };
+
+  useEffect(() => {
+    // fetch targeted testimonial data if an id is in the url
+    if (id) {
+      fetchSingleTestimonial(id);
+    } else {
+      handleResetForm();
+    }
+  }, [id]);
+  if (isLoading) return <DefaultLoader />;
   return (
     <form
       onSubmit={handleSubmit}
@@ -59,8 +120,17 @@ const TestimonialForm = () => {
           formMessage={formMessage}
         />
       )}
+      {id && showConfirmationModal && (
+        <ConfirmationModal
+          item="testimonial"
+          info=""
+          id={id}
+          closeModal={() => setShowConfirmationModal(false)}
+          serviceDelete={deleteTestimonial}
+        />
+      )}
       <h2 className="text-xl font-semibold text-white mb-4">
-        Submit Your Testimonial
+        {id ? "Update Testimonial" : "Submit New Testimonial"}
       </h2>
 
       <div className="mb-4">
@@ -96,13 +166,34 @@ const TestimonialForm = () => {
           required
         />
       </div>
-
-      <button
-        type="submit"
-        className="w-full py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
-      >
-        Submit Testimonial
-      </button>
+      <div className="flex gap-4">
+        {id ? (
+          <>
+            <button
+              type="button"
+              onClick={() => setShowConfirmationModal(true)}
+              className="w-full py-2 bg-red-600 text-white rounded-md font-semibold hover:bg-red-700 transition duration-300 focus:outline-none"
+            >
+              Delete Testimonial
+            </button>
+            <button
+              type="submit"
+              className="w-full py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
+            >
+              Re-submit Testimonial
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              type="submit"
+              className="w-full py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
+            >
+              Submit Testimonial
+            </button>
+          </>
+        )}
+      </div>
       <button
         onClick={handleResetForm}
         className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2"
