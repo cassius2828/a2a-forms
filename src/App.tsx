@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import ViewYourSubmissions from "./components/Submissions/ViewYourSubmissions";
 import TestimonialsGrid from "./components/Submissions/TestimonialsGrid";
 import ErrorBoundary from "./components/ErrorBoundary";
+import ProfileSettings from "./components/Profile/ProfileSettings";
+import MainDashboard from "./components/Profile/MainDashboard";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -39,6 +41,11 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="/profile/:userId/settings"
+              element={<ProfileSettings />}
+            />
+            <Route path="/profile/:userId" element={<MainDashboard />} />
             <Route
               path="/spotlight-form"
               element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}

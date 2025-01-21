@@ -60,7 +60,7 @@ export default function AthleteInfoForm() {
     setFormStep(1);
   }, [user]);
   return (
-    <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-4 px-5 bg-neutral-900 ">
+    <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-20 px-5 bg-neutral-900 ">
       {(error || message) && (
         <FormModal
           isError={Boolean(error)}

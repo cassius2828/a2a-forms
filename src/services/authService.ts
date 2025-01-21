@@ -1,5 +1,9 @@
 import axios from "axios";
-import { LoginFormState, RegisterFormState } from "../lib/types";
+import {
+  LoginFormState,
+  RegisterFormState,
+  UserInfoFormState,
+} from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 /////////////////////
@@ -18,7 +22,7 @@ export async function signup(formData: RegisterFormState) {
       // store the token! in localstorage
       localStorage.setItem("token", data.token);
       const user = JSON.parse(atob(data.token.split(".")[1]));
- 
+
       return user.user;
     }
   } catch (err) {
@@ -70,6 +74,16 @@ export function getUser() {
   const user = JSON.parse(atob(token?.split(".")[1]));
   return user.user;
 }
+
+export const putUpdateUserInfo = async (userId: string, formData: UserInfoFormState) => {
+
+  try {
+    const response = await axios.put(`${BASE_URL}/auth/${userId}`, formData);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 /////////////////////
 // Refresh Token

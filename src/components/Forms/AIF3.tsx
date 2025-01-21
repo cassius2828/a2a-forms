@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import { postAddSpotlight } from "../../services/formService";
-import { ImageUploadsProps, PhotoUpdateProps } from "../../lib/types";
+import {
+  ImageUploadsProps,
+  PhotoUpdateProps,
+  SpotlightFormData,
+} from "../../lib/types";
 
 const AIF3 = ({
   ownedByCurrentUserProp,
@@ -18,7 +22,12 @@ const AIF3 = ({
     setMessage,
     error,
   } = useGlobalContext();
-  const [photos, setPhotos] = useState<(File | null)[]>([null, null, null]);
+  // TODO: Figure out better way than to have spotlight form in a union with the file | null union
+  const [photos, setPhotos] = useState<(File | null | SpotlightFormData)[]>([
+    null,
+    null,
+    null,
+  ]);
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
@@ -117,12 +126,10 @@ const AIF3 = ({
   console.log(ownedByCurrentUserProp, " <-- ownded by current user");
   return (
     <>
-      {ownedByCurrentUserProp ?
-       (
+      {ownedByCurrentUserProp ? (
         <>
-        {/* is owned by user */}
-          {photoDecisionMade ?
-           (
+          {/* is owned by user */}
+          {photoDecisionMade ? (
             // photo decision IS made
             acceptUpdate ? (
               <>
@@ -146,18 +153,18 @@ const AIF3 = ({
             )
           ) : (
             <>
-            {/* photo decision NOT made */}
-            {/* is not ownded by user */}
-            <PhotoUpdateChoiceBox
-          handleAccept={handleAcceptUpdatePhotos}
-          handleDecline={handleDeclineUpdatePhotos}
-        />
+              {/* photo decision NOT made */}
+              {/* is not ownded by user */}
+              <PhotoUpdateChoiceBox
+                handleAccept={handleAcceptUpdatePhotos}
+                handleDecline={handleDeclineUpdatePhotos}
+              />
             </>
           )}
         </>
       ) : photoDecisionMade ? (
         <>
-        {/* is not owned by User */}
+          {/* is not owned by User */}
           <ImageUploads handleFileChange={handleFileChange} />
           <PrevAndSubmitBtn
             handlePrevFormStep={handlePrevFormStep}
@@ -168,8 +175,8 @@ const AIF3 = ({
           />
         </>
       ) : (
-       <>
-         <ImageUploads handleFileChange={handleFileChange} />
+        <>
+          <ImageUploads handleFileChange={handleFileChange} />
           <PrevAndSubmitBtn
             handlePrevFormStep={handlePrevFormStep}
             ownedByCurrentUser={ownedByCurrentUserProp}
@@ -177,7 +184,7 @@ const AIF3 = ({
             photoDecisionMade={photoDecisionMade}
             handleResetForm={handleResetForm}
           />
-     </>
+        </>
       )}
     </>
   );
@@ -187,6 +194,8 @@ export default AIF3;
 export const ImageUploads: React.FC<ImageUploadsProps> = ({
   handleFileChange,
 }) => {
+  const { setSpotlightFormData } = useGlobalContext();
+
   return (
     <>
       {" "}
@@ -202,7 +211,7 @@ export const ImageUploads: React.FC<ImageUploadsProps> = ({
           id="profileImage"
           name="profileImage"
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, setSpotlightFormData)}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
@@ -218,7 +227,7 @@ export const ImageUploads: React.FC<ImageUploadsProps> = ({
           id="actionImage1"
           name="actionImage1"
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, setSpotlightFormData)}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
@@ -234,7 +243,7 @@ export const ImageUploads: React.FC<ImageUploadsProps> = ({
           id="actionImage2"
           name="actionImage2"
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, setSpotlightFormData)}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>

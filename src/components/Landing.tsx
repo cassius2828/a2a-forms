@@ -13,7 +13,7 @@ const Landing = () => {
       >
         <div className="absolute inset-0 bg-black opacity-80 w-full"></div>{" "}
         {/* Dark overlay */}
-        <div className="relative z-10 flex flex-col items-center justify-end gap-12 h-full text-center text-white px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 mt-12 flex flex-col items-center justify-end gap-12 h-full text-center text-white px-4 sm:px-6 lg:px-8">
           <div>
             <h1 className="text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl mb-6">
               Empowering Athletes. Inspiring Excellence.

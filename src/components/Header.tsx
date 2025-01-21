@@ -134,8 +134,8 @@ export const HeaderV2 = () => {
     // },
   ];
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
+    { name: "Your Profile", href: `/profile/${user?.id}` },
+    { name: "Settings", href: `/profile/${user?.id}/settings` },
     { name: "Sign out", href: "#" },
   ];
   return (
@@ -209,8 +209,9 @@ export const HeaderV2 = () => {
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
                           <img
-                            alt=""
+                            alt={user.first_name + " 's avatar"}
                             src={
+                              user.avatar ||
                               "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                             }
                             className="size-8 rounded-full"
@@ -279,6 +280,7 @@ export const HeaderV2 = () => {
                   <img
                     alt={user?.first_name + " avatar" || "user avatar"}
                     src={
+                      user?.avatar ||
                       "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                     }
                     className="size-10 rounded-full"
