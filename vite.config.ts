@@ -5,10 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    hmr: {
-      // Optionally set the HMR options (defaults should work fine)
-      protocol: 'ws', // WebSocket protocol (default)
-      host: 'localhost', // HMR server host
+    watch: {
+      usePolling: true,
     }
   }
 })

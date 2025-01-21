@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useGlobalContext } from "../../context/GlobalContext";
+import { useGlobalContext } from "../../context/useGlobalContext";
 
 const AIF1 = () => {
   const {
     spotlightFormData,
+    setSpotlightFormData,
     handleInputChange,
     handleNextFormStep,
     handlePrevFormStep,
@@ -11,22 +11,36 @@ const AIF1 = () => {
 
   return (
     <>
-      {/* Name Input */}
+      {/* First Name Input */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-white">
-          Name
+          First Name
         </label>
         <input
-          id="name"
-          name="name"
+          id="firstName"
+          name="firstName"
           type="text"
-          value={spotlightFormData.name}
-          onChange={handleInputChange}
-          placeholder="Jane Smith"
+          value={spotlightFormData.firstName}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
+          placeholder="Jane"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
-
+  {/* Last Name Input */}
+  <div>
+        <label htmlFor="name" className="block text-sm font-medium text-white">
+          Last Name
+        </label>
+        <input
+          id="lastName"
+          name="lastName"
+          type="text"
+          value={spotlightFormData.lastName}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
+          placeholder="Smith"
+          className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
+        />
+      </div>
       {/* Sport Input */}
       <div>
         <label htmlFor="sport" className="block text-sm font-medium text-white">
@@ -37,7 +51,7 @@ const AIF1 = () => {
           name="sport"
           type="text"
           value={spotlightFormData.sport}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="Basketball"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
@@ -56,7 +70,7 @@ const AIF1 = () => {
           name="graduationYear"
           type="text"
           value={spotlightFormData.graduationYear}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="2024"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
@@ -75,7 +89,7 @@ const AIF1 = () => {
           name="location"
           type="text"
           value={spotlightFormData.location}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setSpotlightFormData)}
           placeholder="New York, NY"
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />

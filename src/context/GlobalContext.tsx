@@ -1,80 +1,78 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-
-// Define the shape of the context state
-interface GlobalContextType {
-  formStep: number;
-  setFormStep: React.Dispatch<React.SetStateAction<number>>;
-  spotlightFormData: typeof initialSpotlightFormData;
-  setSpotlightFormData: React.Dispatch<
-    React.SetStateAction<typeof initialSpotlightFormData>
-  >;
-  handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleResetForm: () => void;
-  handlePrevFormStep: () => void;
-  handleNextFormStep: () => void;
-}
+import React, { useState, useEffect } from "react";
+import { getUser } from "../services/authService";
+import {
+  GlobalProviderProps,
+  SpotlightFormData,
+  TestimonialDisplayData,
+  TestimonialFormData,
+  UserTokenData,
+} from "../lib/types";
+import { GlobalContext } from "./useGlobalContext";
+import { getAllUserTestimonials } from "../services/formService";
 
 // Initial form data structure
-const initialSpotlightFormData = {
-  name: "",
+const initialSpotlightFormData: SpotlightFormData = {
+  firstName: "",
+  lastName: "",
   sport: "",
   graduationYear: "",
   location: "",
   generalBio: "",
   actionBio: "",
-  communityImpact: "",
+  communityBio: "",
   profileImage: null,
   actionImage1: null,
   actionImage2: null,
 };
-
-// Default context value
-const defaultContextValue: GlobalContextType = {
-  formStep: 1,
-  setFormStep: () => {}, // Temporary placeholder, will be overwritten
-  spotlightFormData: initialSpotlightFormData,
-  setSpotlightFormData: () => {}, // Temporary placeholder, will be overwritten
-  handleInputChange: () => {}, // Temporary placeholder
-  handleFileChange: () => {}, // Temporary placeholder
-  handleResetForm: () => {}, // Temporary placeholder
-  handlePrevFormStep: () => {},
-  handleNextFormStep: () => {},
+const initialTestimonialFormState: TestimonialFormData = {
+  text: "",
+  name: "",
 };
-
-// Create the context
-const GlobalContext = createContext<GlobalContextType>(defaultContextValue);
-
-// Define a Provider componentƒ
-interface GlobalProviderProps {
-  children: ReactNode;
-}
-
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
+  // State Hooks with explicit types
   const [formStep, setFormStep] = useState<number>(1);
-  const [spotlightFormData, setSpotlightFormData] = useState(
+  const [testimonialForm, setTestimonialForm] = useState<TestimonialFormData>(
+    initialTestimonialFormState
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
     initialSpotlightFormData
   );
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  const [user, setUser] = useState<UserTokenData | null>(getUser());
+  const [userTestimonials, setUserTestimonials] = useState<
+    TestimonialDisplayData[]
+  >([]);
+  // const { setError } = useGlobalContext();
+  const fetchUserTestimonialSubmissions = async (userId: string) => {
+    try {
+      const data = await getAllUserTestimonials(userId);
+      console.log(data);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setUserTestimonials(data);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.error);
+    }
+  };
+  // Handle input changes and update state dynamically
+  const handleInputChange = <T extends object>(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setState: React.Dispatch<React.SetStateAction<T>>
   ) => {
     const { name, value } = e.target;
-
-    // Log the value to the console for debugging purposes
-    console.log(`Input name: ${name}, Input value: ${value}`);
-
-    setSpotlightFormData((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    console.log(name, value);
   };
 
-  // Handle file input change
+  // Handle file input changes
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (files && files[0]) {
@@ -83,49 +81,84 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         [name]: files[0],
       }));
     }
+    console.log(spotlightFormData[name], " <-- file uploaded");
   };
 
-  // Handle form reset
+  // Reset the form and scroll to the top
   const handleResetForm = () => {
     setSpotlightFormData(initialSpotlightFormData);
     setFormStep(1);
-    scrollTo(0, 0);
+    window.scrollTo(0, 0);
   };
+
+  // Navigate to the next step
   const handleNextFormStep = () => {
     if (formStep < 3) {
       setFormStep((prev) => prev + 1);
     }
   };
+
+  // Navigate to the previous step
   const handlePrevFormStep = () => {
     if (formStep > 1) {
       setFormStep((prev) => prev - 1);
     }
   };
 
+  // Sign out user and remove token
+  const signoutUser = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [user]);
+
+  const scrollToTop = (smooth: boolean) => {
+    if (smooth) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
+        error,
+        fetchUserTestimonialSubmissions,
         formStep,
-        setFormStep,
-        spotlightFormData,
-        setSpotlightFormData,
-        handleInputChange,
         handleFileChange,
-        handleResetForm,
+        handleInputChange,
         handleNextFormStep,
         handlePrevFormStep,
+        handleResetForm,
+        isLoading,
+        message,
+        scrollToTop,
+        setError,
+        setFormStep,
+        setIsLoading,
+        setMessage,
+        setSpotlightFormData,
+        setUserTestimonials,
+        setUser,
+        signoutUser,
+        spotlightFormData,
+        user,
+        userTestimonials,
+        testimonialForm,
+        setTestimonialForm,
       }}
     >
       {children}
     </GlobalContext.Provider>
   );
-};
-
-// Custom hook to use the context
-export const useGlobalContext = () => {
-  const context = useContext(GlobalContext);
-  if (!context) {
-    throw new Error("useGlobalContext must be used within an GlobalProvider");
-  }
-  return context;
 };

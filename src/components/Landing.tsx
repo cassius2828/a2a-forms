@@ -1,4 +1,3 @@
-
 import FormDescriptionCard from "./FormDescriptionCard";
 
 const Landing = () => {
@@ -24,6 +23,12 @@ const Landing = () => {
               either fill out an Athlete Spotlight story or leave a genuine
               testimonial/review to support our community and continue to allow
               us to chase greatness.
+            </p>
+            <br />
+            <p className="text-lg sm:text-xl lg:text-2xl mb-6">
+              {" "}
+              Please create an account to have your spotlight or testimonial
+              elgible to appear on the website.{" "}
             </p>
           </div>{" "}
           <div>
@@ -54,7 +59,6 @@ const Landing = () => {
                   />
                 </div>
               </div>
-              ƒ
             </div>
           </div>
         </div>
