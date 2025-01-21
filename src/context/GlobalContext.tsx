@@ -24,10 +24,16 @@ const initialSpotlightFormData: SpotlightFormData = {
   actionImage1: null,
   actionImage2: null,
 };
-
+const initialTestimonialFormState: TestimonialFormData = {
+  text: "",
+  name: "",
+};
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   // State Hooks with explicit types
   const [formStep, setFormStep] = useState<number>(1);
+  const [testimonialForm, setTestimonialForm] = useState<TestimonialFormData>(
+    initialTestimonialFormState
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -36,13 +42,13 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
   const [userTestimonials, setUserTestimonials] = useState<
-  TestimonialDisplayData[]
+    TestimonialDisplayData[]
   >([]);
   // const { setError } = useGlobalContext();
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
       const data = await getAllUserTestimonials(userId);
-      console.log(data)
+      console.log(data);
       if (data.error) {
         setError(data.error);
       } else {
@@ -63,7 +69,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       ...prevState,
       [name]: value,
     }));
-    console.log(name, spotlightFormData[name]);
+    console.log(name, value);
   };
 
   // Handle file input changes
@@ -147,7 +153,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         signoutUser,
         spotlightFormData,
         user,
-        userTestimonials
+        userTestimonials,
+        testimonialForm,
+        setTestimonialForm,
       }}
     >
       {children}

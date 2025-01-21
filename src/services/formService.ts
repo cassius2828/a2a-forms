@@ -41,7 +41,7 @@ export const putUpdateSpotlight = async (
   }
 };
 
-export const deleteRemoveSpotlight = async (id:string) => {
+export const deleteSpotlight = async (id:string|null) => {
   try {
     const response = await axios.delete(`${SPOTLIGHT_BASE_URL}/${id}`);
     return response.data;
@@ -123,7 +123,7 @@ export const putUpdateTestimonial = async (
   }
 };
 
-export const deleteTestimonial = async (id: string) => {
+export const deleteTestimonial = async (id: string | null) => {
   try {
     const response = await axios.delete(`${TESTIMONIALS_BASE_URL}/${id}`);
     return response.data;

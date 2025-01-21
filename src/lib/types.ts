@@ -87,6 +87,9 @@ export interface GlobalContextType {
     React.SetStateAction<TestimonialDisplayData[]>
   >; // Function to update testimonials
   fetchUserTestimonialSubmissions: (userId: string) => Promise<void>; // Function to fetch testimonials
+
+  testimonialForm: TestimonialFormData;
+  setTestimonialForm: React.Dispatch<React.SetStateAction<TestimonialFormData>>;
 }
 
 // Define a Provider component

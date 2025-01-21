@@ -11,7 +11,7 @@ const TestimonialsGrid = () => {
     if (userId) fetchUserTestimonialSubmissions(userId);
   }, [userId]);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6  gap-x-12 gap-y-6 mt-12">
+    <div className="flex flex-wrap gap-8 justify-center w-full md:w-4/5 mt-20">
       {userTestimonials.map((submission) => (
         <div
           key={submission.id}

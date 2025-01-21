@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import {
+  deleteSpotlight,
   getAllUserTestimonials,
   getSpotlightByUserId,
 } from "../../services/formService";
 import { formatDate, getStatusClass } from "../../lib/utils";
 import { TestimonialDisplayData } from "../../lib/types";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 type Submission = {
   id: number;
@@ -16,13 +18,9 @@ type Submission = {
   type: "spotlight" | "testimonial"; // Type of submission (spotlight or testimonial)
 };
 
-
-
-
-
 const ViewYourSubmissions = () => {
   const { user, error, setError } = useGlobalContext();
- 
+
   const [spotlightSubmission, setSpotlightSubmission] = useState({
     id: null,
     title: "",
@@ -30,7 +28,11 @@ const ViewYourSubmissions = () => {
     date: "",
     type: "",
   });
-  const [testimonialSubmissions, setTestimonialSubmissions] = useState<TestimonialDisplayData[]>([]);
+  const [testimonialSubmissions, setTestimonialSubmissions] = useState<
+    TestimonialDisplayData[]
+  >([]);
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
   const fetchUserSpotlightSubmission = async (userId: string) => {
     try {
       const data = await getSpotlightByUserId(userId);
@@ -68,50 +70,82 @@ const ViewYourSubmissions = () => {
       fetchUserSpotlightSubmission(user?.id);
       fetchUserTestimonialSubmissions(user?.id);
     }
+    console.log(spotlightSubmission)
   }, [user?.id]);
   return (
-    <div className="p-8 space-y-6 mt-20 bg-red-800 w-full">
+    <div className="p-8 space-y-6 mt-20 w-full">
       {/* Dashboard Title */}
-      <h1 className="text-3xl font-semibold text-gray-200">View Submissions</h1>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          title="Delete your athlete spotlight?"
+          info="This is irreversable, your athlete spotlight will be removed from the website. Any new spotlights form submissions must be approved again by the admin."
+          id={spotlightSubmission.id}
+          greenAction={() => setShowConfirmationModal(false)}
+          greenActionText="Keep Spotlight"
+          redAction={deleteSpotlight}
+          redActionText="Delete"
+        />
+      )}
+      <h1 className="text-3xl font-semibold text-gray-200 text-center pb-12">
+        View Submissions
+      </h1>
       <div className="flex justify-around w-full md:w-3/4 mx-auto ">
         {/* Spotlight Submissions Section */}
-        <div className="space-y-4">
+        <div className="space-y-4 w-full">
           <h2 className="text-xl font-medium text-gray-300">
             Spotlight Submission
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div
-              key={spotlightSubmission.id}
-              className="bg-neutral-800 p-4 rounded-lg shadow-md flex flex-col w-96"
-            >
-              <h3 className="font-semibold text-lg text-gray-200 capitalize">
-                {spotlightSubmission.title}
-              </h3>
-              <p
-                className={`my-2 p-2 inline-block text-md rounded-md ${getStatusClass(
-                  spotlightSubmission.status
-                )}`}
+          {spotlightSubmission.id ? (
+            <div>
+              <div
+                key={spotlightSubmission.id}
+                className="bg-neutral-800 p-4 rounded-lg shadow-md flex flex-col w-96"
               >
-                {spotlightSubmission.status.charAt(0).toUpperCase() +
-                  spotlightSubmission.status.slice(1)}
-              </p>
-              <p className="mt-2 text-sm text-gray-200">
-                Date Submitted: {spotlightSubmission.date}
-              </p>
-              <div className=" flex justify-between items-center mt-3">
-                <Link
-                  to={`/spotlight-form`}
-                  className="text-sm text-blue-500 hover:underline"
+                <h3 className="font-semibold text-lg text-gray-200 capitalize">
+                  {spotlightSubmission.title}
+                </h3>
+                <p
+                  className={`my-2 p-2 inline-block text-md rounded-md ${getStatusClass(
+                    spotlightSubmission.status
+                  )}`}
                 >
-                  Edit
-                </Link>
+                  {spotlightSubmission.status.charAt(0).toUpperCase() +
+                    spotlightSubmission.status.slice(1)}
+                </p>
+                <p className="mt-2 text-sm text-gray-200">
+                  Date Submitted: {spotlightSubmission.date}
+                </p>
+                <div className=" flex justify-between items-center mt-3">
+                  <Link
+                    to={`/spotlight-form`}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => setShowConfirmationModal(true)}
+                    className="text-sm text-gray-100 bg-red-500 hover:bg-red-600 rounded-md px-4 py-2 flex justify-center font-semibold transition duration-300 relative z-10"
+                  >
+                    delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+     
+
+            <Link
+              to={`/spotlight-form`}
+              className="text-sm text-gray-100 bg-gray-500 hover:bg-gray-600 rounded-md px-4 py-2 w-48 flex justify-center font-semibold transition duration-300 relative z-10"
+            >
+              Create a Spotlight
+            </Link>
+         
+          )}
         </div>
 
         {/* Testimonial Submissions Section */}
-        <div className="space-y-4 w-full bg-blue-400">
+        <div className="space-y-4 w-full">
           <h2 className="text-xl font-medium text-gray-300 ">
             Testimonial Submissions
           </h2>
@@ -149,12 +183,19 @@ const ViewYourSubmissions = () => {
               </div>
             ))}
           </div>{" "}
-          {user && (
+          {user && testimonialSubmissions.length > 0 ? (
             <Link
               to={`/submissions/testimonials/${user?.id}`}
               className="text-sm text-gray-100 hover:underline w-full flex justify-center"
             >
               View All Testimonial Submissions
+            </Link>
+          ) : (
+            <Link
+              to={`/testimonial-form`}
+              className="text-sm text-gray-100 bg-gray-500 hover:bg-gray-600 rounded-md px-4 py-2 w-48 flex justify-center font-semibold transition duration-300 relative z-10"
+            >
+              Create a Testimonial
             </Link>
           )}
         </div>

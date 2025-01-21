@@ -4,35 +4,47 @@ import { useNavigate } from "react-router-dom";
 
 const ConfirmationModal = ({
   id,
-  item,
+  title,
   info,
-  closeModal,
-  serviceDelete,
+  greenAction,
+  redAction,
+  redActionText,
+  greenActionText,
 }: {
-  id: string;
-  item: string;
+  id: string | null;
+  title: string;
   info: string;
-  closeModal: () => void;
-  serviceDelete: (id: string) => Promise<BackendDeleteResponseType>;
+  greenAction: () => void;
+  redAction: (
+    id: string | null
+  ) =>
+    | Promise<BackendDeleteResponseType>
+    | void;
+  greenActionText: string;
+  redActionText: string;
 }) => {
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
   const handleKeep = () => {
-    closeModal();
     setError("");
     setMessage("");
+    greenAction();
   };
 
   const handleDelete = async () => {
     try {
-      const data = await serviceDelete(id);
-      console.log(data, " <-- data");
-      if (data.error) {
-        setError(data.error || "Unexpected error occurred");
+      if (id) {
+        const data = await redAction(id);
+        console.log(data, " <-- data");
+        if (data.error) {
+          setError(data.error || "Unexpected error occurred");
+        } else {
+          setMessage(data.message || "Deletion successful");
+        }
       } else {
-        setMessage(data.message || "Deletion successful");
+        redAction(null);
       }
     } catch (err: any) {
       setError(err.response?.data?.error || "An unexpected error occurred.");
@@ -84,7 +96,7 @@ const ConfirmationModal = ({
             <>
               <div className="mt-3 text-center sm:mt-5">
                 <h3 className="text-base font-semibold text-gray-900">
-                  Are you sure you want to delete this {item}?
+                  {title}
                 </h3>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">{info}</p>
@@ -99,7 +111,7 @@ const ConfirmationModal = ({
                     bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm 
                     hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2`}
                 >
-                  delete
+                  {redActionText}
                 </button>
                 <button
                   type="button"
@@ -108,7 +120,7 @@ const ConfirmationModal = ({
                     bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm 
                     hover:bg-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2`}
                 >
-                  do not delete
+                  {greenActionText}
                 </button>
               </div>
             </>
