@@ -11,6 +11,8 @@ import PromptLoginOrRegister from "./components/Auth/PromptLoginOrRegister";
 import { useGlobalContext } from "./context/useGlobalContext";
 import { useEffect } from "react";
 import ViewYourSubmissions from "./components/Submissions/ViewYourSubmissions";
+import TestimonialsGrid from "./components/Submissions/TestimonialsGrid";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -32,26 +34,24 @@ function App() {
   return (
     <>
       <Layout>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/spotlight-form"
-            element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}
-          />
-          <Route path="/testimonial-form" element={<TestimonialForm />} />
-          <Route path="/testimonial-form/:id" element={<TestimonialForm />} />
-          <Route
-            path="/submissions"
-            element={
-              <ViewYourSubmissions
-                testimonialSubmissions={[]}
-                spotlightSubmissions={[]}
-              />
-            }
-          />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/spotlight-form"
+              element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}
+            />
+            <Route path="/testimonial-form" element={<TestimonialForm />} />
+            <Route path="/testimonial-form/:id" element={<TestimonialForm />} />
+            <Route path="/submissions" element={<ViewYourSubmissions />} />
+            <Route
+              path="/submissions/testimonials/:userId"
+              element={<TestimonialsGrid />}
+            />
+          </Routes>
+        </ErrorBoundary>
       </Layout>
     </>
   );

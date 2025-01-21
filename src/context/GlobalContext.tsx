@@ -1,34 +1,14 @@
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getUser } from "../services/authService";
-import { SpotlightFormData, UserTokenData } from "../lib/types";
+import {
+  GlobalProviderProps,
+  SpotlightFormData,
+  TestimonialDisplayData,
+  TestimonialFormData,
+  UserTokenData,
+} from "../lib/types";
 import { GlobalContext } from "./useGlobalContext";
-import { useLocation } from "react-router-dom";
-
-// Define the shape of the context state
-export interface GlobalContextType {
-  formStep: number;
-  setFormStep: React.Dispatch<React.SetStateAction<number>>;
-  spotlightFormData: SpotlightFormData;
-  setSpotlightFormData: React.Dispatch<React.SetStateAction<SpotlightFormData>>;
-  handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setState: React.Dispatch<React.SetStateAction<any>>
-  ) => void;
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleResetForm: () => void;
-  handlePrevFormStep: () => void;
-  handleNextFormStep: () => void;
-  signoutUser: () => void;
-  user: UserTokenData | null;
-  setUser: React.Dispatch<React.SetStateAction<UserTokenData | null>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  formMessage: string;
-  formError: string;
-  setFormMessage: React.Dispatch<React.SetStateAction<string>>;
-  setFormError: React.Dispatch<React.SetStateAction<string>>;
-  scrollToTop: (smooth: boolean) => void; // Added scrollToTop function
-}
+import { getAllUserTestimonials } from "../services/formService";
 
 // Initial form data structure
 const initialSpotlightFormData: SpotlightFormData = {
@@ -45,22 +25,34 @@ const initialSpotlightFormData: SpotlightFormData = {
   actionImage2: null,
 };
 
-// Define a Provider component
-interface GlobalProviderProps {
-  children: ReactNode;
-}
-
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   // State Hooks with explicit types
   const [formStep, setFormStep] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formMessage, setFormMessage] = useState<string>("");
-  const [formError, setFormError] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
     initialSpotlightFormData
   );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
-
+  const [userTestimonials, setUserTestimonials] = useState<
+  TestimonialDisplayData[]
+  >([]);
+  // const { setError } = useGlobalContext();
+  const fetchUserTestimonialSubmissions = async (userId: string) => {
+    try {
+      const data = await getAllUserTestimonials(userId);
+      console.log(data)
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setUserTestimonials(data);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.error);
+    }
+  };
   // Handle input changes and update state dynamically
   const handleInputChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -119,6 +111,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   useEffect(() => {
     getUser();
   }, [user]);
+
   const scrollToTop = (smooth: boolean) => {
     if (smooth) {
       window.scrollTo({
@@ -133,25 +126,28 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   return (
     <GlobalContext.Provider
       value={{
+        error,
+        fetchUserTestimonialSubmissions,
         formStep,
-        setFormStep,
-        spotlightFormData,
-        setSpotlightFormData,
-        handleInputChange,
         handleFileChange,
-        handleResetForm,
+        handleInputChange,
         handleNextFormStep,
         handlePrevFormStep,
-        signoutUser,
-        user,
-        setUser,
-        formMessage,
-        formError,
-        setFormMessage,
-        setFormError,
-        scrollToTop,
+        handleResetForm,
         isLoading,
+        message,
+        scrollToTop,
+        setError,
+        setFormStep,
         setIsLoading,
+        setMessage,
+        setSpotlightFormData,
+        setUserTestimonials,
+        setUser,
+        signoutUser,
+        spotlightFormData,
+        user,
+        userTestimonials
       }}
     >
       {children}

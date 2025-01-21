@@ -4,29 +4,29 @@ import { useGlobalContext } from "../../context/useGlobalContext";
 export default function FormModal({
   title,
   text,
+  isError,
+  setError,
+  setMessage,
   error,
-  setFormError,
-  setFormMessage,
-  formError,
-  formMessage,
+  message,
 }: {
   title: string;
   text: string;
-  error: boolean;
-  setFormError: (error: string) => void;
-  setFormMessage: (message: string) => void;
-  formError: string;
-  formMessage: string;
+  isError: boolean;
+  setError: (error: string) => void;
+  setMessage: (message: string) => void;
+  error: string;
+  message: string;
 }) {
   const { handleResetForm } = useGlobalContext();
   const [open, setOpen] = useState(true);
 
   const closeModal = () => {
-    if (formError) {
-      setFormError("");
+    if (error) {
+      setError("");
     }
-    if (formMessage) {
-      setFormMessage("");
+    if (message) {
+      setMessage("");
       //   handleResetForm()
     }
     setOpen(false);
@@ -47,7 +47,7 @@ export default function FormModal({
               <h3
                 className={`
               text-base font-semibold ${
-                error ? "text-red-500" : "text-green-500"
+                isError ? "text-red-500" : "text-green-500"
               }
               `}
               >
@@ -65,7 +65,7 @@ export default function FormModal({
               type="button"
               onClick={closeModal}
               className={`inline-flex w-full justify-center rounded-md 
-                ${error ? "bg-red-500" : "bg-green-500"}
+                ${isError ? "bg-red-500" : "bg-green-500"}
               
               px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus:outline-none focus-visible:outline-2 focus-visible:outline-neutral-900-600`}
             >

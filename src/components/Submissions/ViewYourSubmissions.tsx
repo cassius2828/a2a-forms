@@ -5,7 +5,8 @@ import {
   getAllUserTestimonials,
   getSpotlightByUserId,
 } from "../../services/formService";
-import { formatDate } from "../../lib/utils";
+import { formatDate, getStatusClass } from "../../lib/utils";
+import { TestimonialDisplayData } from "../../lib/types";
 
 type Submission = {
   id: number;
@@ -15,26 +16,13 @@ type Submission = {
   type: "spotlight" | "testimonial"; // Type of submission (spotlight or testimonial)
 };
 
-interface DashboardProps {
-  spotlightSubmissions: Submission[];
-}
 
-const getStatusClass = (status: "pending" | "approved" | "rejected") => {
-  switch (status) {
-    case "approved":
-      return "bg-green-600 text-white";
-    case "rejected":
-      return "bg-red-600 text-white";
-    case "pending":
-      return "bg-yellow-600 text-white";
-    default:
-      return "bg-gray-600 text-white";
-  }
-};
 
-const ViewYourSubmissions: React.FC<DashboardProps> = ({}) => {
-  const { user } = useGlobalContext();
-  const [error, setError] = useState<boolean>(false);
+
+
+const ViewYourSubmissions = () => {
+  const { user, error, setError } = useGlobalContext();
+ 
   const [spotlightSubmission, setSpotlightSubmission] = useState({
     id: null,
     title: "",
@@ -42,7 +30,7 @@ const ViewYourSubmissions: React.FC<DashboardProps> = ({}) => {
     date: "",
     type: "",
   });
-  const [testimonialSubmissions, setTestimonialSubmissions] = useState([]);
+  const [testimonialSubmissions, setTestimonialSubmissions] = useState<TestimonialDisplayData[]>([]);
   const fetchUserSpotlightSubmission = async (userId: string) => {
     try {
       const data = await getSpotlightByUserId(userId);
@@ -127,8 +115,8 @@ const ViewYourSubmissions: React.FC<DashboardProps> = ({}) => {
           <h2 className="text-xl font-medium text-gray-300 ">
             Testimonial Submissions
           </h2>
-          <div className="flex justify-center gap-6">
-            {testimonialSubmissions.slice(0, 3).map((submission) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-x-12 gap-y-6">
+            {testimonialSubmissions.slice(0, 4).map((submission) => (
               <div
                 key={submission.id}
                 className="bg-neutral-800 p-4 rounded-lg shadow-md flex flex-col w-72"

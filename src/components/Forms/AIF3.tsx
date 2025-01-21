@@ -14,9 +14,9 @@ const AIF3 = ({
     spotlightFormData,
     handlePrevFormStep,
     user,
-    setFormError,
-    setFormMessage,
-    formError,
+    setError,
+    setMessage,
+    error,
   } = useGlobalContext();
   const [photos, setPhotos] = useState<(File | null)[]>([null, null, null]);
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
@@ -90,15 +90,15 @@ const AIF3 = ({
         console.log(dataToSendToServer, " <-- DTSTS");
         // const data = "testing";
         if (data.error) {
-          setFormError(data.error);
+          setError(data.error);
         } else {
-          setFormMessage(data);
+          setMessage(data);
         }
       }
     } catch (err) {
       console.error(err);
       console.log(`Unable to submit form data to server `);
-      setFormError(err.error);
+      setError(err.error);
     }
   };
   const handleAcceptUpdatePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {

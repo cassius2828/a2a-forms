@@ -11,10 +11,10 @@ export default function AthleteInfoForm() {
     setSpotlightFormData,
     formStep,
     setFormStep,
-    formError,
-    formMessage,
-    setFormError,
-    setFormMessage,
+    error,
+    message,
+    setError,
+    setMessage,
     user,
     spotlightFormData,
   } = useGlobalContext();
@@ -61,15 +61,15 @@ export default function AthleteInfoForm() {
   }, [user]);
   return (
     <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-4 px-5 bg-neutral-900 ">
-      {(formError || formMessage) && (
+      {(error || message) && (
         <FormModal
-          error={Boolean(formError)}
-          title={formError ? " Error: Could not submit form" : "Success!"}
-          text={formError ? formError : formMessage}
-          setFormError={setFormError}
-          setFormMessage={setFormMessage}
-          formError={formError}
-          formMessage={formMessage}
+          isError={Boolean(error)}
+          title={error ? " Error: Could not submit form" : "Success!"}
+          text={error ? error : message}
+          setError={setError}
+          setMessage={setMessage}
+          error={error}
+          message={message}
         />
       )}
 

@@ -20,18 +20,16 @@ const TestimonialForm = () => {
   // Local state to manage the testimonial and name
   const {
     handleInputChange,
-    formError,
-    formMessage,
-    setFormError,
-    setFormMessage,
+    error,
+    message,
+    setError,
+    setMessage,
     user,
     isLoading,
     setIsLoading,
   } = useGlobalContext();
 
   const [form, setForm] = useState<TestimonialFormData>(initialFormState);
-  const [error, setError] = useState<string>();
-  const [message, setMessage] = useState<string>();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const navigate = useNavigate();
@@ -111,13 +109,13 @@ const TestimonialForm = () => {
     >
       {(error || message) && (
         <FormModal
-          error={Boolean(error)}
+          isError={Boolean(error)}
           title={error ? " Error: Could not submit form" : "Success!"}
           text={error ? error : message || "cannot send result text"}
-          setFormError={setFormError}
-          setFormMessage={setFormMessage}
-          formError={formError}
-          formMessage={formMessage}
+          setError={setError}
+          setMessage={setMessage}
+          error={error}
+          message={message}
         />
       )}
       {id && showConfirmationModal && (

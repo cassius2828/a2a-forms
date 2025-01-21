@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
-import { GlobalContextType } from "./GlobalContext";
+import { GlobalContextType } from "../lib/types";
+
 
 export const GlobalContext = createContext<GlobalContextType | null>(null);
 
