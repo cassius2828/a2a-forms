@@ -11,7 +11,8 @@ import FormModal from "../Modals/FormModal";
 import { TestimonialFormData } from "../../lib/types";
 import { useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "../Modals/ConfirmationModal";
-import DefaultLoader from "../Loaders/Default";
+import { DefaultLoader } from "../Loaders";
+
 const initialTestimonialFormState: TestimonialFormData = {
   text: "",
   name: "",

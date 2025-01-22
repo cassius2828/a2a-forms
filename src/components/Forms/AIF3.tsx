@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import { postAddSpotlight } from "../../services/formService";
 import {
@@ -6,6 +6,7 @@ import {
   PhotoUpdateProps,
   SpotlightFormData,
 } from "../../lib/types";
+import { DefaultLoader } from "../Loaders";
 
 const AIF3 = ({
   ownedByCurrentUserProp,
@@ -21,6 +22,7 @@ const AIF3 = ({
     setError,
     setMessage,
     error,
+    setIsLoading,
   } = useGlobalContext();
   // TODO: Figure out better way than to have spotlight form in a union with the file | null union
   const [photos, setPhotos] = useState<(File | null | SpotlightFormData)[]>([
@@ -70,7 +72,7 @@ const AIF3 = ({
   ]);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const dataToSendToServer = new FormData();
     dataToSendToServer.append("firstName", spotlightFormData.firstName);
     dataToSendToServer.append("lastName", spotlightFormData.lastName);
@@ -108,6 +110,8 @@ const AIF3 = ({
       console.error(err);
       console.log(`Unable to submit form data to server `);
       setError(err.error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const handleAcceptUpdatePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +127,6 @@ const AIF3 = ({
     setPhotoDecisionMade(true);
     setAcceptUpdate(false);
   };
-  console.log(ownedByCurrentUserProp, " <-- ownded by current user");
   return (
     <>
       {ownedByCurrentUserProp ? (
@@ -286,9 +289,11 @@ export const PrevAndSubmitBtn = ({
   handlePrevFormStep,
   ownedByCurrentUser,
   handleSubmit,
+  handleUpdate,
   photoDecisionMade,
   handleResetForm,
 }) => {
+  const { isLoading } = useGlobalContext();
   return (
     <>
       {/* Prev + Submit Button */}
@@ -301,21 +306,23 @@ export const PrevAndSubmitBtn = ({
         </button>
         {ownedByCurrentUser ? (
           <button
-            onClick={handleSubmit}
+            onClick={handleUpdate}
             className={`w-full ${
               photoDecisionMade
                 ? "bg-green-500 hover:bg-green-600"
                 : "disabled bg-gray-500 hover:bg-gray-600 opacity-30 pointer-events-none"
-            }  text-white font-medium py-2 px-4 rounded-md`}
+            }  text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center`}
           >
             Update
+            {isLoading && <DefaultLoader className={"loader-sm"} />}
           </button>
         ) : (
           <button
             onClick={handleSubmit}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md"
+            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center"
           >
             Submit
+            {isLoading && <DefaultLoader className={"loader-sm"} />}
           </button>
         )}
       </div>
