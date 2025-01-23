@@ -52,7 +52,7 @@ function App() {
             />
             <Route path="/testimonial-form" element={<TestimonialForm />} />
             <Route path="/testimonial-form/:id" element={<TestimonialForm />} />
-            <Route path="/submissions" element={<ViewYourSubmissions />} />
+            <Route path="/submissions/:userId" element={<ViewYourSubmissions />} />
             <Route
               path="/submissions/testimonials/:userId"
               element={<TestimonialsGrid />}

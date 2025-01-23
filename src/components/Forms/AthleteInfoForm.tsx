@@ -5,6 +5,7 @@ import AIF3 from "./AIF3";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import FormModal from "../Modals/FormModal";
 import { getSpotlightByUserId } from "../../services/formService";
+import { useNavigate } from "react-router-dom";
 export default function AthleteInfoForm() {
   // Single state for the entire form
   const {
@@ -18,6 +19,7 @@ export default function AthleteInfoForm() {
     user,
     spotlightFormData,
   } = useGlobalContext();
+  const navigate = useNavigate();
   const [ownedByCurrentUser, setOwnedByCurrentUser] = useState<boolean>(false);
   useEffect(() => {
     const fetchUserSpotlightDetails = async () => {
@@ -70,6 +72,8 @@ export default function AthleteInfoForm() {
           setMessage={setMessage}
           error={error}
           message={message}
+          willNavigate
+          navigateFn={() => navigate(`/submissions/${user?.id}`)}
         />
       )}
 

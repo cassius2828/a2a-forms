@@ -1,6 +1,9 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
-import { postAddSpotlight } from "../../services/formService";
+import {
+  postAddSpotlight,
+  putUpdateSpotlight,
+} from "../../services/formService";
 import {
   ImageUploadsProps,
   PhotoUpdateProps,
@@ -70,40 +73,20 @@ const AIF3 = ({
     spotlightFormData.actionImage1,
     spotlightFormData.actionImage2,
   ]);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const dataToSendToServer = new FormData();
-    dataToSendToServer.append("firstName", spotlightFormData.firstName);
-    dataToSendToServer.append("lastName", spotlightFormData.lastName);
-    dataToSendToServer.append("sport", spotlightFormData.sport);
-    dataToSendToServer.append(
-      "graduationYear",
-      spotlightFormData.graduationYear
-    );
-    dataToSendToServer.append("location", spotlightFormData.location);
-    dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
-    dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
-    dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
-    if (photos && photos.length > 0) {
-      photos.forEach((photo) => {
-        dataToSendToServer.append("photos", photo);
-      });
-    }
-
-    for (const key of dataToSendToServer.entries()) {
-      console.log(key[0] + ", " + key[1]);
-    }
-
+    const dataToSendToServer = createFormData(spotlightFormData, photos);
     try {
-      if (user) {
-        const data = await postAddSpotlight(user.id, dataToSendToServer);
-        console.log(dataToSendToServer, " <-- DTSTS");
-        // const data = "testing";
+      if (user && ownedByCurrentUserProp) {
+        const data = await putUpdateSpotlight(user.id, dataToSendToServer);
+        console.log(dataToSendToServer, " <-- DTSTS update");
+
         if (data.error) {
           setError(data.error);
         } else {
-          setMessage(data);
+          setMessage(data.message);
         }
       }
     } catch (err) {
@@ -112,6 +95,32 @@ const AIF3 = ({
       setError(err.error);
     } finally {
       setIsLoading(false);
+      console.log("ran");
+    }
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const dataToSendToServer = createFormData(spotlightFormData, photos);
+
+    try {
+      if (user) {
+        const data = await postAddSpotlight(user.id, dataToSendToServer);
+        console.log(dataToSendToServer, " <-- DTSTS");
+
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      console.log(`Unable to submit form data to server `);
+      setError(err.error);
+    } finally {
+      setIsLoading(false);
+      console.log("ran");
     }
   };
   const handleAcceptUpdatePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +149,7 @@ const AIF3 = ({
                 <PrevAndSubmitBtn
                   handlePrevFormStep={handlePrevFormStep}
                   ownedByCurrentUser={ownedByCurrentUserProp}
+                  handleUpdate={handleUpdate}
                   handleSubmit={handleSubmit}
                   photoDecisionMade={photoDecisionMade}
                   handleResetForm={handleResetForm}
@@ -149,6 +159,7 @@ const AIF3 = ({
               <PrevAndSubmitBtn
                 handlePrevFormStep={handlePrevFormStep}
                 ownedByCurrentUser={ownedByCurrentUserProp}
+                handleUpdate={handleUpdate}
                 handleSubmit={handleSubmit}
                 photoDecisionMade={photoDecisionMade}
                 handleResetForm={handleResetForm}
@@ -172,6 +183,7 @@ const AIF3 = ({
           <PrevAndSubmitBtn
             handlePrevFormStep={handlePrevFormStep}
             ownedByCurrentUser={ownedByCurrentUserProp}
+            handleUpdate={handleUpdate}
             handleSubmit={handleSubmit}
             photoDecisionMade={photoDecisionMade}
             handleResetForm={handleResetForm}
@@ -183,6 +195,7 @@ const AIF3 = ({
           <PrevAndSubmitBtn
             handlePrevFormStep={handlePrevFormStep}
             ownedByCurrentUser={ownedByCurrentUserProp}
+            handleUpdate={handleUpdate}
             handleSubmit={handleSubmit}
             photoDecisionMade={photoDecisionMade}
             handleResetForm={handleResetForm}
@@ -334,4 +347,29 @@ export const PrevAndSubmitBtn = ({
       </span>
     </>
   );
+};
+
+const createFormData = (
+  spotlightFormData: SpotlightFormData,
+  photos: (File | null | SpotlightFormData)[]
+) => {
+  const dataToSendToServer = new FormData();
+  dataToSendToServer.append("firstName", spotlightFormData.firstName);
+  dataToSendToServer.append("lastName", spotlightFormData.lastName);
+  dataToSendToServer.append("sport", spotlightFormData.sport);
+  dataToSendToServer.append("graduationYear", spotlightFormData.graduationYear);
+  dataToSendToServer.append("location", spotlightFormData.location);
+  dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
+  dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
+  dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
+  if (photos && photos.length > 0) {
+    photos.forEach((photo) => {
+      dataToSendToServer.append("photos", photo);
+    });
+  }
+
+  for (const key of dataToSendToServer.entries()) {
+    console.log(key[0] + ", " + key[1]);
+  }
+  return dataToSendToServer;
 };

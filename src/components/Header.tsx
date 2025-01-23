@@ -104,7 +104,7 @@ export const HeaderV2 = () => {
     },
     {
       name: "My Submissions",
-      href: "/submissions",
+      href: `/submissions/${user?.id}`,
       current: location.pathname === "/submissions",
       condition: user,
     },

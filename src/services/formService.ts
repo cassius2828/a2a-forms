@@ -28,11 +28,13 @@ export const putUpdateSpotlight = async (
   userId: string,
   formData: SpotlightFormData
 ) => {
+  console.log('running update spotlight')
   try {
     const response = await axios.put(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
       formData
     );
+    console.log(response.data, ' <-- response data')
     return response.data;
   } catch (err) {
     console.error(err);
