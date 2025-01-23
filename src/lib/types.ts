@@ -18,7 +18,9 @@ export interface GlobalContextType {
   formStep: number; // Current step in a multi-step form
   handleFileChange: (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<File | null | SpotlightFormData>>
+    setState: React.Dispatch<
+      React.SetStateAction<File | null | SpotlightFormData>
+    >
   ) => void; // Handles file input changes for a state object with dynamic keys
 
   handleSingleFileChange: (
@@ -136,4 +138,18 @@ export type UserTokenData = {
   phone: string | null; // User's phone number
   role: string; // User's role in the application
   updatedAt: string; // Timestamp when the user was last updated
+};
+// Represents keys for nav menu
+export type NavigationMenu = {
+  name: string;
+  href: string;
+  current?: boolean;
+  condition?: boolean; // Optional condition for rendering
+  action?: () => void; // Optional action for custom behavior
+};
+
+// Represents keys for user nav menu
+export type UserNavigationMenu = {
+  name: string;
+  href: string;
 };

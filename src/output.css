@@ -2219,6 +2219,11 @@ video {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
 }
 
+.data-\[focus\]\:bg-gray-700[data-focus] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
+}
+
 .data-\[closed\]\:opacity-0[data-closed] {
   opacity: 0;
 }
