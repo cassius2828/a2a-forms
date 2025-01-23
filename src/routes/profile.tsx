@@ -73,7 +73,7 @@ const profileRoutes = [
           </div>
         }
       >
-        <ProfileSettings />
+        <ComingSoon />
       </Suspense>
     ),
   },

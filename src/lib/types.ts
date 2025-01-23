@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
 // Defines the response type for a backend delete request, which may return a success message or error
 export type BackendDeleteResponseType = {
@@ -154,8 +154,14 @@ export type UserNavigationMenu = {
   href: string;
 };
 
-
 export interface ComingSoonProps {
   title?: string;
   text?: string;
 }
+
+export type SideBarNavMenu = {
+  name: string;
+  href: string;
+  current?: boolean;
+  icon: (props: React.SVGProps<SVGSVGElement>) => ReactElement; // Type for the icon
+};

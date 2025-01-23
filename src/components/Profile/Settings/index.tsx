@@ -17,18 +17,12 @@ import {
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useGlobalContext } from "../../../context/useGlobalContext";
-import { UserInfoFormState } from "../../../lib/types";
+import { SideBarNavMenu, UserInfoFormState } from "../../../lib/types";
 import { getUser, putUpdateUserInfo } from "../../../services/authService";
 import FormModal from "../../Modals/FormModal";
 import { useNavigate } from "react-router-dom";
+import PromptLoginOrRegister from "../../Auth/PromptLoginOrRegister";
 
-const navigation = [
-  { name: "Appointments", href: "#", icon: FolderIcon, current: false },
-  { name: "Membership", href: "#", icon: ServerIcon, current: false },
-  { name: "Preferences", href: "#", icon: SignalIcon, current: false },
-  { name: "Billing", href: "#", icon: GlobeAltIcon, current: false },
-  { name: "Settings", href: "#", icon: Cog6ToothIcon, current: true },
-];
 const initialFormState = {
   firstName: "",
   lastName: "",
@@ -58,6 +52,38 @@ export default function ProfileSettings() {
     message,
     setMessage,
   } = useGlobalContext();
+  const navigation = [
+    {
+      name: "Appointments",
+      href: `/profile/${user?.id}/appointments`,
+      icon: FolderIcon,
+      current: false,
+    },
+    {
+      name: "Membership",
+      href: `/profile/${user?.id}/membership`,
+      icon: ServerIcon,
+      current: false,
+    },
+    {
+      name: "Preferences",
+      href: `/profile/${user?.id}/preferences`,
+      icon: SignalIcon,
+      current: false,
+    },
+    {
+      name: "Billing",
+      href: `/profile/${user?.id}/billing`,
+      icon: GlobeAltIcon,
+      current: false,
+    },
+    {
+      name: "Settings",
+      href: `/profile/${user?.id}/settings`,
+      icon: Cog6ToothIcon,
+      current: true,
+    },
+  ];
   const fillUserInfoFormFromUserState = () => {
     if (user) {
       setUserInfoForm({
@@ -116,20 +142,10 @@ export default function ProfileSettings() {
   useEffect(() => {
     fillUserInfoFormFromUserState();
   }, []);
-  useEffect(() => {
-    console.log(profilePhoto, " <--pfp");
-  }, [profilePhoto]);
-  if (!user) return <h1>Sign in to view your profile</h1>;
+
+  if (!user) return <PromptLoginOrRegister />;
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-900">
-        <body class="h-full">
-        ```
-      */}
       <div>
         {(error || message) && (
           <FormModal
@@ -218,7 +234,7 @@ export default function ProfileSettings() {
                           className="size-8 rounded-full bg-gray-800"
                         />
                         <span className="sr-only">Your profile</span>
-                        <span aria-hidden="true">Tom Cook</span>
+                        <span aria-hidden="true">Tom sCook</span>
                       </a>
                     </li>
                   </ul>
@@ -270,7 +286,7 @@ export default function ProfileSettings() {
                     className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white hover:bg-gray-800"
                   >
                     <img
-                      alt={user.first_name + ' avatar'}
+                      alt={user.first_name + " avatar"}
                       src={
                         user.avatar ||
                         "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
@@ -278,7 +294,7 @@ export default function ProfileSettings() {
                       className="size-8 rounded-full bg-gray-800"
                     />
                     <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
+                    <span aria-hidden="true">Toms Cook</span>
                   </a>
                 </li>
               </ul>
@@ -539,3 +555,67 @@ export default function ProfileSettings() {
     </>
   );
 }
+
+export const SideNav = ({ navigation }: { navigation: SideBarNavMenu[] }) => {
+  const { user } = useGlobalContext();
+  return (
+    <>
+      <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
+        {/* Sidebar component, swap this element with another sidebar if you like */}
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
+          <div className="flex h-16 shrink-0 items-center">
+            <img
+              alt="Your Company"
+              src="https://tailwindui.com/plus/img/logos/mark.svg?color=green&shade=500"
+              className="h-8 w-auto"
+            />
+          </div>
+          <nav className="flex flex-1 flex-col">
+            <ul role="list" className="flex flex-1 flex-col gap-y-7">
+              <li>
+                <ul role="list" className="-mx-2 space-y-1">
+                  {navigation.map((item) => (
+                    <li key={item.name}>
+                      <a
+                        href={item.href}
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-800 text-white"
+                            : "text-gray-400 hover:bg-gray-800 hover:text-white",
+                          "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
+                        )}
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className="size-6 shrink-0"
+                        />
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="-mx-6 mt-auto">
+                <a
+                  href="#"
+                  className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white hover:bg-gray-800"
+                >
+                  <img
+                    alt={user?.first_name + " avatar"}
+                    src={
+                      user?.avatar ||
+                      "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                    }
+                    className="size-8 rounded-full bg-gray-800"
+                  />
+                  <span className="sr-only">Your profile</span>
+                  <span aria-hidden="true">{`${user?.first_name} ${user?.last_name}`}</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </>
+  );
+};
