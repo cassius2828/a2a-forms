@@ -13,8 +13,12 @@ import { useEffect } from "react";
 import ViewYourSubmissions from "./components/Submissions/ViewYourSubmissions";
 import TestimonialsGrid from "./components/Submissions/TestimonialsGrid";
 import ErrorBoundary from "./components/ErrorBoundary";
-import ProfileSettings from "./components/Profile/ProfileSettings";
+
 import MainDashboard from "./components/Profile/MainDashboard";
+import NotFound404 from "./components/PlaceholderPages/NotFound404";
+import { ComingSoon } from "./components/PlaceholderPages/ComingSoon";
+import ProfileSettings from "./components/Profile/Settings";
+import AppRoutes from "./routes/AppRoutes";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -37,27 +41,7 @@ function App() {
     <>
       <Layout>
         <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/profile/:userId/settings"
-              element={<ProfileSettings />}
-            />
-            <Route path="/profile/:userId" element={<MainDashboard />} />
-            <Route
-              path="/spotlight-form"
-              element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}
-            />
-            <Route path="/testimonial-form" element={<TestimonialForm />} />
-            <Route path="/testimonial-form/:id" element={<TestimonialForm />} />
-            <Route path="/submissions/:userId" element={<ViewYourSubmissions />} />
-            <Route
-              path="/submissions/testimonials/:userId"
-              element={<TestimonialsGrid />}
-            />
-          </Routes>
+          <AppRoutes />
         </ErrorBoundary>
       </Layout>
     </>
@@ -65,3 +49,42 @@ function App() {
 }
 
 export default App;
+{
+  /* <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/profile/:userId/settings"
+              element={<ProfileSettings />}
+            />
+            <Route
+              path="/profile/:userId/appointments"
+              element={<ComingSoon />}
+            />{" "}
+            <Route path="/profile/:userId/billing" element={<ComingSoon />} />{" "}
+            <Route
+              path="/profile/:userId/membership"
+              element={<ComingSoon />}
+            />{" "}
+            <Route
+              path="/profile/:userId/preferences"
+              element={<ComingSoon />}
+            />
+            <Route path="/profile/:userId" element={<MainDashboard />} />{" "}
+            <Route
+              path="/spotlight-form"
+              element={user ? <AthleteInfoForm /> : <PromptLoginOrRegister />}
+            />
+            <Route path="/testimonial-form" element={<TestimonialForm />} />
+            <Route path="/testimonial-form/:id" element={<TestimonialForm />} />
+            <Route
+              path="/submissions/:userId"
+              element={<ViewYourSubmissions />}
+            />
+            <Route
+              path="/submissions/testimonials/:userId"
+              element={<TestimonialsGrid />}
+            />
+          </Routes>*/
+}

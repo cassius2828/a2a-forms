@@ -6,6 +6,7 @@ import { useGlobalContext } from "../../context/useGlobalContext";
 import FormModal from "../Modals/FormModal";
 import { getSpotlightByUserId } from "../../services/formService";
 import { useNavigate } from "react-router-dom";
+import PromptLoginOrRegister from "../Auth/PromptLoginOrRegister";
 export default function AthleteInfoForm() {
   // Single state for the entire form
   const {
@@ -61,6 +62,11 @@ export default function AthleteInfoForm() {
     fetchUserSpotlightDetails();
     setFormStep(1);
   }, [user]);
+
+  
+  if (!user) {
+    return <PromptLoginOrRegister />;
+  }
   return (
     <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-20 px-5 bg-neutral-900 ">
       {(error || message) && (

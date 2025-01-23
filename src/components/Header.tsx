@@ -61,14 +61,14 @@ export const HeaderV2 = () => {
     },
     {
       name: "Login",
-      href: "/login",
-      current: location.pathname === "/login",
+      href: "/auth/login",
+      current: location.pathname === "/auth/login",
       condition: !user,
     },
     {
       name: "Register",
-      href: "/register",
-      current: location.pathname === "/register",
+      href: "/auth/register",
+      current: location.pathname === "/auth/register",
       condition: !user,
     },
     {

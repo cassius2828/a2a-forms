@@ -16,10 +16,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
-import { useGlobalContext } from "../../context/useGlobalContext";
-import { UserInfoFormState } from "../../lib/types";
-import { getUser, putUpdateUserInfo } from "../../services/authService";
-import FormModal from "../Modals/FormModal";
+import { useGlobalContext } from "../../../context/useGlobalContext";
+import { UserInfoFormState } from "../../../lib/types";
+import { getUser, putUpdateUserInfo } from "../../../services/authService";
+import FormModal from "../../Modals/FormModal";
 import { useNavigate } from "react-router-dom";
 
 const navigation = [

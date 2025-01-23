@@ -153,3 +153,9 @@ export type UserNavigationMenu = {
   name: string;
   href: string;
 };
+
+
+export interface ComingSoonProps {
+  title?: string;
+  text?: string;
+}
