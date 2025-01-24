@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import ConfirmEmailChange from "../components/Profile/Settings/ConfirmEmailChange";
 
 // Lazy imports
 const ProfileSettings = lazy(() => import("../components/Profile/Settings"));
@@ -74,6 +75,19 @@ const profileRoutes = [
         }
       >
         <ComingSoon />
+      </Suspense>
+    ),
+  },  {
+    path: "/confirm-email",
+    element: (
+      <Suspense
+        fallback={
+          <div className="w-screen h-screen flex justify-center items-center">
+            <span className="loader"></span>
+          </div>
+        }
+      >
+        <ConfirmEmailChange />
       </Suspense>
     ),
   },

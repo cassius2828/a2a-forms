@@ -37,10 +37,6 @@ export const HeaderV2 = () => {
     navigate("/");
   };
   const location = useLocation();
-  console.log(location.pathname);
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const navigation = [
     {

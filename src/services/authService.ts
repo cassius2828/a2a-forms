@@ -82,9 +82,11 @@ export const putUpdateUserInfo = async (
 ) => {
   try {
     const response = await axios.put(`${BASE_URL}/auth/${userId}`, formData);
+    console.log(response.data, ",,- respn dadta");
     return response.data;
   } catch (err) {
     console.error(err);
+    return err;
   }
 };
 ///////////////////////////
@@ -123,5 +125,42 @@ export const refreshToken = async () => {
     return token;
   } catch (err) {
     console.error("Error refreshing token:", err);
+  }
+};
+
+///////////////////////////
+// * PUT | Confirm Email Change
+///////////////////////////
+export const confirmEmailChange = async (
+  userId: string,
+  email: string,
+  paramToken: string
+) => {
+  const params = {
+    userId,
+    email,
+  };
+
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/auth/${userId}/confirm-email?token=${paramToken}`,
+      params,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = response.data; // Axios automatically parses JSON responses
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+    console.log(`Unable to communicate with backend to confirm email change`);
+    return err;
   }
 };

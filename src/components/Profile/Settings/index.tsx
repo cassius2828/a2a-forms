@@ -126,7 +126,8 @@ export default function ProfileSettings() {
       }
       if (user) {
         const data = await putUpdateUserInfo(user.id, dataToSendToServer);
-        if (data.error) {
+        console.log(data, '<-- fdsafdsa')
+        if (data?.error) {
           setError(data.error);
         } else {
           setMessage(data.message);
@@ -143,7 +144,7 @@ export default function ProfileSettings() {
       }
     } catch (err) {
       console.error(err);
-      setError(err.response.data.error);
+      setError('Unable to update user info');
     }
   };
 
