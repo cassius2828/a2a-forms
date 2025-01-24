@@ -6,6 +6,7 @@ import { confirmEmailChange } from "../../../services/authService";
 import { useGlobalContext } from "../../../context/useGlobalContext";
 import { isTokenExpired } from "../../../lib/utils";
 import SessionExpiredModal from "../../Modals/SessionExpiredModal";
+import NoAccessPage from "../../PlaceholderPages/NoAccessPage";
 
 const ConfirmEmailChange = () => {
   // State to manage feedback messages (either success or error)
@@ -20,7 +21,7 @@ const ConfirmEmailChange = () => {
   const token = queryParams.get("token");
   const userId = queryParams.get("userId");
 
-  if (token && isTokenExpired(token, 10)) {
+  if (token && isTokenExpired(token, 10000)) {
     let navigatePath: string = "/";
     if (user) {
       navigatePath = `/profile/${user.id}/settings`;
@@ -31,6 +32,24 @@ const ConfirmEmailChange = () => {
         timeLimit={10}
         onClose={() => navigate(navigatePath)}
       />
+    );
+  }
+  if (userId !== user?.id) {
+    return (
+      <div className="w-full flex flex-col items-center gap-5">
+        <NoAccessPage />
+        <p className="text-gray-100 mt-4 p-2 text-center leading-8 md:w-1/2">
+          Please login to access the email change. Once logged in, click on the
+          link from your email again and you should be able to access the
+          confirm email change form. Thank you!
+        </p>
+        <Link
+          className=" text-white underline mt-4 rounded-md hover:text-green-600 transition duration-200"
+          to={`/auth/login`}
+        >
+          Login
+        </Link>
+      </div>
     );
   }
   ///////////////////////////

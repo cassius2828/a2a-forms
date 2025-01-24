@@ -30,6 +30,7 @@ import {
 import FormModal from "../../Modals/FormModal";
 import { useNavigate, useParams } from "react-router-dom";
 import PromptLoginOrRegister from "../../Auth/PromptLoginOrRegister";
+import NoAccessPage from "../../PlaceholderPages/NoAccessPage";
 
 const initialFormState = {
   firstName: "",
@@ -48,6 +49,7 @@ function classNames(...classes) {
 export default function ProfileSettings() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const { userId } = useParams();
   const [userInfoForm, setUserInfoForm] =
     useState<UserInfoFormState>(initialFormState);
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
@@ -153,6 +155,7 @@ export default function ProfileSettings() {
   }, []);
 
   if (!user) return <PromptLoginOrRegister />;
+  if (userId !== user.id) return <NoAccessPage />;
   return (
     <>
       <div>
