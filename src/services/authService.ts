@@ -134,11 +134,13 @@ export const refreshToken = async () => {
 export const confirmEmailChange = async (
   userId: string,
   email: string,
-  paramToken: string
+  paramToken: string,
+  password: string
 ) => {
   const params = {
     userId,
     email,
+    password
   };
 
   try {

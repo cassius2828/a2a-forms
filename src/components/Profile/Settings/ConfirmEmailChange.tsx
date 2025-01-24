@@ -10,7 +10,8 @@ import SessionExpiredModal from "../../Modals/SessionExpiredModal";
 const ConfirmEmailChange = () => {
   // State to manage feedback messages (either success or error)
   const [feedback, setFeedback] = useState({ message: "", error: "" });
-  const { user } = useGlobalContext();
+  const [password, setPassword] = useState<string>("");
+  const { user, setError, setMessage } = useGlobalContext();
   // Extracting query parameters from the URL
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const ConfirmEmailChange = () => {
     if (user) {
       navigatePath = `/profile/${user.id}/settings`;
     }
+
     return (
       <SessionExpiredModal
         timeLimit={10}
@@ -36,12 +38,15 @@ const ConfirmEmailChange = () => {
   ///////////////////////////
   const handleConfirmEmail = async () => {
     try {
-      if (userId && email && token) {
+      if (userId && email && token && password) {
         console.log("click");
-        const data = await confirmEmailChange(userId, email, token);
+        const data = await confirmEmailChange(userId, email, token, password);
         // Update feedback state based on response
         if (data.message) {
           setFeedback({ message: data.message, error: "" });
+        }
+        if (data.passwordError) {
+          setFeedback({ message: "", error: data.passwordError });
         }
         if (data.error) {
           setFeedback({ message: "", error: data.error });
@@ -50,6 +55,7 @@ const ConfirmEmailChange = () => {
     } catch (err) {
       console.error(err);
       console.log(`Could not use service file to confirm email change`);
+      setError(err);
     }
   };
 
@@ -58,7 +64,7 @@ const ConfirmEmailChange = () => {
       {/* Display message if available */}
       {feedback.message && (
         <div className="relative flex justify-center text-center w-full md:w-[40rem] bg-neutral-700 mb-12 h-40 p-4 rounded-md">
-          <Link to={`/profiles/${userId}`}>
+          <Link to={`/profile/${userId}`}>
             <span className="absolute top-0 right-3 text-2xl text-gray-100">
               x
             </span>
@@ -71,14 +77,14 @@ const ConfirmEmailChange = () => {
       {/* Display error if available */}
       {feedback.error && (
         <div className="relative flex justify-center text-center w-full md:w-[40rem] bg-neutral-700 mb-12 h-40 p-4 rounded-md">
-          <Link to={`/profile/${userId}`}>
+          <button onClick={() => setFeedback({ message: "", error: "" })}>
             <span className="absolute top-0 right-3 text-2xl text-gray-100">
               x
             </span>
             <span className="text-2xl text-red-500 w-full">
               {feedback.error}
             </span>
-          </Link>
+          </button>
         </div>
       )}
 
@@ -88,10 +94,36 @@ const ConfirmEmailChange = () => {
           <h1 className="text-3xl font-bold text-gray-200 mb-6">
             Confirm Email Change
           </h1>
+
           <div className="flex flex-col text-gray-100 gap-2 mb-8">
             <span>From: {user?.email}</span>
             <span>To: {email}</span>
           </div>
+
+          {/* Styled form */}
+          <form className="mb-8">
+            <div className="flex flex-col gap-4">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-gray-200 text-sm font-medium mb-2"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your password"
+                />
+              </div>
+            </div>
+          </form>
+
+          {/* Buttons */}
           <div className="flex space-x-4">
             <Link to={`/profile/${userId}`}>
               {/* Button to cancel email change */}
@@ -102,6 +134,7 @@ const ConfirmEmailChange = () => {
                 Cancel Email Change
               </button>
             </Link>
+
             {/* Button to confirm email change */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"

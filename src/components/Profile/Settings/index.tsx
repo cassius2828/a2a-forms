@@ -126,7 +126,7 @@ export default function ProfileSettings() {
       }
       if (user) {
         const data = await putUpdateUserInfo(user.id, dataToSendToServer);
-        console.log(data, '<-- fdsafdsa')
+        console.log(data, "<-- fdsafdsa");
         if (data?.error) {
           setError(data.error);
         } else {
@@ -144,7 +144,7 @@ export default function ProfileSettings() {
       }
     } catch (err) {
       console.error(err);
-      setError('Unable to update user info');
+      setError("Unable to update user info");
     }
   };
 
@@ -242,7 +242,7 @@ export default function ProfileSettings() {
                         <img
                           alt=""
                           src=""
-                          className="size-8 rounded-full bg-gray-800"
+                          className="size-8 rounded-full object-cover bg-gray-800"
                         />
                         <span className="sr-only">Your profile</span>
                         <span aria-hidden="true">Tom sCook</span>
@@ -486,7 +486,7 @@ export const SideNav = ({ navigation }: { navigation: SideBarNavMenu[] }) => {
                       user?.avatar ||
                       "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                     }
-                    className="size-8 rounded-full bg-gray-800"
+                    className="size-8 rounded-full object-cover bg-gray-800"
                   />
                   <span className="sr-only">Your profile</span>
                   <span aria-hidden="true">{`${user?.first_name} ${user?.last_name}`}</span>

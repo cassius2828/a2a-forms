@@ -154,7 +154,7 @@ export const HeaderV2 = () => {
                               user.avatar ||
                               "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                             }
-                            className="size-8 rounded-full"
+                            className="size-8 rounded-full object-cover"
                           />
                         </MenuButton>
                       </div>
@@ -264,7 +264,7 @@ export const MobileMenu = ({
                   user?.avatar ||
                   "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                 }
-                className="size-10 rounded-full"
+                className="size-10 rounded-full object-cover"
               />
             </div>
             <div className="ml-3">
