@@ -165,3 +165,9 @@ export type SideBarNavMenu = {
   current?: boolean;
   icon: (props: React.SVGProps<SVGSVGElement>) => ReactElement; // Type for the icon
 };
+
+export type UpdatePasswordFormData = {
+  password: string;
+  newPassword: string;
+  confirmPassword: string;
+};

@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   LoginFormState,
   RegisterFormState,
+  UpdatePasswordFormData,
   UserInfoFormState,
 } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -75,8 +76,10 @@ export function getUser() {
   return user.user;
 }
 
-export const putUpdateUserInfo = async (userId: string, formData: UserInfoFormState) => {
-
+export const putUpdateUserInfo = async (
+  userId: string,
+  formData: UserInfoFormState
+) => {
   try {
     const response = await axios.put(`${BASE_URL}/auth/${userId}`, formData);
     return response.data;
@@ -84,7 +87,23 @@ export const putUpdateUserInfo = async (userId: string, formData: UserInfoFormSt
     console.error(err);
   }
 };
-
+///////////////////////////
+// * PUT  | Update Password
+///////////////////////////
+export const putUpdatePassword = async (
+  formData: UpdatePasswordFormData,
+  userId: string
+) => {
+  const url = `${BASE_URL}/auth/${userId}/update-password`;
+  try {
+    const response = await axios.put(url, formData);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log(`Unable to communicate with server to update password`);
+    return err;
+  }
+};
 /////////////////////
 // Refresh Token
 /////////////////////

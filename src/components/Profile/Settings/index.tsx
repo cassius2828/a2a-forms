@@ -17,10 +17,18 @@ import {
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useGlobalContext } from "../../../context/useGlobalContext";
-import { SideBarNavMenu, UserInfoFormState } from "../../../lib/types";
-import { getUser, putUpdateUserInfo } from "../../../services/authService";
+import {
+  SideBarNavMenu,
+  UpdatePasswordFormData,
+  UserInfoFormState,
+} from "../../../lib/types";
+import {
+  getUser,
+  putUpdatePassword,
+  putUpdateUserInfo,
+} from "../../../services/authService";
 import FormModal from "../../Modals/FormModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PromptLoginOrRegister from "../../Auth/PromptLoginOrRegister";
 
 const initialFormState = {
@@ -167,6 +175,7 @@ export default function ProfileSettings() {
             transition
             className="fixed inset-0  transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
           />
+          {/* What is this?? */}
 
           <div className="fixed inset-0 flex">
             <DialogPanel
@@ -188,7 +197,8 @@ export default function ProfileSettings() {
                   </button>
                 </div>
               </TransitionChild>
-              {/* Sidebar component, swap this element with another sidebar if you like */}
+
+              {/* What is this?? */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 ring-1 ring-white/10">
                 <div className="flex h-16 shrink-0 items-center">
                   <img
@@ -244,64 +254,10 @@ export default function ProfileSettings() {
           </div>
         </Dialog>
 
-        {/* Static sidebar for desktop */}
-        <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
-            <div className="flex h-16 shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=green&shade=500"
-                className="h-8 w-auto"
-              />
-            </div>
-            <nav className="flex flex-1 flex-col">
-              <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                <li>
-                  <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
-                      <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className={classNames(
-                            item.current
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                            "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
-                          )}
-                        >
-                          <item.icon
-                            aria-hidden="true"
-                            className="size-6 shrink-0"
-                          />
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-                <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
-                    className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white hover:bg-gray-800"
-                  >
-                    <img
-                      alt={user.first_name + " avatar"}
-                      src={
-                        user.avatar ||
-                        "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-                      }
-                      className="size-8 rounded-full bg-gray-800"
-                    />
-                    <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Toms Cook</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+        {/* side nav */}
+        <SideNav navigation={navigation} />
 
+        {/* main settings form */}
         <div className="xl:pl-72">
           <main>
             <h1 className="sr-only">Account Settings</h1>
@@ -309,8 +265,8 @@ export default function ProfileSettings() {
             {/* Settings forms */}
             <div className="divide-y divide-white/5">
               <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+                {/* personal info */}
                 <div>
-                  {/* personal info */}
                   <h2 className="text-base/7 font-semibold text-white">
                     Personal Information
                   </h2>
@@ -448,84 +404,7 @@ export default function ProfileSettings() {
                   </div>
                 </form>
               </div>
-
-              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                <div>
-                  <h2 className="text-base/7 font-semibold text-white">
-                    Change password
-                  </h2>
-                  <p className="mt-1 text-sm/6 text-gray-400">
-                    Update your password associated with your account.
-                  </p>
-                </div>
-
-                <form className="md:col-span-2">
-                  <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm/6 font-medium text-white"
-                      >
-                        Current password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          autoComplete="password"
-                          className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="newPassword"
-                        className="block text-sm/6 font-medium text-white"
-                      >
-                        New password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="newPassword"
-                          name="new_password"
-                          type="password"
-                          autoComplete="newPassword"
-                          className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="confirmPassword"
-                        className="block text-sm/6 font-medium text-white"
-                      >
-                        Confirm password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="confirmPassword"
-                          name="confirmPassword"
-                          type="password"
-                          autoComplete="newPassword"
-                          className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 flex">
-                    <button
-                      type="submit"
-                      className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <UpdatePasswordFormSection />
 
               <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                 <div>
@@ -617,5 +496,125 @@ export const SideNav = ({ navigation }: { navigation: SideBarNavMenu[] }) => {
         </div>
       </div>
     </>
+  );
+};
+const initialUpdatePasswordFormState = {
+  password: "",
+  newPassword: "",
+  confirmPassword: "",
+};
+
+export const UpdatePasswordFormSection = () => {
+  const [form, setForm] = useState<UpdatePasswordFormData>(
+    initialUpdatePasswordFormState
+  );
+  const { handleInputChange, setError, setMessage } = useGlobalContext();
+  const { userId } = useParams();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      if (userId) {
+        const data = await putUpdatePassword(form, userId);
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+          setForm(initialUpdatePasswordFormState);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.response.data.error);
+    }
+  };
+  return (
+    <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 className="text-base/7 font-semibold text-white">
+          Change password
+        </h2>
+        <p className="mt-1 text-sm/6 text-gray-400">
+          Update your password associated with your account.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="md:col-span-2">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+          <div className="col-span-full">
+            <label
+              htmlFor="password"
+              className="block text-sm/6 font-medium text-white"
+            >
+              Current password
+            </label>
+            <div className="mt-2">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="password"
+                value={form.password}
+                onChange={(e) => handleInputChange(e, setForm)}
+                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div className="col-span-full">
+            <label
+              htmlFor="newPassword"
+              className="block text-sm/6 font-medium text-white"
+            >
+              New password
+            </label>
+            <div className="mt-2">
+              <input
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                value={form.newPassword}
+                onChange={(e) => handleInputChange(e, setForm)}
+                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div className="col-span-full">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm/6 font-medium text-white"
+            >
+              Confirm password
+            </label>
+            <div className="mt-2">
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={form.confirmPassword}
+                onChange={(e) => handleInputChange(e, setForm)}
+                className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 flex gap-6">
+          <button
+            onClick={() => setForm(initialUpdatePasswordFormState)}
+            type="button"
+            className="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+          >
+            Reset Form
+          </button>
+          <button
+            type="submit"
+            className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };

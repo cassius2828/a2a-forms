@@ -2070,6 +2070,11 @@ video {
   background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-gray-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:text-gray-400:hover {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
@@ -2166,6 +2171,10 @@ video {
 
 .focus-visible\:outline-green-600:focus-visible {
   outline-color: #16a34a;
+}
+
+.focus-visible\:outline-gray-600:focus-visible {
+  outline-color: #4b5563;
 }
 
 .focus-visible\:ring-2:focus-visible {
