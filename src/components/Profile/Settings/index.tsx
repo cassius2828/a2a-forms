@@ -23,6 +23,7 @@ import {
   UserInfoFormState,
 } from "../../../lib/types";
 import {
+  deleteUserById,
   getUser,
   putUpdatePassword,
   putUpdateUserInfo,
@@ -31,6 +32,8 @@ import FormModal from "../../Modals/FormModal";
 import { useNavigate, useParams } from "react-router-dom";
 import PromptLoginOrRegister from "../../Auth/PromptLoginOrRegister";
 import NoAccessPage from "../../PlaceholderPages/NoAccessPage";
+import ConfirmationModal from "../../Modals/ConfirmationModal";
+import ConfirmationModalWithPasswordInput from "../../Modals/ConfirmationModalWithPasswordInput";
 
 const initialFormState = {
   firstName: "",
@@ -53,6 +56,9 @@ export default function ProfileSettings() {
   const [userInfoForm, setUserInfoForm] =
     useState<UserInfoFormState>(initialFormState);
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
   const {
     handleInputChange,
     handleSingleFileChange,
@@ -104,6 +110,7 @@ export default function ProfileSettings() {
       });
     }
   };
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(profilePhoto, " pfp");
@@ -424,12 +431,25 @@ export default function ProfileSettings() {
 
                 <form className="flex items-start md:col-span-2">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={() => setShowConfirmationModal(true)}
                     className="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400"
                   >
                     Yes, delete my account
                   </button>
                 </form>
+                {showConfirmationModal && (
+                  <ConfirmationModalWithPasswordInput
+                    title="Delete User"
+                    info="Are you sure you want to delete this user? This action cannot be undone and will remove any data tied to this user such as spotlights, testimonials, and more."
+                    id={userId}
+                    greenAction={() => {
+                      setShowConfirmationModal(false);
+                    }}
+                    greenActionText="No, keep this user"
+                    redActionText="Yes, permanently delete user"
+                  />
+                )}
               </div>
             </div>
           </main>

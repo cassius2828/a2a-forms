@@ -81,7 +81,12 @@ export const putUpdateUserInfo = async (
   formData: UserInfoFormState
 ) => {
   try {
-    const response = await axios.put(`${BASE_URL}/auth/${userId}`, formData);
+    const token = localStorage.getItem("token"); // Retrieve the JWT token from localStorage or any other storage
+    const response = await axios.put(`${BASE_URL}/auth/${userId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
     console.log(response.data, ",,- respn dadta");
     return response.data;
   } catch (err) {
@@ -140,7 +145,7 @@ export const confirmEmailChange = async (
   const params = {
     userId,
     email,
-    password
+    password,
   };
 
   try {
@@ -163,6 +168,50 @@ export const confirmEmailChange = async (
   } catch (err) {
     console.error(err);
     console.log(`Unable to communicate with backend to confirm email change`);
+    return err;
+  }
+};
+
+///////////////////////////
+// ! DELETE | Delete User by Id
+///////////////////////////
+
+export const deleteUserById = async (userId: string) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.delete(`${BASE_URL}/auth/${userId}/delete`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
+    console.log(response.data, " <-- response data ");
+    localStorage.removeItem("token");
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
+export const validateUserPassword = async (
+  userId: string,
+  password: string
+) => {
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/auth/${userId}/validate-user-password`,
+      { password },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
     return err;
   }
 };

@@ -119,7 +119,7 @@ const ConfirmEmailChange = () => {
             <span>To: {email}</span>
           </div>
 
-          {/* Styled form */}
+          {/* password form */}
           <form className="mb-8">
             <div className="flex flex-col gap-4">
               <div>
