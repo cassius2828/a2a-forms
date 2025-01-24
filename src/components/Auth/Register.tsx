@@ -9,21 +9,26 @@ const initialFormState = {
   password: "",
   confirmPassword: "",
 };
-import { signup } from "../../services/authService";
+import { getUser, signup } from "../../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
   const [registerForm, setRegisterForm] =
     useState<RegisterFormState>(initialFormState);
-  const { handleInputChange } = useGlobalContext();
+  const { handleInputChange, setError, setUser, error } = useGlobalContext();
   const navigate = useNavigate();
   const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add validation logic
     try {
       const data = await signup(registerForm);
-      if (!data.error) {
-        navigate("/");
-      }
+         if (data.error) {
+              setError(data.error);
+            } else {
+              setUser(data);
+              getUser();
+              navigate("/");
+            }
+    
     } catch (err) {
       console.error(err);
       console.log(`Unable to communciate with server to register user`);
@@ -35,6 +40,11 @@ const Register = () => {
       onSubmit={handleRegisterSubmit}
       className="w-full md:w-1/2 lg:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
     >
+       {error && (
+          <span className="text-red-500 text-xl flex justify-center">
+            {error}
+          </span>
+        )}
       <h2 className="text-xl font-semibold text-white mb-4">Sign Up</h2>
 
       <div className="mb-4">
@@ -151,7 +161,7 @@ const Register = () => {
         Sign Up
       </button>
       <Link
-        to={"/login"}
+        to={"/auth/login"}
         className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2"
       >
         login

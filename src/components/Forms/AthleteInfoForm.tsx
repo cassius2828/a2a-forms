@@ -5,6 +5,8 @@ import AIF3 from "./AIF3";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import FormModal from "../Modals/FormModal";
 import { getSpotlightByUserId } from "../../services/formService";
+import { useNavigate } from "react-router-dom";
+import PromptLoginOrRegister from "../Auth/PromptLoginOrRegister";
 export default function AthleteInfoForm() {
   // Single state for the entire form
   const {
@@ -18,6 +20,7 @@ export default function AthleteInfoForm() {
     user,
     spotlightFormData,
   } = useGlobalContext();
+  const navigate = useNavigate();
   const [ownedByCurrentUser, setOwnedByCurrentUser] = useState<boolean>(false);
   useEffect(() => {
     const fetchUserSpotlightDetails = async () => {
@@ -59,8 +62,13 @@ export default function AthleteInfoForm() {
     fetchUserSpotlightDetails();
     setFormStep(1);
   }, [user]);
+
+  
+  if (!user) {
+    return <PromptLoginOrRegister />;
+  }
   return (
-    <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-4 px-5 bg-neutral-900 ">
+    <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-20 px-5 bg-neutral-900 ">
       {(error || message) && (
         <FormModal
           isError={Boolean(error)}
@@ -70,6 +78,8 @@ export default function AthleteInfoForm() {
           setMessage={setMessage}
           error={error}
           message={message}
+          willNavigate
+          navigateFn={() => navigate(`/submissions/${user?.id}`)}
         />
       )}
 

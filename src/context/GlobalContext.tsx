@@ -37,7 +37,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
+  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData | File | null>(
     initialSpotlightFormData
   );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
@@ -72,16 +72,36 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     console.log(name, value);
   };
 
-  // Handle file input changes
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle multiple file input changes
+  const handleFileChange = <T extends object>(
+    e: React.ChangeEvent<HTMLInputElement>,
+    setState: React.Dispatch<React.SetStateAction<(File | null | SpotlightFormData)[]>>
+  ) => {
     const { name, files } = e.target;
-    if (files && files[0]) {
-      setSpotlightFormData((prevState) => ({
+    if (files && files.length > 0) {
+      const file = files[0]; // Retrieve the first file
+      setState((prevState) => ({
         ...prevState,
-        [name]: files[0],
+        [name]: file, // Dynamically set the file in the state
       }));
     }
-    console.log(spotlightFormData[name], " <-- file uploaded");
+  };
+  // handle single file change
+  const handleSingleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFile: React.Dispatch<React.SetStateAction<File | null>>
+  ) => {
+    const file = e.target.files?.[0]; // Access the first file in the list
+    if (file) {
+      setFile(file);
+      console.log(
+        "Selected file:",
+        file instanceof File ? file : "Not a valid File"
+      );
+    } else {
+      console.error("No file selected");
+      setFile(null);
+    }
   };
 
   // Reset the form and scroll to the top
@@ -136,6 +156,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         fetchUserTestimonialSubmissions,
         formStep,
         handleFileChange,
+        handleSingleFileChange,
         handleInputChange,
         handleNextFormStep,
         handlePrevFormStep,

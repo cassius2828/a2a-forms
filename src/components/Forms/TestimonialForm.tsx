@@ -11,7 +11,8 @@ import FormModal from "../Modals/FormModal";
 import { TestimonialFormData } from "../../lib/types";
 import { useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "../Modals/ConfirmationModal";
-import DefaultLoader from "../Loaders/Default";
+import { DefaultLoader } from "../Loaders";
+
 const initialTestimonialFormState: TestimonialFormData = {
   text: "",
   name: "",
@@ -62,7 +63,9 @@ const TestimonialForm = () => {
         setError(data.error);
       } else {
         setTestimonialForm(initialTestimonialFormState);
-        navigate("/submissions");
+        if (user) {
+          navigate(`/submissions/${user.id}`);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -145,7 +148,7 @@ const TestimonialForm = () => {
           greenAction={() => {
             postAddTestimonial(testimonialForm, id);
             setShowConfirmationModal(false);
-            setTestimonialForm(initialTestimonialFormState)
+            setTestimonialForm(initialTestimonialFormState);
           }}
           greenActionText="Post as Guest"
           redAction={() => setShowConfirmationModal(false)}
@@ -157,12 +160,18 @@ const TestimonialForm = () => {
       </h2>
 
       <div className="mb-4">
-        <label htmlFor="text" className="block text-sm font-medium text-white mb-2">
+        <label
+          htmlFor="text"
+          className="block text-sm font-medium text-white mb-2"
+        >
           Your Testimonial
         </label>
-        {!user && <span className="italic text-xs mt-6 text-white">
-            Sign in to be able to edit and track your approval process. Submissions by non-users cannot be edited in the future
-            </span>}
+        {!user && (
+          <span className="italic text-xs mt-6 text-white">
+            Sign in to be able to edit and track your approval process.
+            Submissions by non-users cannot be edited in the future
+          </span>
+        )}
         <textarea
           id="text"
           name="text"

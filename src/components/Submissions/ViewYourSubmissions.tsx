@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import {
   deleteSpotlight,
@@ -20,7 +20,7 @@ type Submission = {
 
 const ViewYourSubmissions = () => {
   const { user, error, setError } = useGlobalContext();
-
+  const { userId } = useParams();
   const [spotlightSubmission, setSpotlightSubmission] = useState({
     id: null,
     title: "",
@@ -66,12 +66,12 @@ const ViewYourSubmissions = () => {
     }
   };
   useEffect(() => {
-    if (user) {
-      fetchUserSpotlightSubmission(user?.id);
-      fetchUserTestimonialSubmissions(user?.id);
+    if (user && userId) {
+      fetchUserSpotlightSubmission(userId);
+      fetchUserTestimonialSubmissions(userId);
     }
-    console.log(spotlightSubmission)
-  }, [user?.id]);
+    console.log(spotlightSubmission);
+  }, [userId]);
   return (
     <div className="p-8 space-y-6 mt-20 w-full">
       {/* Dashboard Title */}
@@ -132,15 +132,12 @@ const ViewYourSubmissions = () => {
               </div>
             </div>
           ) : (
-     
-
             <Link
               to={`/spotlight-form`}
               className="text-sm text-gray-100 bg-gray-500 hover:bg-gray-600 rounded-md px-4 py-2 w-48 flex justify-center font-semibold transition duration-300 relative z-10"
             >
               Create a Spotlight
             </Link>
-         
           )}
         </div>
 

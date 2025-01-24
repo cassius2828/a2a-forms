@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/useGlobalContext";
 import { useEffect } from "react";
 import {
@@ -11,74 +11,24 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { classNames } from "../lib/utils";
+import {
+  NavigationMenu,
+  NavigationType,
+  UserNavigationMenu,
+} from "../lib/types";
 const Header = () => {
-  const { user, signoutUser } = useGlobalContext();
-  const navigate = useNavigate();
-  const handleSignOut = () => {
-    signoutUser();
-    navigate("/");
-  };
+  const { user } = useGlobalContext();
+
   useEffect(() => {}, [user]);
   return (
     <header className="bg-neutral-950 text-white shadow-md pb-4">
-      {/* {user && (
-        <span className="absolute top-3 right-8 text-white">
-          Welcome, {user?.first_name}
-        </span>
-      )} */}
-
-      {/* <nav className=" mx-5 px-4 flex items-end justify-between gap-4">
-        <Link to={"/"}>
-          <h1 className="text-4xl mr-8">Athlete 2 Athlete</h1>
-        </Link>
-        <ul className="flex space-x-8">
-          <li className="hover:text-green-400 transition-colors">
-            <Link to="/spotlight-form">Athlete Info Form</Link>
-          </li>
-          <li className="hover:text-green-500 transition-colors">
-            <Link to="/testimonial-form">Testimonial Form</Link>
-          </li>
-          <li className="hover:text-green-500 transition-colors">
-            <Link to="/submissions">My Submissions</Link>
-          </li>{" "}
-          {user ? (
-            <li
-              onClick={handleSignOut}
-              className="hover:text-green-500 transition-colors"
-            >
-              Sign Out
-            </li>
-          ) : (
-            <>
-              <li className="hover:text-green-500 transition-colors">
-                <Link to="/login">Login</Link>
-              </li>
-              <li className="hover:text-green-500 transition-colors">
-                <Link to="/register">Register</Link>
-              </li>
-            </>
-          )}
-          <li className="hover:text-green-500 transition-colors">
-            <Link to="https://a2a-training.netlify.app/">Website</Link>
-          </li>
-        </ul>
-      </nav> */}
       <HeaderV2 />
     </header>
   );
 };
 export default Header;
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 export const HeaderV2 = () => {
   const { user, signoutUser } = useGlobalContext();
   const navigate = useNavigate();
@@ -87,10 +37,7 @@ export const HeaderV2 = () => {
     navigate("/");
   };
   const location = useLocation();
-  console.log(location.pathname);
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+
   const navigation = [
     {
       name: "Athlete Info Form",
@@ -104,27 +51,27 @@ export const HeaderV2 = () => {
     },
     {
       name: "My Submissions",
-      href: "/submissions",
+      href: `/submissions/${user?.id}`,
       current: location.pathname === "/submissions",
-      condition: user,
+      condition: !!user,
     },
     {
       name: "Login",
-      href: "/login",
-      current: location.pathname === "/login",
+      href: "/auth/login",
+      current: location.pathname === "/auth/login",
       condition: !user,
     },
     {
       name: "Register",
-      href: "/register",
-      current: location.pathname === "/register",
+      href: "/auth/register",
+      current: location.pathname === "/auth/register",
       condition: !user,
     },
     {
       name: "Sign Out",
       href: "/",
       // current: location.pathname === "/",
-      condition: user, // Shows if user is logged in
+      condition: !!user, // Shows if user is logged in
       action: handleSignOut, // Add the sign-out handler
     },
     // {
@@ -134,20 +81,12 @@ export const HeaderV2 = () => {
     // },
   ];
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
+    { name: "Your Profile", href: `/profile/${user?.id}` },
+    { name: "Settings", href: `/profile/${user?.id}/settings` },
     { name: "Sign out", href: "#" },
   ];
   return (
     <>
-      {/*
-      This example requires updating your template:
-
-      ```
-      <html class="h-full bg-gray-100">
-      <body class="h-full">
-      ```
-    */}
       <div className=" w-full">
         <Disclosure
           as="nav"
@@ -193,14 +132,15 @@ export const HeaderV2 = () => {
               <div className="hidden md:block">
                 {user && (
                   <div className="ml-4 flex items-center md:ml-6">
-                    <button
+                    {/* notifications btn */}
+                    {/* <button
                       type="button"
                       className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">View notifications</span>
                       <BellIcon aria-hidden="true" className="size-6" />
-                    </button>
+                    </button> */}
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
@@ -209,23 +149,27 @@ export const HeaderV2 = () => {
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
                           <img
-                            alt=""
+                            alt={user.first_name + " 's avatar"}
                             src={
+                              user.avatar ||
                               "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
                             }
-                            className="size-8 rounded-full"
+                            className="size-8 rounded-full object-cover"
                           />
                         </MenuButton>
                       </div>
                       <MenuItems
                         transition
-                        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md  bg-gray-800  overflow-hidden shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                       >
                         {userNavigation.map((item) => (
                           <MenuItem key={item.name}>
                             <a
+                              onClick={
+                                item.href === "#" ? handleSignOut : undefined
+                              }
                               href={item.href}
-                              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                              className="block px-4 py-2 text-sm text-gray-200 hover:text-white data-[focus]:bg-gray-700 data-[focus]:outline-none"
                             >
                               {item.name}
                             </a>
@@ -237,7 +181,7 @@ export const HeaderV2 = () => {
                 )}
               </div>
               <div className="-mr-2 flex md:hidden">
-                {/* Mobile menu button */}
+                {/* Mobile HAMBURGER button */}
                 <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
@@ -254,69 +198,108 @@ export const HeaderV2 = () => {
             </div>
           </div>
 
-          <DisclosurePanel className="md:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-              {navigation.map((item) => (
-                <DisclosureButton
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  aria-current={item.current ? "page" : undefined}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                >
-                  {item.name}
-                </DisclosureButton>
-              ))}
-            </div>
-            <div className="border-t border-gray-700 pb-3 pt-4">
-              <div className="flex items-center px-5">
-                <div className="shrink-0">
-                  <img
-                    alt={user?.first_name + " avatar" || "user avatar"}
-                    src={
-                      "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-                    }
-                    className="size-10 rounded-full"
-                  />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base/5 font-medium text-white">
-                    {user?.first_name}
-                  </div>
-                  <div className="text-sm font-medium text-gray-400">
-                    {user?.email}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon aria-hidden="true" className="size-6" />
-                </button>
-              </div>
-              <div className="mt-3 space-y-1 px-2">
-                {userNavigation.map((item) => (
-                  <DisclosureButton
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                  >
-                    {item.name}
-                  </DisclosureButton>
-                ))}
-              </div>
-            </div>
-          </DisclosurePanel>
+          {/* MOBILE MENU */}
+          <MobileMenu
+            navigation={navigation}
+            userNavigation={userNavigation}
+            handleSignout={handleSignOut}
+          />
         </Disclosure>
       </div>
     </>
+  );
+};
+
+export const MobileMenu = ({
+  navigation,
+  userNavigation,
+  handleSignout,
+}: {
+  navigation: NavigationMenu[];
+  userNavigation: UserNavigationMenu[];
+  handleSignout: () => void;
+}) => {
+  const { user } = useGlobalContext();
+  return (
+    <DisclosurePanel className="md:hidden">
+      <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+        {navigation.map((item) => {
+          if (item.name !== "Sign Out") {
+            return (
+              <DisclosureButton
+                key={item.name}
+                as="a"
+                href={item.href}
+                style={{
+                  display:
+                    item.condition !== undefined
+                      ? item.condition
+                        ? "block"
+                        : "none"
+                      : "block",
+                }}
+                aria-current={item.current ? "page" : undefined}
+                className={classNames(
+                  item.current
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                  "block rounded-md px-3 py-2 text-base font-medium"
+                )}
+              >
+                {item.name}
+              </DisclosureButton>
+            );
+          }
+          return null; // Return null if the condition is not met
+        })}
+      </div>
+      {/* bottom portion */}
+      {user && (
+        <div className="border-t border-gray-700 pb-3 pt-4">
+          <div className="flex items-center px-5">
+            <div className="shrink-0">
+              <img
+                alt={user?.first_name + " avatar" || "user avatar"}
+                src={
+                  user?.avatar ||
+                  "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                }
+                className="size-10 rounded-full object-cover"
+              />
+            </div>
+            <div className="ml-3">
+              <div className="text-base/5 font-medium text-white">
+                {user?.first_name}
+              </div>
+              <div className="text-sm font-medium text-gray-400">
+                {user?.email}
+              </div>
+            </div>
+            {/* notification btn */}
+            {/* <button
+              type="button"
+              className="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            >
+              <span className="absolute -inset-1.5" />
+              <span className="sr-only">View notifications</span>
+              <BellIcon aria-hidden="true" className="size-6" />
+            </button> */}
+          </div>
+          <div className="mt-3 space-y-1 px-2">
+            {userNavigation.map((item) => (
+              <DisclosureButton
+                key={item.name}
+                onClick={item.href === "#" ? handleSignout : undefined}
+                as="a"
+                href={item.href}
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                {item.name}
+              </DisclosureButton>
+            ))}
+          </div>
+        </div>
+      )}
+    </DisclosurePanel>
   );
 };

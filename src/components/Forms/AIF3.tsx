@@ -1,7 +1,15 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
-import { postAddSpotlight } from "../../services/formService";
-import { ImageUploadsProps, PhotoUpdateProps } from "../../lib/types";
+import {
+  postAddSpotlight,
+  putUpdateSpotlight,
+} from "../../services/formService";
+import {
+  ImageUploadsProps,
+  PhotoUpdateProps,
+  SpotlightFormData,
+} from "../../lib/types";
+import { DefaultLoader } from "../Loaders";
 
 const AIF3 = ({
   ownedByCurrentUserProp,
@@ -17,8 +25,14 @@ const AIF3 = ({
     setError,
     setMessage,
     error,
+    setIsLoading,
   } = useGlobalContext();
-  const [photos, setPhotos] = useState<(File | null)[]>([null, null, null]);
+  // TODO: Figure out better way than to have spotlight form in a union with the file | null union
+  const [photos, setPhotos] = useState<(File | null | SpotlightFormData)[]>([
+    null,
+    null,
+    null,
+  ]);
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
@@ -59,46 +73,54 @@ const AIF3 = ({
     spotlightFormData.actionImage1,
     spotlightFormData.actionImage2,
   ]);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const dataToSendToServer = new FormData();
-    dataToSendToServer.append("firstName", spotlightFormData.firstName);
-    dataToSendToServer.append("lastName", spotlightFormData.lastName);
-    dataToSendToServer.append("sport", spotlightFormData.sport);
-    dataToSendToServer.append(
-      "graduationYear",
-      spotlightFormData.graduationYear
-    );
-    dataToSendToServer.append("location", spotlightFormData.location);
-    dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
-    dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
-    dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
-    if (photos && photos.length > 0) {
-      photos.forEach((photo) => {
-        dataToSendToServer.append("photos", photo);
-      });
-    }
-
-    for (const key of dataToSendToServer.entries()) {
-      console.log(key[0] + ", " + key[1]);
-    }
-
+    setIsLoading(true);
+    const dataToSendToServer = createFormData(spotlightFormData, photos);
     try {
-      if (user) {
-        const data = await postAddSpotlight(user.id, dataToSendToServer);
-        console.log(dataToSendToServer, " <-- DTSTS");
-        // const data = "testing";
+      if (user && ownedByCurrentUserProp) {
+        const data = await putUpdateSpotlight(user.id, dataToSendToServer);
+        console.log(dataToSendToServer, " <-- DTSTS update");
+
         if (data.error) {
           setError(data.error);
         } else {
-          setMessage(data);
+          setMessage(data.message);
         }
       }
     } catch (err) {
       console.error(err);
       console.log(`Unable to submit form data to server `);
       setError(err.error);
+    } finally {
+      setIsLoading(false);
+      console.log("ran");
+    }
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const dataToSendToServer = createFormData(spotlightFormData, photos);
+
+    try {
+      if (user) {
+        const data = await postAddSpotlight(user.id, dataToSendToServer);
+        console.log(dataToSendToServer, " <-- DTSTS");
+
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      console.log(`Unable to submit form data to server `);
+      setError(err.error);
+    } finally {
+      setIsLoading(false);
+      console.log("ran");
     }
   };
   const handleAcceptUpdatePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,15 +136,12 @@ const AIF3 = ({
     setPhotoDecisionMade(true);
     setAcceptUpdate(false);
   };
-  console.log(ownedByCurrentUserProp, " <-- ownded by current user");
   return (
     <>
-      {ownedByCurrentUserProp ?
-       (
+      {ownedByCurrentUserProp ? (
         <>
-        {/* is owned by user */}
-          {photoDecisionMade ?
-           (
+          {/* is owned by user */}
+          {photoDecisionMade ? (
             // photo decision IS made
             acceptUpdate ? (
               <>
@@ -130,6 +149,7 @@ const AIF3 = ({
                 <PrevAndSubmitBtn
                   handlePrevFormStep={handlePrevFormStep}
                   ownedByCurrentUser={ownedByCurrentUserProp}
+                  handleUpdate={handleUpdate}
                   handleSubmit={handleSubmit}
                   photoDecisionMade={photoDecisionMade}
                   handleResetForm={handleResetForm}
@@ -139,6 +159,7 @@ const AIF3 = ({
               <PrevAndSubmitBtn
                 handlePrevFormStep={handlePrevFormStep}
                 ownedByCurrentUser={ownedByCurrentUserProp}
+                handleUpdate={handleUpdate}
                 handleSubmit={handleSubmit}
                 photoDecisionMade={photoDecisionMade}
                 handleResetForm={handleResetForm}
@@ -146,38 +167,40 @@ const AIF3 = ({
             )
           ) : (
             <>
-            {/* photo decision NOT made */}
-            {/* is not ownded by user */}
-            <PhotoUpdateChoiceBox
-          handleAccept={handleAcceptUpdatePhotos}
-          handleDecline={handleDeclineUpdatePhotos}
-        />
+              {/* photo decision NOT made */}
+              {/* is not ownded by user */}
+              <PhotoUpdateChoiceBox
+                handleAccept={handleAcceptUpdatePhotos}
+                handleDecline={handleDeclineUpdatePhotos}
+              />
             </>
           )}
         </>
       ) : photoDecisionMade ? (
         <>
-        {/* is not owned by User */}
+          {/* is not owned by User */}
           <ImageUploads handleFileChange={handleFileChange} />
           <PrevAndSubmitBtn
             handlePrevFormStep={handlePrevFormStep}
             ownedByCurrentUser={ownedByCurrentUserProp}
+            handleUpdate={handleUpdate}
             handleSubmit={handleSubmit}
             photoDecisionMade={photoDecisionMade}
             handleResetForm={handleResetForm}
           />
         </>
       ) : (
-       <>
-         <ImageUploads handleFileChange={handleFileChange} />
+        <>
+          <ImageUploads handleFileChange={handleFileChange} />
           <PrevAndSubmitBtn
             handlePrevFormStep={handlePrevFormStep}
             ownedByCurrentUser={ownedByCurrentUserProp}
+            handleUpdate={handleUpdate}
             handleSubmit={handleSubmit}
             photoDecisionMade={photoDecisionMade}
             handleResetForm={handleResetForm}
           />
-     </>
+        </>
       )}
     </>
   );
@@ -187,6 +210,8 @@ export default AIF3;
 export const ImageUploads: React.FC<ImageUploadsProps> = ({
   handleFileChange,
 }) => {
+  const { setSpotlightFormData } = useGlobalContext();
+
   return (
     <>
       {" "}
@@ -202,7 +227,7 @@ export const ImageUploads: React.FC<ImageUploadsProps> = ({
           id="profileImage"
           name="profileImage"
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, setSpotlightFormData)}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
@@ -218,7 +243,7 @@ export const ImageUploads: React.FC<ImageUploadsProps> = ({
           id="actionImage1"
           name="actionImage1"
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, setSpotlightFormData)}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
@@ -234,7 +259,7 @@ export const ImageUploads: React.FC<ImageUploadsProps> = ({
           id="actionImage2"
           name="actionImage2"
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, setSpotlightFormData)}
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
@@ -277,9 +302,11 @@ export const PrevAndSubmitBtn = ({
   handlePrevFormStep,
   ownedByCurrentUser,
   handleSubmit,
+  handleUpdate,
   photoDecisionMade,
   handleResetForm,
 }) => {
+  const { isLoading } = useGlobalContext();
   return (
     <>
       {/* Prev + Submit Button */}
@@ -292,21 +319,23 @@ export const PrevAndSubmitBtn = ({
         </button>
         {ownedByCurrentUser ? (
           <button
-            onClick={handleSubmit}
+            onClick={handleUpdate}
             className={`w-full ${
               photoDecisionMade
                 ? "bg-green-500 hover:bg-green-600"
                 : "disabled bg-gray-500 hover:bg-gray-600 opacity-30 pointer-events-none"
-            }  text-white font-medium py-2 px-4 rounded-md`}
+            }  text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center`}
           >
             Update
+            {isLoading && <DefaultLoader className={"loader-sm"} />}
           </button>
         ) : (
           <button
             onClick={handleSubmit}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md"
+            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center"
           >
             Submit
+            {isLoading && <DefaultLoader className={"loader-sm"} />}
           </button>
         )}
       </div>
@@ -318,4 +347,29 @@ export const PrevAndSubmitBtn = ({
       </span>
     </>
   );
+};
+
+const createFormData = (
+  spotlightFormData: SpotlightFormData,
+  photos: (File | null | SpotlightFormData)[]
+) => {
+  const dataToSendToServer = new FormData();
+  dataToSendToServer.append("firstName", spotlightFormData.firstName);
+  dataToSendToServer.append("lastName", spotlightFormData.lastName);
+  dataToSendToServer.append("sport", spotlightFormData.sport);
+  dataToSendToServer.append("graduationYear", spotlightFormData.graduationYear);
+  dataToSendToServer.append("location", spotlightFormData.location);
+  dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
+  dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
+  dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
+  if (photos && photos.length > 0) {
+    photos.forEach((photo) => {
+      dataToSendToServer.append("photos", photo);
+    });
+  }
+
+  for (const key of dataToSendToServer.entries()) {
+    console.log(key[0] + ", " + key[1]);
+  }
+  return dataToSendToServer;
 };

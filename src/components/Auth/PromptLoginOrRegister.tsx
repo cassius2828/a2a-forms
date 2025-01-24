@@ -24,13 +24,13 @@ const PromptLoginOrRegister = () => {
 
       <div className="flex justify-center gap-4">
         <Link
-          to="/login"
+          to="/auth/login"
           className="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
         >
           Login
         </Link>
         <Link
-          to="/register"
+          to="/auth/register"
           className="px-6 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors"
         >
           Register

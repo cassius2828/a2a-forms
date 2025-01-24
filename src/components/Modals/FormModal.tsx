@@ -9,6 +9,8 @@ export default function FormModal({
   setMessage,
   error,
   message,
+  willNavigate,
+  navigateFn,
 }: {
   title: string;
   text: string;
@@ -17,6 +19,8 @@ export default function FormModal({
   setMessage: (message: string) => void;
   error: string;
   message: string;
+  willNavigate: boolean;
+  navigateFn: () => void;
 }) {
   const { handleResetForm } = useGlobalContext();
   const [open, setOpen] = useState(true);
@@ -26,8 +30,11 @@ export default function FormModal({
       setError("");
     }
     if (message) {
+      if (willNavigate) {
+        setMessage("");
+        navigateFn();
+      }
       setMessage("");
-      //   handleResetForm()
     }
     setOpen(false);
   };
