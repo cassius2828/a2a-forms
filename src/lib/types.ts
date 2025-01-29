@@ -105,7 +105,7 @@ export type SpotlightFormData = {
   communityBio: string; // Bio about the user's community involvement
   firstName: string; // First name of the user
   generalBio: string; // General bio about the user
-  graduationYear: string; // User's graduation year
+  graduationYear: number | null; // User's graduation year
   lastName: string; // Last name of the user
   location: string; // User's location
   profileImage?: File | null; // Profile image of the user
@@ -123,7 +123,7 @@ export type TestimonialDisplayData = {
   createdAt: string; // Timestamp when the testimonial was created
   id: string | number; // Unique identifier for the testimonial
   name: string; // Name of the person who submitted the testimonial
-  status: "pending" | "approved" | "rejected"; // Status of the testimonial
+  status: StatusType; // Status of the testimonial
   text: string; // Testimonial text
 };
 
@@ -171,3 +171,32 @@ export type UpdatePasswordFormData = {
   newPassword: string;
   confirmPassword: string;
 };
+
+export type AthleteSpotlightSubmission = {
+  id: string;
+  href: string;
+  sport: string;
+  status: StatusType;
+  first_name: string;
+  last_name: string;
+  grad_year: string | number;
+  createdAt: string;
+};
+
+export type TestimonialSubmission = {
+  id: string;
+  href: string;
+  status: StatusType;
+  name: string;
+  createdAt: string;
+};
+
+export type TestimonialDataManageView = {
+  id: string;
+  name: string;
+  status: string;
+  createdAt: string;
+  text: string;
+};
+
+export type StatusType = "pending" | "approved" | "rejected";

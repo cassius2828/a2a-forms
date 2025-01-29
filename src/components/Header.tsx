@@ -56,6 +56,12 @@ export const HeaderV2 = () => {
       condition: !!user,
     },
     {
+      name: "Manage Submissions",
+      href: `/submissions/${user?.id}/manage`,
+      current: location.pathname === "/submissions",
+      condition: user?.role === "admin",
+    },
+    {
       name: "Login",
       href: "/auth/login",
       current: location.pathname === "/auth/login",

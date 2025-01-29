@@ -7,13 +7,13 @@ import {
   getSpotlightByUserId,
 } from "../../services/formService";
 import { formatDate, getStatusClass } from "../../lib/utils";
-import { TestimonialDisplayData } from "../../lib/types";
+import { StatusType, TestimonialDisplayData } from "../../lib/types";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
 type Submission = {
   id: number;
   title: string;
-  status: "pending" | "approved" | "rejected";
+  status: StatusType
   date: string;
   type: "spotlight" | "testimonial"; // Type of submission (spotlight or testimonial)
 };

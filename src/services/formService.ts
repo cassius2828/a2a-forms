@@ -28,13 +28,13 @@ export const putUpdateSpotlight = async (
   userId: string,
   formData: SpotlightFormData
 ) => {
-  console.log('running update spotlight')
+  console.log("running update spotlight");
   try {
     const response = await axios.put(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
       formData
     );
-    console.log(response.data, ' <-- response data')
+    console.log(response.data, " <-- response data");
     return response.data;
   } catch (err) {
     console.error(err);
@@ -43,7 +43,28 @@ export const putUpdateSpotlight = async (
   }
 };
 
-export const deleteSpotlight = async (id:string|null) => {
+export const putChangeSpotlightStatus = async (id: string, status: string) => {
+  try {
+    const response = await axios.put(
+      `${SPOTLIGHT_BASE_URL}/${id}/status`,
+      {
+        status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log(`Failed to change spotlight status to ${status}`);
+    throw err;
+  }
+};
+
+export const deleteSpotlight = async (id: string | null) => {
   try {
     const response = await axios.delete(`${SPOTLIGHT_BASE_URL}/${id}`);
     return response.data;
@@ -76,13 +97,20 @@ export const getSpotlightByUserId = async (userId: string) => {
   }
 };
 
-export const getApprovedSpotlights = async () => {
+export const getSpotlightSubmissionsByStatus = async (status: string) => {
   try {
-    const response = await axios.get(`${SPOTLIGHT_BASE_URL}/approved`);
+    const response = await axios.get(
+      `${SPOTLIGHT_BASE_URL}/status?status=${status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to fetch approved athlete spotlights.");
+    console.log(`Failed to fetch ${status} athlete spotlights.`);
     throw err;
   }
 };
@@ -176,5 +204,49 @@ export const getSingleTestimonial = async (id: string) => {
     console.error(err);
     console.log("Failed to fetch targeted user testimonials.");
     throw err;
+  }
+};
+
+export const putChangeTestimonialStatus = async (
+  id: string,
+  status: string
+) => {
+  try {
+    const response = await axios.put(
+      `${TESTIMONIALS_BASE_URL}/${id}/status`,
+      {
+        status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log(`Failed to change testimonial status to ${status}`);
+    throw err;
+  }
+};
+
+export const getTestimonialSubmissionsByStatus = async (status: string) => {
+  try {
+    const response = await axios.get(
+      `${TESTIMONIALS_BASE_URL}/status?status=${status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log(
+      `Failed to fetch ${status} athlete Testimonials.\n ERROR: ${err}`
+    );
+    return err;
   }
 };

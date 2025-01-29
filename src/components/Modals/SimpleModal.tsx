@@ -1,4 +1,18 @@
-const SimpleModal = () => {
+import React from "react";
+
+interface SimpleModalProps {
+  title: string;
+  text: string;
+  isError?: boolean;
+  closeModal: () => void;
+}
+
+const SimpleModal: React.FC<SimpleModalProps> = ({
+  title,
+  text,
+  isError = false,
+  closeModal,
+}) => {
   return (
     <>
       {/* Backdrop */}
@@ -10,9 +24,9 @@ const SimpleModal = () => {
           <div>
             <div className="mt-3 text-center sm:mt-5">
               <h3
-                className={`
-        text-base font-semibold ${isError ? "text-red-500" : "text-green-500"}
-        `}
+                className={`text-base font-semibold ${
+                  isError ? "text-red-500" : "text-green-500"
+                }`}
               >
                 {title}
               </h3>
@@ -28,11 +42,10 @@ const SimpleModal = () => {
               type="button"
               onClick={closeModal}
               className={`inline-flex w-full justify-center rounded-md 
-          ${isError ? "bg-red-500" : "bg-green-500"}
-        
-        px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus:outline-none focus-visible:outline-2 focus-visible:outline-neutral-900-600`}
+              ${isError ? "bg-red-500" : "bg-green-500"} 
+              px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 focus:outline-none`}
             >
-              close
+              Close
             </button>
           </div>
         </div>
@@ -40,4 +53,5 @@ const SimpleModal = () => {
     </>
   );
 };
+
 export default SimpleModal;

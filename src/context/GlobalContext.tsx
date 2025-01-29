@@ -15,7 +15,7 @@ const initialSpotlightFormData: SpotlightFormData = {
   firstName: "",
   lastName: "",
   sport: "",
-  graduationYear: "",
+  graduationYear: null,
   location: "",
   generalBio: "",
   actionBio: "",
