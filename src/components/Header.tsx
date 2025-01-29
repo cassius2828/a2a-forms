@@ -56,6 +56,12 @@ export const HeaderV2 = () => {
       condition: !!user,
     },
     {
+      name: "Manage Submissions",
+      href: `/submissions/${user?.id}/manage`,
+      current: location.pathname === "/submissions",
+      condition: user?.role === "admin",
+    },
+    {
       name: "Login",
       href: "/auth/login",
       current: location.pathname === "/auth/login",
@@ -87,12 +93,12 @@ export const HeaderV2 = () => {
   ];
   return (
     <>
-      <div className=" w-full">
+      <div className="w-full">
         <Disclosure
           as="nav"
           className="bg-neutral-950 shadow-sm shadow-green-900 fixed z-50 top-0 w-full"
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <div className="shrink-0">
@@ -100,8 +106,10 @@ export const HeaderV2 = () => {
                     <h1 className="text-3xl">A2A</h1>
                   </Link>
                 </div>
+              </div>
+              <div className="hidden md:block">
                 <div className="hidden md:block">
-                  <div className="ml-10 flex items-baseline space-x-4">
+                  <div className="ml-10 flex items-center space-x-4">
                     {navigation.map((item) => (
                       <Link
                         style={{
@@ -125,15 +133,11 @@ export const HeaderV2 = () => {
                       >
                         {item.name}
                       </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="hidden md:block">
-                {user && (
-                  <div className="ml-4 flex items-center md:ml-6">
-                    {/* notifications btn */}
-                    {/* <button
+                    ))}{" "}
+                    {user && (
+                      <div className="ml-4 flex items-center md:ml-6">
+                        {/* notifications btn */}
+                        {/* <button
                       type="button"
                       className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
@@ -142,43 +146,47 @@ export const HeaderV2 = () => {
                       <BellIcon aria-hidden="true" className="size-6" />
                     </button> */}
 
-                    {/* Profile dropdown */}
-                    <Menu as="div" className="relative ml-3">
-                      <div>
-                        <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                          <span className="absolute -inset-1.5" />
-                          <span className="sr-only">Open user menu</span>
-                          <img
-                            alt={user.first_name + " 's avatar"}
-                            src={
-                              user.avatar ||
-                              "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-                            }
-                            className="size-8 rounded-full object-cover"
-                          />
-                        </MenuButton>
+                        {/* Profile dropdown */}
+                        <Menu as="div" className="relative ml-3">
+                          <div>
+                            <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                              <span className="absolute -inset-1.5" />
+                              <span className="sr-only">Open user menu</span>
+                              <img
+                                alt={user.first_name + " 's avatar"}
+                                src={
+                                  user.avatar ||
+                                  "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                                }
+                                className="size-8 rounded-full object-cover"
+                              />
+                            </MenuButton>
+                          </div>
+                          <MenuItems
+                            transition
+                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md  bg-gray-800  overflow-hidden shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                          >
+                            {userNavigation.map((item) => (
+                              <MenuItem key={item.name}>
+                                <a
+                                  onClick={
+                                    item.href === "#"
+                                      ? handleSignOut
+                                      : undefined
+                                  }
+                                  href={item.href}
+                                  className="block px-4 py-2 text-sm text-gray-200 hover:text-white data-[focus]:bg-gray-700 data-[focus]:outline-none"
+                                >
+                                  {item.name}
+                                </a>
+                              </MenuItem>
+                            ))}
+                          </MenuItems>
+                        </Menu>
                       </div>
-                      <MenuItems
-                        transition
-                        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md  bg-gray-800  overflow-hidden shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                      >
-                        {userNavigation.map((item) => (
-                          <MenuItem key={item.name}>
-                            <a
-                              onClick={
-                                item.href === "#" ? handleSignOut : undefined
-                              }
-                              href={item.href}
-                              className="block px-4 py-2 text-sm text-gray-200 hover:text-white data-[focus]:bg-gray-700 data-[focus]:outline-none"
-                            >
-                              {item.name}
-                            </a>
-                          </MenuItem>
-                        ))}
-                      </MenuItems>
-                    </Menu>
-                  </div>
-                )}
+                    )}
+                  </div>{" "}
+                </div>
               </div>
               <div className="-mr-2 flex md:hidden">
                 {/* Mobile HAMBURGER button */}

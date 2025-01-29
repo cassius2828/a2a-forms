@@ -7,16 +7,10 @@ import {
   getSpotlightByUserId,
 } from "../../services/formService";
 import { formatDate, getStatusClass } from "../../lib/utils";
-import { TestimonialDisplayData } from "../../lib/types";
+import { StatusType, TestimonialDisplayData } from "../../lib/types";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
-type Submission = {
-  id: number;
-  title: string;
-  status: "pending" | "approved" | "rejected";
-  date: string;
-  type: "spotlight" | "testimonial"; // Type of submission (spotlight or testimonial)
-};
+
 
 const ViewYourSubmissions = () => {
   const { user, error, setError } = useGlobalContext();
@@ -72,6 +66,7 @@ const ViewYourSubmissions = () => {
     }
     console.log(spotlightSubmission);
   }, [userId]);
+  
   return (
     <div className="p-8 space-y-6 mt-20 w-full">
       {/* Dashboard Title */}
@@ -89,7 +84,7 @@ const ViewYourSubmissions = () => {
       <h1 className="text-3xl font-semibold text-gray-200 text-center pb-12">
         View Submissions
       </h1>
-      <div className="flex justify-around w-full md:w-3/4 mx-auto ">
+      <div className="flex flex-col md:flex-row justify-around w-full md:w-3/4 mx-auto ">
         {/* Spotlight Submissions Section */}
         <div className="space-y-4 w-full">
           <h2 className="text-xl font-medium text-gray-300">
@@ -142,11 +137,11 @@ const ViewYourSubmissions = () => {
         </div>
 
         {/* Testimonial Submissions Section */}
-        <div className="space-y-4 w-full">
+        <div className="space-y-4 w-full mt-12 md:mt-0 ">
           <h2 className="text-xl font-medium text-gray-300 ">
             Testimonial Submissions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-x-12 gap-y-6">
+          <div className="flex gap-8 flex-wrap">
             {testimonialSubmissions.slice(0, 4).map((submission) => (
               <div
                 key={submission.id}

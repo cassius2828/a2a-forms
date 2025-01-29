@@ -77,7 +77,8 @@ const profileRoutes = [
         <ComingSoon />
       </Suspense>
     ),
-  },  {
+  },
+  {
     path: "/confirm-email",
     element: (
       <Suspense
@@ -101,7 +102,8 @@ const profileRoutes = [
           </div>
         }
       >
-        <MainDashboard />
+        {/* <MainDashboard /> */}
+        <ComingSoon text="Your profile dashboard is coming soon! Soon, you'll be able to manage your upcoming appointments, customize your account settings, and access personalized features—all in one place. We're working hard to bring you an amazing experience, so stay tuned!" />
       </Suspense>
     ),
   },
