@@ -146,7 +146,7 @@ const ViewYourSubmissions = () => {
           <h2 className="text-xl font-medium text-gray-300 ">
             Testimonial Submissions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 justify-center gap-x-12 gap-y-6 place-items-center">
+          <div className="flex gap-8 flex-wrap">
             {testimonialSubmissions.slice(0, 4).map((submission) => (
               <div
                 key={submission.id}
