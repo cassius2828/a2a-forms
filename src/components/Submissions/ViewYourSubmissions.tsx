@@ -89,7 +89,7 @@ const ViewYourSubmissions = () => {
       <h1 className="text-3xl font-semibold text-gray-200 text-center pb-12">
         View Submissions
       </h1>
-      <div className="flex justify-around w-full md:w-3/4 mx-auto ">
+      <div className="flex flex-col md:flex-row justify-around w-full md:w-3/4 mx-auto ">
         {/* Spotlight Submissions Section */}
         <div className="space-y-4 w-full">
           <h2 className="text-xl font-medium text-gray-300">
@@ -142,11 +142,11 @@ const ViewYourSubmissions = () => {
         </div>
 
         {/* Testimonial Submissions Section */}
-        <div className="space-y-4 w-full">
+        <div className="space-y-4 w-full mt-12 md:mt-0 ">
           <h2 className="text-xl font-medium text-gray-300 ">
             Testimonial Submissions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-x-12 gap-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-x-12 gap-y-6 place-items-center">
             {testimonialSubmissions.slice(0, 4).map((submission) => (
               <div
                 key={submission.id}

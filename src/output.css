@@ -1464,6 +1464,10 @@ video {
   padding: 0.625rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
 .p-4 {
   padding: 1rem;
 }
@@ -2528,6 +2532,10 @@ video {
     margin-left: 1.5rem;
   }
 
+  .md\:mt-0 {
+    margin-top: 0px;
+  }
+
   .md\:block {
     display: block;
   }
@@ -2562,6 +2570,10 @@ video {
 
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
   }
 
   .md\:text-2xl {
@@ -2644,8 +2656,8 @@ video {
     bottom: 0px;
   }
 
-  .xl\:z-50 {
-    z-index: 50;
+  .xl\:z-40 {
+    z-index: 40;
   }
 
   .xl\:flex {

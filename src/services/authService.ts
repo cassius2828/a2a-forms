@@ -59,9 +59,9 @@ export async function login(userCredentials: LoginFormState) {
       return user.user;
     }
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err);
 
-    return err.response.data;
+    return err;
   }
 }
 

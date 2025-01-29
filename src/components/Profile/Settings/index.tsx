@@ -111,7 +111,6 @@ export default function ProfileSettings() {
     }
   };
 
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.log(profilePhoto, " pfp");
     e.preventDefault();
@@ -165,7 +164,7 @@ export default function ProfileSettings() {
   if (userId !== user.id) return <NoAccessPage />;
   return (
     <>
-      <div>
+      <div className="w-full">
         {(error || message) && (
           <FormModal
             isError={Boolean(error)}
@@ -275,7 +274,7 @@ export default function ProfileSettings() {
 
             {/* Settings forms */}
             <div className="divide-y divide-white/5">
-              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+              <div className="grid  grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8  ">
                 {/* personal info */}
                 <div>
                   <h2 className="text-base/7 font-semibold text-white">
@@ -463,17 +462,10 @@ export const SideNav = ({ navigation }: { navigation: SideBarNavMenu[] }) => {
   const { user } = useGlobalContext();
   return (
     <>
-      <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
+      <div className="hidden xl:fixed  xl:inset-y-0 xl:z-40 xl:flex xl:w-72 xl:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
-          <div className="flex h-16 shrink-0 items-center">
-            <img
-              alt="Your Company"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=green&shade=500"
-              className="h-8 w-auto"
-            />
-          </div>
-          <nav className="flex flex-1 flex-col">
+          <nav className="flex flex-1 flex-col mt-20 ">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
