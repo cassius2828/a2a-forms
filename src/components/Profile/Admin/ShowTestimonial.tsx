@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getSingleTestimonial,
-  putChangeTestimonialStatus,
-} from "../../../services/formService";
+import { getSingleTestimonial } from "../../../services/formService";
 import { useGlobalContext } from "../../../context/useGlobalContext";
 import { TestimonialDataManageView } from "../../../lib/types";
 import { DefaultLoader } from "../../Loaders";
@@ -30,16 +27,19 @@ const ShowTestimonial = () => {
     setIsLoading,
     scrollToTop,
     user,
+    handleRejectTestimonial,
+    handleApproveTestimonial,
+    handleCloseModalAndNavigate,
   } = useGlobalContext();
   const navigate = useNavigate();
 
   const { testimonialId } = useParams();
 
-  const fetchTestimonialById = async () => {
+  const fetchTestimonialById = async (id: string) => {
     setIsLoading(true);
     try {
-      if (testimonialId) {
-        const data = await getSingleTestimonial(testimonialId);
+      if (id) {
+        const data = await getSingleTestimonial(id);
         if (data.error) {
           setError(data.error);
         } else {
@@ -53,65 +53,12 @@ const ShowTestimonial = () => {
       setIsLoading(false);
     }
   };
-  const handleRejectTestimonial = async () => {
-    setIsLoading(true);
-    if (testimonialId) {
-      try {
-        const data = await putChangeTestimonialStatus(
-          testimonialId,
-          "rejected"
-        );
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setMessage(data.message);
-        }
-      } catch (err) {
-        console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to rejected"
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    ƒ;
-  };
-  const handleApproveTestimonial = async () => {
-    setIsLoading(true);
-    if (testimonialId) {
-      try {
-        const data = await putChangeTestimonialStatus(
-          testimonialId,
-          "approved"
-        );
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setMessage(data.message);
-        }
-      } catch (err) {
-        console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to approved"
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-  const handleCloseModalAndNavigate = async () => {
-    if (message) setMessage("");
-    if (error) setError("");
-    navigate(`/submissions/${user?.id}/manage`);
-  };
+
   useEffect(() => {
-    fetchTestimonialById();
+    if (testimonialId) fetchTestimonialById(testimonialId);
     scrollToTop(false);
   }, [testimonialId]);
-
+  if (!testimonialId) return <span>cannot locate testimonial ID</span>;
   if (isLoading) return <DefaultLoader />;
   if (user?.id !== import.meta.env.VITE_ADMIN_ID)
     return <h1>Not Authorized</h1>;
@@ -167,13 +114,13 @@ const ShowTestimonial = () => {
         </button>
         <div className="flex gap-4">
           <button
-            onClick={handleRejectTestimonial}
+            onClick={() => handleRejectTestimonial(testimonialId)}
             className="px-4 py-2 bg-red-600 text-white rounded-md font-semibold hover:bg-red-700 transition duration-300 focus:outline-none"
           >
             Reject
           </button>
           <button
-            onClick={handleApproveTestimonial}
+            onClick={() => handleApproveTestimonial(testimonialId)}
             className="px-4 py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
           >
             Approve
@@ -188,7 +135,11 @@ const ShowTestimonial = () => {
           }`}
           title={message ? message : error}
           isError={Boolean(error)}
-          closeModal={handleCloseModalAndNavigate}
+          closeModal={() =>
+            handleCloseModalAndNavigate(
+              navigate(`/submissions/${user?.id}/manage`)
+            )
+          }
         />
       )}
     </div>

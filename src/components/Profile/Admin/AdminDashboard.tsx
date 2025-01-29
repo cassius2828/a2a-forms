@@ -28,7 +28,8 @@ import {
   StatusType,
   TestimonialSubmission,
 } from "../../../lib/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import SimpleModal from "../../Modals/SimpleModal";
 
 const navigation = [
   { name: "Home", href: "#" },
@@ -211,7 +212,8 @@ export default function AdminDashboard() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [submissionsTypeIsSpotlight, setSubmissionTypeIsSpotlight] =
     useState<boolean>(true);
-  const { user, error, setError } = useGlobalContext();
+  const { user, error, message, setError, handleCloseModalAndNavigate } =
+    useGlobalContext();
   const [status, setStatus] = useState<StatusType>("pending");
   const [athleteSpotlightSubmissions, setAthleteSpotlightSubmissions] =
     useState<AthleteSpotlightSubmission[]>([]);
@@ -223,6 +225,8 @@ export default function AdminDashboard() {
     { status: "approved", color: "#22c55e", current: status === "approved" },
     { status: "rejected", color: "#ef4444", current: status === "rejected" },
   ];
+
+  const navigate = useNavigate();
   const fetchAthleteSpotlightSubmissions = async () => {
     try {
       const data = await getSpotlightSubmissionsByStatus(status);
@@ -343,6 +347,18 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+        {(message || error) && (
+          <SimpleModal
+            text={`Attemp to update the status was ${
+              error ? "unsuccessful" : "successful"
+            }`}
+            title={message ? message : error}
+            isError={Boolean(error)}
+            closeModal={() =>
+              handleCloseModalAndNavigate(window.location.reload())
+            }
+          />
+        )}
       </main>
     </>
   );
@@ -422,6 +438,8 @@ export const TestimonialSubmmisionsTableBody = ({
   status: StatusType;
   userId: string;
 }) => {
+  const { handleApproveTestimonial, handleRejectTestimonial } =
+    useGlobalContext();
   if (submissions.length === 0)
     return (
       <span className="text-gray-100 text-2xl p-3 text-center w-full flex justify-center">
@@ -462,10 +480,16 @@ export const TestimonialSubmmisionsTableBody = ({
               <ViewSubmissionBtn
                 path={`/submissions/${userId}/manage/testimonials/${testimonial.id}`}
               />
-              <button className="px-4 py-1 border border-gray-400 bg-red-700 text-white text-sm rounded-lg hover:bg-red-800 transition">
+              <button
+                onClick={() => handleRejectTestimonial(testimonial.id)}
+                className="px-4 py-1 border border-gray-400 bg-red-700 text-white text-sm rounded-lg hover:bg-red-800 transition"
+              >
                 Reject
               </button>{" "}
-              <button className="px-4 py-1 border border-gray-400 bg-green-700 text-white text-sm rounded-lg hover:bg-green-800 transition">
+              <button
+                onClick={() => handleApproveTestimonial(testimonial.id)}
+                className="px-4 py-1 border border-gray-400 bg-green-700 text-white text-sm rounded-lg hover:bg-green-800 transition"
+              >
                 Accept
               </button>
             </td>

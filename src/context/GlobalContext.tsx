@@ -8,7 +8,10 @@ import {
   UserTokenData,
 } from "../lib/types";
 import { GlobalContext } from "./useGlobalContext";
-import { getAllUserTestimonials } from "../services/formService";
+import {
+  getAllUserTestimonials,
+  putChangeTestimonialStatus,
+} from "../services/formService";
 
 // Initial form data structure
 const initialSpotlightFormData: SpotlightFormData = {
@@ -37,9 +40,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData | File | null>(
-    initialSpotlightFormData
-  );
+  const [spotlightFormData, setSpotlightFormData] = useState<
+    SpotlightFormData | File | null
+  >(initialSpotlightFormData);
   const [user, setUser] = useState<UserTokenData | null>(getUser());
   const [userTestimonials, setUserTestimonials] = useState<
     TestimonialDisplayData[]
@@ -75,7 +78,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   // Handle multiple file input changes
   const handleFileChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<(File | null | SpotlightFormData)[]>>
+    setState: React.Dispatch<
+      React.SetStateAction<(File | null | SpotlightFormData)[]>
+    >
   ) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
@@ -134,6 +139,56 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
+  const handleRejectTestimonial = async (id: string) => {
+    setIsLoading(true);
+    if (id) {
+      try {
+        const data = await putChangeTestimonialStatus(id, "rejected");
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(
+          err.response.data.error ||
+            "Unable to change testimonial status to rejected"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+  const handleApproveTestimonial = async (id: string) => {
+    setIsLoading(true);
+    if (id) {
+      try {
+        const data = await putChangeTestimonialStatus(id, "approved");
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(
+          err.response.data.error ||
+            "Unable to change testimonial status to approved"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleCloseModalAndNavigate =  (fn?: () => void) => {
+    if (message) setMessage("");
+    if (error) setError("");
+    console.log(fn);
+    if (fn) fn();
+  };
+
   useEffect(() => {
     getUser();
   }, [user]);
@@ -177,6 +232,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         userTestimonials,
         testimonialForm,
         setTestimonialForm,
+        handleRejectTestimonial,
+        handleApproveTestimonial,
+        handleCloseModalAndNavigate,
       }}
     >
       {children}
