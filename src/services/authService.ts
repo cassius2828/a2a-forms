@@ -102,8 +102,13 @@ export const putUpdatePassword = async (
   userId: string
 ) => {
   const url = `${BASE_URL}/auth/${userId}/update-password`;
+  const options = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
   try {
-    const response = await axios.put(url, formData);
+    const response = await axios.put(url, formData, options);
     return response.data;
   } catch (err) {
     console.error(err);
