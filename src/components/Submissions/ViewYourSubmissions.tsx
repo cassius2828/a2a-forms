@@ -10,13 +10,7 @@ import { formatDate, getStatusClass } from "../../lib/utils";
 import { StatusType, TestimonialDisplayData } from "../../lib/types";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
-type Submission = {
-  id: number;
-  title: string;
-  status: StatusType
-  date: string;
-  type: "spotlight" | "testimonial"; // Type of submission (spotlight or testimonial)
-};
+
 
 const ViewYourSubmissions = () => {
   const { user, error, setError } = useGlobalContext();
@@ -72,6 +66,7 @@ const ViewYourSubmissions = () => {
     }
     console.log(spotlightSubmission);
   }, [userId]);
+  
   return (
     <div className="p-8 space-y-6 mt-20 w-full">
       {/* Dashboard Title */}

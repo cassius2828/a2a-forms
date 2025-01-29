@@ -378,7 +378,7 @@ export const AthleteSpotlightSubmissionsTableBody = ({
                     <div
                       className={classNames(
                         spotlight.status,
-                        "text-xs font-medium text-yellow-500"
+                        "text-xs font-medium "
                       )}
                     >
                       {spotlight.status}
@@ -441,7 +441,7 @@ export const TestimonialSubmmisionsTableBody = ({
                     <div
                       className={classNames(
                         testimonial.status,
-                        "text-xs font-medium text-yellow-500"
+                        "text-xs font-medium"
                       )}
                     >
                       {testimonial.status}

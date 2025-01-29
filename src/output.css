@@ -1863,11 +1863,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.text-yellow-500 {
-  --tw-text-opacity: 1;
-  color: rgb(234 179 8 / var(--tw-text-opacity, 1));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -2035,7 +2030,7 @@ video {
 .loader {
   width: 48px;
   height: 48px;
-  border: 3px solid #FFF;
+  border: 3px solid #fff;
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -2044,7 +2039,7 @@ video {
 }
 
 .loader::after {
-  content: '';
+  content: "";
   box-sizing: border-box;
   position: absolute;
   left: 50%;
@@ -2074,7 +2069,7 @@ video {
   /* 48px / 3 */
   height: 16px;
   /* 48px / 3 */
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   /* 3px / 3 */
   border-radius: 50%;
   display: inline-block;
@@ -2084,7 +2079,7 @@ video {
 }
 
 .loader-sm::after {
-  content: '';
+  content: "";
   box-sizing: border-box;
   position: absolute;
   left: 50%;
@@ -2098,6 +2093,20 @@ video {
   border: 1px solid;
   /* 3px / 3 */
   border-color: #22c55e transparent;
+}
+
+/* text colors based on status */
+
+.pending {
+  color: #eab308;
+}
+
+.approved {
+  color: #22c55e;
+}
+
+.rejected {
+  color: #ef4444;
 }
 
 .placeholder\:text-gray-500::-moz-placeholder {
