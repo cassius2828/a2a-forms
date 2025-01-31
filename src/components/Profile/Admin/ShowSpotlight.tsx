@@ -202,7 +202,11 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
             }
             className={`w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-semibold  transition duration-300 focus:outline-none`}
           >
-            {!isApproved ? "Update Comment" : "Reject"}
+            {spotlight.status === "pending"
+              ? "Reject"
+              : !isApproved
+              ? "Update Comment"
+              : "Reject"}
           </button>
           <button
             onClick={() =>
@@ -210,7 +214,11 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
             }
             className={`w-full px-5 py-2 bg-green-600 hover:bg-green-700  text-white rounded-lg transition`}
           >
-            {isApproved ? "Update Comment" : "Approve"}
+            {spotlight.status === "pending"
+              ? "Approve"
+              : isApproved
+              ? "Update Comment"
+              : "Approve"}
           </button>
         </div>
       </div>

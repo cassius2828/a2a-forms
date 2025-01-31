@@ -147,7 +147,11 @@ const ShowTestimonial = () => {
             }
             className={` w-full px-4 py-2 hover:bg-red-700 bg-red-600 text-white rounded-md font-semibold  transition duration-300 focus:outline-none`}
           >
-            {!isApproved ? "Update Comment" : "Reject"}
+            {testimonial.status === "pending"
+              ? "Reject"
+              : !isApproved
+              ? "Update Comment"
+              : "Reject"}
           </button>
           <button
             onClick={() =>
@@ -155,7 +159,11 @@ const ShowTestimonial = () => {
             }
             className=" w-full px-4 py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
           >
-            {isApproved ? "Update Comment" : "Approve"}
+            {testimonial.status === "pending"
+              ? "Approve"
+              : isApproved
+              ? "Update Comment"
+              : "Approve"}
           </button>
         </div>
       </div>
