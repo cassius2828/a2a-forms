@@ -10,6 +10,7 @@ import {
 import { GlobalContext } from "./useGlobalContext";
 import {
   getAllUserTestimonials,
+  putChangeSpotlightStatus,
   putChangeTestimonialStatus,
 } from "../services/formService";
 
@@ -48,7 +49,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     TestimonialDisplayData[]
   >([]);
 
-
   // const { setError } = useGlobalContext();
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
@@ -65,7 +65,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
-  
   // Handle input changes and update state dynamically
   const handleInputChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -142,7 +141,62 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setUser(null);
     }
   };
-// admin actions on testimonials
+  
+  // admin actions on spotlights
+  const handleRejectSpotlight = async (id: string, adminComment?: string) => {
+    setIsLoading(true);
+    if (id) {
+      try {
+        const data = await putChangeSpotlightStatus(
+          id,
+          "rejected",
+          adminComment
+        );
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(
+          err.response.data.error ||
+            "Unable to change testimonial status to rejected"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+  const handleApproveSpotlight = async (id: string, adminComment?: string) => {
+    console.log(id, " <-- id");
+    console.log(adminComment, " <-- hat");
+    setIsLoading(true);
+    if (id) {
+      try {
+        const data = await putChangeSpotlightStatus(
+          id,
+          "approved",
+          adminComment
+        );
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(
+          err.response.data.error ||
+            "Unable to change Spotlight status to approved"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  // admin actions on testimonials
   const handleRejectTestimonial = async (id: string, adminComment?: string) => {
     setIsLoading(true);
     if (id) {
@@ -172,8 +226,8 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     id: string,
     adminComment?: string
   ) => {
-    console.log(id, ' <-- id')
-    console.log(adminComment, ' <-- hat')
+    console.log(id, " <-- id");
+    console.log(adminComment, " <-- hat");
     setIsLoading(true);
     if (id) {
       try {
@@ -251,6 +305,8 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         handleRejectTestimonial,
         handleApproveTestimonial,
         handleCloseModalAndNavigate,
+        handleApproveSpotlight,
+        handleRejectSpotlight,
       }}
     >
       {children}

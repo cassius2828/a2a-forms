@@ -12,12 +12,14 @@ const initialTestmonialData = {
   text: "No testimonial available.",
   createdAt: "",
   status: "pending",
-  admin_comment:''
+  admin_comment: "",
 };
 const ShowTestimonial = () => {
   const [testimonial, setTestimonial] = useState<TestimonialDataManageView>(
     initialTestmonialData
   );
+  const [isApproved, setIsApproved] = useState<boolean>(false);
+
   const {
     error,
     setError,
@@ -29,7 +31,8 @@ const ShowTestimonial = () => {
     user,
     handleRejectTestimonial,
     handleApproveTestimonial,
-    handleCloseModalAndNavigate,handleInputChange
+    handleCloseModalAndNavigate,
+    handleInputChange,
   } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -44,6 +47,7 @@ const ShowTestimonial = () => {
           setError(data.error);
         } else {
           setTestimonial(data);
+          setIsApproved(Boolean(data.status === "approved"));
         }
       }
     } catch (err) {
@@ -55,8 +59,11 @@ const ShowTestimonial = () => {
   };
 
   useEffect(() => {
-console.log(testimonial.admin_comment, '==========\nadmin comment\n============')
-  },[testimonial])
+    console.log(
+      testimonial.admin_comment,
+      "==========\nadmin comment\n============"
+    );
+  }, [testimonial]);
 
   useEffect(() => {
     if (testimonialId) fetchTestimonialById(testimonialId);
@@ -69,7 +76,7 @@ console.log(testimonial.admin_comment, '==========\nadmin comment\n============'
   if (user?.id !== import.meta.env.VITE_ADMIN_ID)
     return <h1>Not Authorized</h1>;
   return (
-    <div className="flex flex-col justify-start w-full md:w-2/3 lg:w-1/2 mx-auto p-2 bg-neutral-900 rounded-lg shadow-md mt-20 relative">
+    <div className="flex flex-col justify-start w-full md:w-2/3 lg:w-1/2 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative">
       {/* Text Heading */}
       <h2 className="text-2xl font-semibold text-white mb-4 text-center">
         Testimonial Review
@@ -87,21 +94,6 @@ console.log(testimonial.admin_comment, '==========\nadmin comment\n============'
           </div>
           {/* status and date */}
           <div className="mt-8 flex gap-8 justify-end">
-            {/* status */}
-            <span>
-              <strong className="text-white">Status:</strong>{" "}
-              <span
-                className={`px-2 py-1 rounded-md font-semibold ${
-                  testimonial.status === "pending"
-                    ? "bg-yellow-500 text-black"
-                    : testimonial.status === "approved"
-                    ? "bg-green-600 text-white"
-                    : "bg-red-600 text-white"
-                }`}
-              >
-                {testimonial.status}
-              </span>
-            </span>
             {/* date */}
             <span>
               <strong className="text-white">Date:</strong>{" "}
@@ -121,36 +113,56 @@ console.log(testimonial.admin_comment, '==========\nadmin comment\n============'
         type="textarea"
         value={testimonial.admin_comment}
         onChange={(e) => handleInputChange(e, setTestimonial)}
-        className="flex flex-col p-5 gap-y-4 justify-between items-center text-sm text-gray-200 bg-neutral-800 rounded-md min-h-20 mt-4"
+        className="w-full h-auto my-3 p-3 bg-neutral-800 text-gray-100 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 resize-none"
+        placeholder="Add any comments or feedback here..."
       />
-
+      <div className="mt-2 text-gray-100">
+        <p>
+          Current Status:{" "}
+          <span
+            className={`${
+              testimonial.status === "pending"
+                ? "text-yellow-500"
+                : isApproved
+                ? "text-green-500"
+                : "text-red-500"
+            } capitalize`}
+          >
+            {testimonial.status}
+          </span>
+        </p>
+      </div>
       {/* Action Buttons */}
-      <div className="flex justify-between p-4">
+      <div className="mt-8 flex flex-col-reverse md:flex-row justify-between gap-4">
         <button
           onClick={() => navigate(-1)}
           className="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold hover:bg-gray-600 transition duration-300 focus:outline-none"
         >
           Back
         </button>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center w-full max-w-md">
           <button
-            onClick={() => handleRejectTestimonial(testimonialId, testimonial.admin_comment)}
-            className="px-4 py-2 bg-red-600 text-white rounded-md font-semibold hover:bg-red-700 transition duration-300 focus:outline-none"
+            onClick={() =>
+              handleRejectTestimonial(testimonialId, testimonial.admin_comment)
+            }
+            className={` w-full px-4 py-2 hover:bg-red-700 bg-red-600 text-white rounded-md font-semibold  transition duration-300 focus:outline-none`}
           >
-            Reject
+            {!isApproved ? "Update Comment" : "Reject"}
           </button>
           <button
-            onClick={() => handleApproveTestimonial(testimonialId, testimonial.admin_comment)}
-            className="px-4 py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
+            onClick={() =>
+              handleApproveTestimonial(testimonialId, testimonial.admin_comment)
+            }
+            className=" w-full px-4 py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
           >
-            Approve
+            {isApproved ? "Update Comment" : "Approve"}
           </button>
         </div>
       </div>
       {/* Modal */}
       {(message || error) && (
         <SimpleModal
-          text={`Attemp to update the status was ${
+          text={`Attemp to update the status / admin comment was ${
             error ? "unsuccessful" : "successful"
           }`}
           title={message ? message : error}

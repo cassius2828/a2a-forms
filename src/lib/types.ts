@@ -100,19 +100,34 @@ export type RegisterFormState = {
 
 // Represents the data structure for a spotlight form submission
 export type SpotlightFormData = {
+  firstName: string; // First name of the user
+  lastName: string; // Last name of the user
+  sport: string; // Sport played by the user
+  location: string; // User's location
+  graduationYear: number | null; // User's graduation year
   actionBio: string; // Bio describing the user's actions
+  generalBio: string; // General bio about the user
+  communityBio: string; // Bio about the user's community involvement
+  profileImage?: File | null; // Profile image of the user
   actionImage1?: File | null; // First action image
   actionImage2?: File | null; // Second action image
-  communityBio: string; // Bio about the user's community involvement
-  firstName: string; // First name of the user
-  generalBio: string; // General bio about the user
-  graduationYear: number | null; // User's graduation year
-  lastName: string; // Last name of the user
-  location: string; // User's location
-  profileImage?: File | null; // Profile image of the user
-  sport: string; // Sport played by the user
 };
-
+// Represents the data structure for a spotlight form submission from the server
+export type SpotlightFormDataFromServer = {
+  first_name: string; // First name of the user
+  last_name: string; // Last name of the user
+  sport: string; // Sport played by the user
+  location: string; // User's location
+  grad_year: number | null; // User's graduation year
+  action_bio: string; // Bio describing the user's actions
+  general_bio: string; // General bio about the user
+  community_bio: string; // Bio about the user's community involvement
+  profile_image?: string | null; // Profile image of the user
+  action_image_1?: string | null; // First action image
+  action_image_2?: string | null; // Second action image
+  admin_comment?: string; // Second action image
+  status: StatusType
+};
 // Represents the data structure for testimonial form input
 export type TestimonialFormData = {
   name: string; // Name of the person submitting the testimonial
