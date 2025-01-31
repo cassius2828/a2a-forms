@@ -1,25 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/react";
-import {
-  ArrowDownCircleIcon,
-  ArrowPathIcon,
-  ArrowUpCircleIcon,
-  Bars3Icon,
-  EllipsisHorizontalIcon,
-  PlusSmallIcon,
-} from "@heroicons/react/20/solid";
-import { BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { set } from "mongoose";
+
 import { useGlobalContext } from "../../../context/useGlobalContext";
 import {
-  getPendingSpotlights,
   getSpotlightSubmissionsByStatus,
   getTestimonialSubmissionsByStatus,
 } from "../../../services/formService";
@@ -31,12 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import SimpleModal from "../../Modals/SimpleModal";
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Invoices", href: "#" },
-  { name: "Clients", href: "#" },
-  { name: "Expenses", href: "#" },
-];
+
 
 const stats = [
   {
@@ -64,152 +41,13 @@ const stats = [
     changeType: "negative",
   },
 ];
-const statuses = {
-  Paid: "text-green-700 bg-green-50 ring-green-600/20",
-  Withdraw: "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Overdue: "text-red-700 bg-red-50 ring-red-600/10",
-};
-const transactions = [
-  {
-    id: 1,
-    href: "#",
-    sport: "Football",
-    status: "pending",
-    name: "Jane Doe",
-    grad_year: "2023",
-    createdAt: "2022-12-13",
-  },
 
-  {
-    id: 2,
-    href: "#",
-    sport: "Football",
-    status: "pending",
-    name: "Reform",
-    grad_year: "Website redesign",
-    createdAt: "2022-12-13",
-  },
-  {
-    id: 2,
-    href: "#",
-    sport: "Football",
-    status: "pending",
-    name: "Reform",
-    grad_year: "Website redesign",
-    createdAt: "2022-12-13",
-  },
-];
-const spotlightSubmissionMock = [
-  {
-    id: 1,
-    href: "#",
-    sport: "Football",
-    status: "pending",
-    first_name: "Reform",
-    last_name: "Jane Doe",
-    grad_year: "2023",
-    createdAt: "2022-12-13",
-  },
-
-  {
-    id: 2,
-    href: "#",
-    sport: "Football",
-    status: "pending",
-    first_name: "Reform",
-    last_name: "Reform",
-    grad_year: "Website redesign",
-    createdAt: "2022-12-13",
-  },
-  {
-    id: 3,
-    href: "#",
-    sport: "Football",
-    status: "pending",
-    first_name: "Reform",
-    last_name: "Reform",
-    grad_year: "Website redesign",
-    createdAt: "2022-12-13",
-  },
-];
-const testimonialSubmissionsMock = [
-  {
-    id: 1,
-    href: "#",
-    status: "pending",
-    name: "Jane Doe",
-    createdAt: "2022-12-13",
-  },
-
-  {
-    id: 2,
-    href: "#",
-    status: "pending",
-    name: "Tim Samson",
-    createdAt: "2022-12-13",
-  },
-  {
-    id: 3,
-    href: "#",
-    status: "pending",
-    name: "Lauren Danefield",
-    createdAt: "2022-12-13",
-  },
-];
-
-const clients = [
-  {
-    id: 1,
-    name: "Tuple",
-    imageUrl: "https://tailwindui.com/plus/img/logos/48x48/tuple.svg",
-    lastInvoice: {
-      date: "December 13, 2022",
-      dateTime: "2022-12-13",
-      amount: "$2,000.00",
-      status: "Overdue",
-    },
-  },
-  {
-    id: 1,
-    name: "Tuple",
-    imageUrl: "https://tailwindui.com/plus/img/logos/48x48/tuple.svg",
-    lastInvoice: {
-      date: "December 13, 2022",
-      dateTime: "2022-12-13",
-      amount: "$2,000.00",
-      status: "Overdue",
-    },
-  },
-  {
-    id: 1,
-    name: "Tuple",
-    imageUrl: "https://tailwindui.com/plus/img/logos/48x48/tuple.svg",
-    lastInvoice: {
-      date: "December 13, 2022",
-      dateTime: "2022-12-13",
-      amount: "$2,000.00",
-      status: "Overdue",
-    },
-  },
-  {
-    id: 1,
-    name: "Tuple",
-    imageUrl: "https://tailwindui.com/plus/img/logos/48x48/tuple.svg",
-    lastInvoice: {
-      date: "December 13, 2022",
-      dateTime: "2022-12-13",
-      amount: "$2,000.00",
-      status: "Overdue",
-    },
-  },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function AdminDashboard() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [submissionsTypeIsSpotlight, setSubmissionTypeIsSpotlight] =
     useState<boolean>(true);
   const { user, error, message, setError, handleCloseModalAndNavigate } =
@@ -226,7 +64,6 @@ export default function AdminDashboard() {
     { status: "rejected", color: "#ef4444", current: status === "rejected" },
   ];
 
-  const navigate = useNavigate();
   const fetchAthleteSpotlightSubmissions = async () => {
     try {
       const data = await getSpotlightSubmissionsByStatus(status);

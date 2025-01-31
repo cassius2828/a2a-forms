@@ -1,7 +1,5 @@
 import { Fragment, useState } from "react";
 import {
-  Dialog,
-  DialogPanel,
   Menu,
   MenuButton,
   MenuItem,
@@ -11,18 +9,11 @@ import {
   ArrowDownCircleIcon,
   ArrowPathIcon,
   ArrowUpCircleIcon,
-  Bars3Icon,
+
   EllipsisHorizontalIcon,
   PlusSmallIcon,
 } from "@heroicons/react/20/solid";
-import { BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Invoices", href: "#" },
-  { name: "Clients", href: "#" },
-  { name: "Expenses", href: "#" },
-];
 const secondaryNavigation = [
   { name: "Last 7 days", href: "#", current: true },
   { name: "Last 30 days", href: "#", current: false },
@@ -157,7 +148,6 @@ function classNames(...classes) {
 }
 
 export default function MainDashboard() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>

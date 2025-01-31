@@ -3,7 +3,6 @@ import { BackendDeleteResponseType } from "../../lib/types";
 import { useNavigate } from "react-router-dom";
 import {
   deleteUserById,
-  getUser,
   validateUserPassword,
 } from "../../services/authService";
 import { useGlobalContext } from "../../context/useGlobalContext";
@@ -13,7 +12,6 @@ const ConfirmationModalWithPasswordInput = ({
   title,
   info,
   greenAction,
-  redAction,
   redActionText,
   greenActionText,
 }: {
@@ -60,7 +58,7 @@ const ConfirmationModalWithPasswordInput = ({
       }
     } catch (err) {
       console.error(err);
-      setError(err);
+      setError(typeof err === "string" ? err : "Unable to delete user");
     }
   };
   useEffect(() => {
@@ -169,8 +167,3 @@ const ConfirmationModalWithPasswordInput = ({
 };
 
 export default ConfirmationModalWithPasswordInput;
-
-/*
-
-
-*/

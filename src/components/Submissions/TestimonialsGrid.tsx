@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 
 const TestimonialsGrid = () => {
-  const { user, userTestimonials, fetchUserTestimonialSubmissions } =
+  const { userTestimonials, fetchUserTestimonialSubmissions } =
     useGlobalContext();
   const navigate = useNavigate();
   const { userId } = useParams();

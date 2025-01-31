@@ -31,7 +31,7 @@ export type RegisterFormState = {
   firstName: string;
   lastName: string;
   password: string;
-  phone: string | null;
+  phone: string | undefined;
 };
 
 // Represents the data structure for a user's token data
@@ -42,7 +42,7 @@ export type UserTokenData = {
   first_name: string;
   id: string;
   last_name: string;
-  phone: string | null;
+  phone: string | undefined;
   role: string;
   updatedAt: string;
 };

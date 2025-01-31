@@ -49,7 +49,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     TestimonialDisplayData[]
   >([]);
 
-  // const { setError } = useGlobalContext();
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
       const data = await getAllUserTestimonials(userId);
@@ -61,7 +60,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError("Error: Unable to get user testimonials");
     }
   };
 
@@ -79,7 +78,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   };
 
   // Handle multiple file input changes
-  const handleFileChange = <T extends object>(
+  const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setState: React.Dispatch<
       React.SetStateAction<(File | null | SpotlightFormData)[]>
@@ -141,7 +140,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setUser(null);
     }
   };
-  
+
   // admin actions on spotlights
   const handleRejectSpotlight = async (id: string, adminComment?: string) => {
     setIsLoading(true);
@@ -186,10 +185,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change Spotlight status to approved"
-        );
+        setError("Unable to change Spotlight status to approved");
       } finally {
         setIsLoading(false);
       }

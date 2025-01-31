@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getSpotlightBySpotlightId } from "../../../services/formService";
 import SimpleModal from "../../Modals/SimpleModal";
 
-const initialSpotlight = {
+const initialSpotlight: SpotlightFormDataFromServer = {
   first_name: "",
   last_name: "",
   sport: "",
@@ -22,7 +22,7 @@ const initialSpotlight = {
   admin_comment: "",
 };
 
-const ShowSpotlight = ({ data, onApprove, onReject }) => {
+const ShowSpotlight = () => {
   const [spotlight, setSpotlight] =
     useState<SpotlightFormDataFromServer>(initialSpotlight);
   const [isApproved, setIsApproved] = useState<boolean>(false);
@@ -53,7 +53,7 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.response.data.error);
+      setError("Unable to get spotlight");
     } finally {
       setIsLoading(false);
     }

@@ -24,7 +24,6 @@ const AIF3 = ({
     user,
     setError,
     setMessage,
-    error,
     setIsLoading,
   } = useGlobalContext();
   // TODO: Figure out better way than to have spotlight form in a union with the file | null union
@@ -36,10 +35,6 @@ const AIF3 = ({
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
-  const handleAcceptUpdate = () => {
-    setAcceptUpdate(true); // User accepts to update photos
-    // You can handle further logic here for the form submission if needed
-  };
   useEffect(() => {
     // If profileImage exists, replace the 0th index
     if (spotlightFormData.profileImage) {
@@ -92,7 +87,7 @@ const AIF3 = ({
     } catch (err) {
       console.error(err);
       console.log(`Unable to submit form data to server `);
-      setError(err.error);
+      setError("Unable to submit form");
     } finally {
       setIsLoading(false);
       console.log("ran");
@@ -106,7 +101,6 @@ const AIF3 = ({
     try {
       if (user) {
         const data = await postAddSpotlight(user.id, dataToSendToServer);
-        console.log(dataToSendToServer, " <-- DTSTS");
 
         if (data.error) {
           setError(data.error);
@@ -117,7 +111,7 @@ const AIF3 = ({
     } catch (err) {
       console.error(err);
       console.log(`Unable to submit form data to server `);
-      setError(err.error);
+      setError("Unable to submit form");
     } finally {
       setIsLoading(false);
       console.log("ran");

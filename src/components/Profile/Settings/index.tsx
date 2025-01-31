@@ -31,7 +31,7 @@ import PromptLoginOrRegister from "../../Auth/PromptLoginOrRegister";
 import NoAccessPage from "../../PlaceholderPages/NoAccessPage";
 import ConfirmationModalWithPasswordInput from "../../Modals/ConfirmationModalWithPasswordInput";
 
-const initialFormState = {
+const initialFormState: UserInfoFormState = {
   firstName: "",
   lastName: "",
   email: "",
@@ -94,6 +94,9 @@ export default function ProfileSettings() {
             setMessage={setMessage}
             error={error}
             message={message}
+            willNavigate={false}
+            // TODO: Check for best practices on this situation
+            navigateFn={() => null}
           />
         )}
         <Dialog

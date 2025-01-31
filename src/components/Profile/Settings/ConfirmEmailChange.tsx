@@ -12,7 +12,7 @@ const ConfirmEmailChange = () => {
   // State to manage feedback messages (either success or error)
   const [feedback, setFeedback] = useState({ message: "", error: "" });
   const [password, setPassword] = useState<string>("");
-  const { user, setError, setMessage } = useGlobalContext();
+  const { user, setError } = useGlobalContext();
   // Extracting query parameters from the URL
   const location = useLocation();
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const ConfirmEmailChange = () => {
     } catch (err) {
       console.error(err);
       console.log(`Could not use service file to confirm email change`);
-      setError(err);
+      setError("Could not confirm email change");
     }
   };
 

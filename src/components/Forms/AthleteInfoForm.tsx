@@ -81,7 +81,7 @@ export default function AthleteInfoForm() {
           navigateFn={() => navigate(`/submissions/${user?.id}`)}
         />
       )}
-   
+
       <div className="pb-12 w-full ">
         <div className="mt-10 flex flex-col w-full  mx-auto gap-8">
           <div>
@@ -95,12 +95,13 @@ export default function AthleteInfoForm() {
               </a>
             </p>
           </div>
-   {ownedByCurrentUser && (
-        <span className="text-sm text-neutral-400 italic">
-          Updating the spotlight will cause the status to go back to "pending" and
-          it will be removed from the website until approved by an admin.
-        </span>
-      )}
+          {ownedByCurrentUser && (
+            <span className="text-sm text-neutral-400 italic">
+              Updating the spotlight will cause the status to go back to
+              "pending" and it will be removed from the website until approved
+              by an admin.
+            </span>
+          )}
           {/* 1: basic info */}
           {/* 2: sport bios */}
           {/* 3: images */}
