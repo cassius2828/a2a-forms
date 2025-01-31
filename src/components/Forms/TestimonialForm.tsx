@@ -87,11 +87,13 @@ const TestimonialForm = () => {
     setTestimonialForm(initialTestimonialFormState);
   };
   const fetchSingleTestimonial = async (id: string) => {
+    console.log("running");
     try {
       const data = await getSingleTestimonial(id);
       if (data.error) {
         setError(data.error);
       } else {
+        console.log("got the data", data);
         setTestimonialForm(data);
         console.log("Retrieved form data \n", data);
       }
@@ -158,8 +160,13 @@ const TestimonialForm = () => {
       <h2 className="text-xl font-semibold text-white mb-4">
         {id ? "Update Testimonial" : "Submit New Testimonial"}
       </h2>
-
-      <div className="mb-4">
+      {id && (
+        <span className="text-sm text-gray-100 italic">
+          Updating the testimonial will cause the status to go back to "pending" and
+          it will be removed from the website until approved by an admin.
+        </span>
+      )}
+      <div className="my-4">
         <label
           htmlFor="text"
           className="block text-sm font-medium text-white mb-2"

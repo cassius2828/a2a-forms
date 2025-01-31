@@ -373,6 +373,7 @@ export const AthleteSpotlightSubmissionsTableBody = ({
   status: StatusType;
   userId: string;
 }) => {
+  const { handleApproveSpotlight, handleRejectSpotlight } = useGlobalContext();
   if (submissions.length === 0)
     return (
       <span className="text-gray-100 text-2xl p-3 text-center w-full flex justify-center">
@@ -415,10 +416,16 @@ export const AthleteSpotlightSubmissionsTableBody = ({
               <ViewSubmissionBtn
                 path={`/submissions/${userId}/manage/spotlights/${spotlight.id}`}
               />
-              <button className="px-4 py-1 border border-gray-400 bg-red-700 text-white text-sm rounded-lg hover:bg-red-800 transition">
+              <button
+                onClick={() => handleRejectSpotlight(spotlight.id)}
+                className="px-4 py-1 border border-gray-400 bg-red-700 text-white text-sm rounded-lg hover:bg-red-800 transition"
+              >
                 Reject
               </button>{" "}
-              <button className="px-4 py-1 border border-gray-400 bg-green-700 text-white text-sm rounded-lg hover:bg-green-800 transition">
+              <button
+                onClick={() => handleApproveSpotlight(spotlight.id)}
+                className="px-4 py-1 border border-gray-400 bg-green-700 text-white text-sm rounded-lg hover:bg-green-800 transition"
+              >
                 Accept
               </button>
             </td>

@@ -10,6 +10,7 @@ import {
 import { GlobalContext } from "./useGlobalContext";
 import {
   getAllUserTestimonials,
+  putChangeSpotlightStatus,
   putChangeTestimonialStatus,
 } from "../services/formService";
 
@@ -47,6 +48,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [userTestimonials, setUserTestimonials] = useState<
     TestimonialDisplayData[]
   >([]);
+
   // const { setError } = useGlobalContext();
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
@@ -62,6 +64,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setError(err.error);
     }
   };
+
   // Handle input changes and update state dynamically
   const handleInputChange = <T extends object>(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -138,12 +141,17 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setUser(null);
     }
   };
-
-  const handleRejectTestimonial = async (id: string) => {
+  
+  // admin actions on spotlights
+  const handleRejectSpotlight = async (id: string, adminComment?: string) => {
     setIsLoading(true);
     if (id) {
       try {
-        const data = await putChangeTestimonialStatus(id, "rejected");
+        const data = await putChangeSpotlightStatus(
+          id,
+          "rejected",
+          adminComment
+        );
         if (data.error) {
           setError(data.error);
         } else {
@@ -160,11 +168,74 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       }
     }
   };
-  const handleApproveTestimonial = async (id: string) => {
+  const handleApproveSpotlight = async (id: string, adminComment?: string) => {
+    console.log(id, " <-- id");
+    console.log(adminComment, " <-- hat");
     setIsLoading(true);
     if (id) {
       try {
-        const data = await putChangeTestimonialStatus(id, "approved");
+        const data = await putChangeSpotlightStatus(
+          id,
+          "approved",
+          adminComment
+        );
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(
+          err.response.data.error ||
+            "Unable to change Spotlight status to approved"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  // admin actions on testimonials
+  const handleRejectTestimonial = async (id: string, adminComment?: string) => {
+    setIsLoading(true);
+    if (id) {
+      try {
+        const data = await putChangeTestimonialStatus(
+          id,
+          "rejected",
+          adminComment
+        );
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setMessage(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(
+          err.response.data.error ||
+            "Unable to change testimonial status to rejected"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+  const handleApproveTestimonial = async (
+    id: string,
+    adminComment?: string
+  ) => {
+    console.log(id, " <-- id");
+    console.log(adminComment, " <-- hat");
+    setIsLoading(true);
+    if (id) {
+      try {
+        const data = await putChangeTestimonialStatus(
+          id,
+          "approved",
+          adminComment
+        );
         if (data.error) {
           setError(data.error);
         } else {
@@ -182,10 +253,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
-  const handleCloseModalAndNavigate =  (fn?: () => void) => {
+  const handleCloseModalAndNavigate = (fn?: () => void) => {
     if (message) setMessage("");
     if (error) setError("");
-    console.log(fn);
     if (fn) fn();
   };
 
@@ -235,6 +305,8 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         handleRejectTestimonial,
         handleApproveTestimonial,
         handleCloseModalAndNavigate,
+        handleApproveSpotlight,
+        handleRejectSpotlight,
       }}
     >
       {children}

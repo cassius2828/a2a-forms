@@ -76,6 +76,9 @@ export function getUser() {
   return user.user;
 }
 
+///////////////////////////
+// * PUT  | Update User Info
+///////////////////////////
 export const putUpdateUserInfo = async (
   userId: string,
   formData: UserInfoFormState
@@ -94,6 +97,7 @@ export const putUpdateUserInfo = async (
     return err;
   }
 };
+
 ///////////////////////////
 // * PUT  | Update Password
 ///////////////////////////

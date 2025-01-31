@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import MainDashboard from "../components/Profile/MainDashboard";
 import AdminDashboard from "../components/Profile/Admin/AdminDashboard";
 import ShowTestimonial from "../components/Profile/Admin/ShowTestimonial";
+import ShowSpotlight from "../components/Profile/Admin/ShowSpotlight";
 const ViewYourSubmissions = lazy(
   () => import("../components/Submissions/ViewYourSubmissions")
 );
@@ -48,7 +49,7 @@ const submissionRoutes = [
           </div>
         }
       >
-        <AdminDashboard />
+        <ShowSpotlight />
       </Suspense>
     ),
   },

@@ -1,177 +1,93 @@
 import { ReactElement, ReactNode } from "react";
 
-// Defines the response type for a backend delete request, which may return a success message or error
+// ✅ Backend Response Types
+// Represents the response type for a backend delete request
 export type BackendDeleteResponseType = {
   message?: string;
   error?: string;
 };
 
-// Represents the props for the GlobalProvider component
-export interface GlobalProviderProps {
-  children: ReactNode; // Children components to be rendered within the provider
-}
-
-// Defines the shape of the Global Context state and its associated functions
-export interface GlobalContextType {
-  error: string; // Error message for the global state
-  fetchUserTestimonialSubmissions: (userId: string) => Promise<void>; // Function to fetch user testimonial submissions
-  formStep: number; // Current step in a multi-step form
-  handleFileChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<
-      React.SetStateAction<File | null | SpotlightFormData>
-    >
-  ) => void; // Handles file input changes for a state object with dynamic keys
-
-  handleSingleFileChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<File | null>>
-  ) => void; // Handles a single file input change
-  handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    setState: React.Dispatch<React.SetStateAction<any>>
-  ) => void; // Handles text input changes
-  handleNextFormStep: () => void; // Moves to the next form step
-  handlePrevFormStep: () => void; // Moves to the previous form step
-  handleResetForm: () => void; // Resets the form
-  isLoading: boolean; // Loading state for the global context
-  message: string; // Message for the global state
-  scrollToTop: (smooth: boolean) => void; // Scrolls to the top of the page, optionally with smooth scrolling
-  setError: React.Dispatch<React.SetStateAction<string>>; // Function to update the error state
-  setFormStep: React.Dispatch<React.SetStateAction<number>>; // Function to update the form step
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>; // Function to update the loading state
-  setMessage: React.Dispatch<React.SetStateAction<string>>; // Function to update the message state
-  setSpotlightFormData: React.Dispatch<
-    React.SetStateAction<SpotlightFormData | File | null>
-  >; // Function to update spotlight form data or a single file
-  setTestimonialForm: React.Dispatch<React.SetStateAction<TestimonialFormData>>; // Function to update testimonial form data
-  setUser: React.Dispatch<React.SetStateAction<UserTokenData | null>>; // Function to update user data
-  setUserTestimonials: React.Dispatch<
-    React.SetStateAction<TestimonialDisplayData[]>
-  >; // Function to update the user testimonials
-  signoutUser: () => void; // Signs out the current user
-  spotlightFormData: SpotlightFormData; // Data for the spotlight submission form
-  testimonialForm: TestimonialFormData; // Data for the testimonial form
-  user: UserTokenData | null; // Information about the currently signed-in user
-  userTestimonials: TestimonialDisplayData[]; // Array of user testimonial data
-}
-
-export interface ImageUploadsProps {
-  handleFileChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    // TODO: Find a better way to type bc this doesnt make that much sense to me, file vs the entire spotlight typing
-    setState: React.Dispatch<
-      React.SetStateAction<File | null | SpotlightFormData>
-    >
-  ) => void; // Handles multi-file input changes
-}
-
-// Defines props for photo update actions
-export interface PhotoUpdateProps {
-  handleAccept: (e: React.FormEvent | React.MouseEvent) => void; // Accepts the photo update
-  handleDecline: (e: React.FormEvent | React.MouseEvent) => void; // Declines the photo update
-}
-
+// ✅ Authentication & User Data Types
 // Represents the login form's state structure
 export type LoginFormState = {
-  email: string; // Email entered by the user
-  password: string; // Password entered by the user
+  email: string;
+  password: string;
 };
 
 // Represents the user information form's state structure
 export type UserInfoFormState = {
-  firstName: string; // First name of the user
-  lastName: string; // Last name of the user
-  email: string; // Email address of the user
-  avatar?: File | null | string; // profile pic of the user
-  phone: string | number | readonly string[] | undefined; // Phone number of the user
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string | number | readonly string[] | undefined;
+  avatar?: File | null | string;
+  removeAvatar?: boolean;
 };
 
 // Represents the data structure for a register form's state
 export type RegisterFormState = {
-  confirmPassword: string; // Confirmation of the user's password
-  email: string; // Email entered by the user
-  firstName: string; // First name entered by the user
-  lastName: string; // Last name entered by the user
-  password: string; // Password entered by the user
-  phone: string | null; // Phone number entered by the user
-};
-
-// Represents the data structure for a spotlight form submission
-export type SpotlightFormData = {
-  actionBio: string; // Bio describing the user's actions
-  actionImage1?: File | null; // First action image
-  actionImage2?: File | null; // Second action image
-  communityBio: string; // Bio about the user's community involvement
-  firstName: string; // First name of the user
-  generalBio: string; // General bio about the user
-  graduationYear: number | null; // User's graduation year
-  lastName: string; // Last name of the user
-  location: string; // User's location
-  profileImage?: File | null; // Profile image of the user
-  sport: string; // Sport played by the user
-};
-
-// Represents the data structure for testimonial form input
-export type TestimonialFormData = {
-  name: string; // Name of the person submitting the testimonial
-  text: string; // Testimonial text
-};
-
-// Represents the data structure for a testimonial display entry
-export type TestimonialDisplayData = {
-  createdAt: string; // Timestamp when the testimonial was created
-  id: string | number; // Unique identifier for the testimonial
-  name: string; // Name of the person who submitted the testimonial
-  status: StatusType; // Status of the testimonial
-  text: string; // Testimonial text
+  confirmPassword: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  phone: string | null;
 };
 
 // Represents the data structure for a user's token data
 export type UserTokenData = {
-  avatar: string; // URL or path to the user's avatar
-  createdAt: string; // Timestamp when the user was created
-  email: string; // User's email address
-  first_name: string; // User's first name
-  id: string; // Unique identifier for the user
-  last_name: string; // User's last name
-  phone: string | null; // User's phone number
-  role: string; // User's role in the application
-  updatedAt: string; // Timestamp when the user was last updated
-};
-// Represents keys for nav menu
-export type NavigationMenu = {
-  name: string;
-  href: string;
-  current?: boolean;
-  condition?: boolean; // Optional condition for rendering
-  action?: () => void; // Optional action for custom behavior
+  avatar: string;
+  createdAt: string;
+  email: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  phone: string | null;
+  role: string;
+  updatedAt: string;
 };
 
-// Represents keys for user nav menu
-export type UserNavigationMenu = {
-  name: string;
-  href: string;
-};
-
-export interface ComingSoonProps {
-  title?: string;
-  text?: string;
-}
-
-export type SideBarNavMenu = {
-  name: string;
-  href: string;
-  current?: boolean;
-  icon: (props: React.SVGProps<SVGSVGElement>) => ReactElement; // Type for the icon
-};
-
+// Represents the update password form data
 export type UpdatePasswordFormData = {
   password: string;
   newPassword: string;
   confirmPassword: string;
 };
 
+// ✅ Spotlight Form & Submission Data
+// Represents the data structure for a spotlight form submission
+export type SpotlightFormData = {
+  firstName: string;
+  lastName: string;
+  sport: string;
+  location: string;
+  graduationYear: number | null;
+  actionBio: string;
+  generalBio: string;
+  communityBio: string;
+  profileImage?: File | null;
+  actionImage1?: File | null;
+  actionImage2?: File | null;
+};
+
+// Represents the data structure for a spotlight form submission from the server
+export type SpotlightFormDataFromServer = {
+  first_name: string;
+  last_name: string;
+  sport: string;
+  location: string;
+  grad_year: number | null;
+  action_bio: string;
+  general_bio: string;
+  community_bio: string;
+  profile_image?: string | null;
+  action_image_1?: string | null;
+  action_image_2?: string | null;
+  admin_comment?: string;
+  status: StatusType;
+};
+
+// Represents the athlete spotlight submission
 export type AthleteSpotlightSubmission = {
   id: string;
   href: string;
@@ -183,6 +99,34 @@ export type AthleteSpotlightSubmission = {
   createdAt: string;
 };
 
+// Represents the athlete spotlight submission display data
+export type AthleteSpotlightSubmissionDisplay = {
+  id: string;
+  title: string;
+  status: StatusType;
+  date: string;
+  type: string;
+  admin_comment: string;
+};
+
+// ✅ Testimonial Form & Submission Data
+// Represents the data structure for testimonial form input
+export type TestimonialFormData = {
+  name: string;
+  text: string;
+};
+
+// Represents the data structure for a testimonial display entry
+export type TestimonialDisplayData = {
+  createdAt: string;
+  id: string | number;
+  name: string;
+  status: StatusType;
+  text: string;
+  admin_comment: string;
+};
+
+// Represents a testimonial submission
 export type TestimonialSubmission = {
   id: string;
   href: string;
@@ -191,12 +135,113 @@ export type TestimonialSubmission = {
   createdAt: string;
 };
 
+// Represents the data structure for testimonial management view
 export type TestimonialDataManageView = {
   id: string;
   name: string;
   status: string;
   createdAt: string;
   text: string;
+  admin_comment?: string;
 };
 
+// ✅ Context & Provider Types
+// Represents the props for the GlobalProvider component
+export interface GlobalProviderProps {
+  children: ReactNode;
+}
+
+// Defines the shape of the Global Context state and its associated functions
+export interface GlobalContextType {
+  error: string;
+  fetchUserTestimonialSubmissions: (userId: string) => Promise<void>;
+  formStep: number;
+  handleFileChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setState: React.Dispatch<
+      React.SetStateAction<File | null | SpotlightFormData>
+    >
+  ) => void;
+  handleSingleFileChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setState: React.Dispatch<React.SetStateAction<File | null>>
+  ) => void;
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setState: React.Dispatch<React.SetStateAction<any>>
+  ) => void;
+  handleNextFormStep: () => void;
+  handlePrevFormStep: () => void;
+  handleResetForm: () => void;
+  isLoading: boolean;
+  message: string;
+  scrollToTop: (smooth: boolean) => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  setFormStep: React.Dispatch<React.SetStateAction<number>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setSpotlightFormData: React.Dispatch<
+    React.SetStateAction<SpotlightFormData | File | null>
+  >;
+  setTestimonialForm: React.Dispatch<React.SetStateAction<TestimonialFormData>>;
+  setUser: React.Dispatch<React.SetStateAction<UserTokenData | null>>;
+  setUserTestimonials: React.Dispatch<
+    React.SetStateAction<TestimonialDisplayData[]>
+  >;
+  signoutUser: () => void;
+  spotlightFormData: SpotlightFormData;
+  testimonialForm: TestimonialFormData;
+  user: UserTokenData | null;
+  userTestimonials: TestimonialDisplayData[];
+}
+
+// ✅ Component Props
+// Defines props for image uploads
+export interface ImageUploadsProps {
+  handleFileChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setState: React.Dispatch<
+      React.SetStateAction<File | null | SpotlightFormData>
+    >
+  ) => void;
+}
+
+// Defines props for photo update actions
+export interface PhotoUpdateProps {
+  handleAccept: (e: React.FormEvent | React.MouseEvent) => void;
+  handleDecline: (e: React.FormEvent | React.MouseEvent) => void;
+}
+
+// Represents props for the coming soon component
+export interface ComingSoonProps {
+  title?: string;
+  text?: string;
+}
+
+// ✅ Navigation & Sidebar Types
+// Represents the keys for the navigation menu
+export type NavigationMenu = {
+  name: string;
+  href: string;
+  current?: boolean;
+  condition?: boolean;
+  action?: () => void;
+};
+
+// Represents keys for user navigation menu
+export type UserNavigationMenu = {
+  name: string;
+  href: string;
+};
+
+// Represents the keys for the sidebar navigation menu
+export type SideBarNavMenu = {
+  name: string;
+  href: string;
+  current?: boolean;
+  icon: (props: React.SVGProps<SVGSVGElement>) => ReactElement;
+};
+
+// ✅ Other Utility Types
+// Represents the status type used across submissions
 export type StatusType = "pending" | "approved" | "rejected";

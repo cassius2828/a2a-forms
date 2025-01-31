@@ -43,12 +43,17 @@ export const putUpdateSpotlight = async (
   }
 };
 
-export const putChangeSpotlightStatus = async (id: string, status: string) => {
+export const putChangeSpotlightStatus = async (
+  id: string,
+  status: string,
+  adminComment?: string
+) => {
   try {
     const response = await axios.put(
       `${SPOTLIGHT_BASE_URL}/${id}/status`,
       {
         status,
+        adminComment,
       },
       {
         headers: {
@@ -93,6 +98,18 @@ export const getSpotlightByUserId = async (userId: string) => {
   } catch (err) {
     console.error(err);
     console.log("Failed to get spotlight with an id of: ", userId);
+    throw err;
+  }
+};
+
+export const getSpotlightBySpotlightId = async (spotlightId: string) => {
+  try {
+    const response = await axios.get(`${SPOTLIGHT_BASE_URL}/${spotlightId}/spotlight-id`);
+    console.log(response.data)
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    console.log("Failed to get spotlight with an id of: ", spotlightId);
     throw err;
   }
 };
@@ -196,6 +213,7 @@ export const getAllUserTestimonials = async (userId: string) => {
     throw err;
   }
 };
+
 export const getSingleTestimonial = async (id: string) => {
   try {
     const response = await axios.get(`${TESTIMONIALS_BASE_URL}/single/${id}`);
@@ -209,13 +227,16 @@ export const getSingleTestimonial = async (id: string) => {
 
 export const putChangeTestimonialStatus = async (
   id: string,
-  status: string
+  status: string,
+  adminComment?: string
 ) => {
   try {
+    console.log(adminComment)
     const response = await axios.put(
       `${TESTIMONIALS_BASE_URL}/${id}/status`,
       {
         status,
+        adminComment,
       },
       {
         headers: {

@@ -36,7 +36,7 @@ const fromRoutes = [
     ),
   },
   {
-    path: "/testimonial-form/:userId",
+    path: "/testimonial-form/:id",
     element: (
       <Suspense
         fallback={
