@@ -43,12 +43,17 @@ export const putUpdateSpotlight = async (
   }
 };
 
-export const putChangeSpotlightStatus = async (id: string, status: string) => {
+export const putChangeSpotlightStatus = async (
+  id: string,
+  status: string,
+  adminComment: string
+) => {
   try {
     const response = await axios.put(
       `${SPOTLIGHT_BASE_URL}/${id}/status`,
       {
         status,
+        adminComment,
       },
       {
         headers: {
@@ -209,13 +214,16 @@ export const getSingleTestimonial = async (id: string) => {
 
 export const putChangeTestimonialStatus = async (
   id: string,
-  status: string
+  status: string,
+  adminComment?: string
 ) => {
   try {
+    console.log(adminComment)
     const response = await axios.put(
       `${TESTIMONIALS_BASE_URL}/${id}/status`,
       {
         status,
+        adminComment,
       },
       {
         headers: {

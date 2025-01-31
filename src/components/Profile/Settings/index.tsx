@@ -415,6 +415,7 @@ export const UpdatePasswordFormSection = () => {
 
 export const UserInfoForm = () => {
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+  const [removeAvatar, setRemoveAvatar] = useState<boolean>(false);
   const [userInfoForm, setUserInfoForm] =
     useState<UserInfoFormState>(initialFormState);
   const {
@@ -450,6 +451,9 @@ export const UserInfoForm = () => {
               : value + " FALSE"
           );
         }
+      }
+      if (removeAvatar) {
+        dataToSendToServer.append("removeAvatar", removeAvatar);
       }
 
       if (user) {
@@ -500,29 +504,51 @@ export const UserInfoForm = () => {
     <form onSubmit={handleSubmit} className="md:col-span-2">
       <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
         {/* Profile Picture Upload Section */}
-        <div className="col-span-full flex items-center gap-x-8">
+        <div className="col-span-full flex flex-col md:flex-row items-center gap-x-8">
           <img
             alt={user.first_name + " 's avatar"}
             src={
               user.avatar ||
               `https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg`
             }
-            className="size-24 flex-none rounded-lg bg-gray-800 object-cover"
+            className="size-48 md:size-24 flex-none rounded-lg bg-gray-800 object-cover"
           />
-          <div className="flex flex-col justify-start items-start">
-            <label className="rounded-md text-sm font-semibold text-white shadow-sm mb-2 ">
-              Change avatar
-            </label>
-            <input
-              id="avatar"
-              name="avatar"
-              type="file"
-              onChange={(e) => handleSingleFileChange(e, setProfilePhoto)}
-              className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
-            />
-            <p className="mt-2 text-xs/5 text-gray-400">
-              JPG, GIF or PNG. 1MB max.
-            </p>
+          <div className="flex items-center gap-4 mt-12">
+            {/* file input */}
+            <div className="flex flex-col justify-start items-start">
+              <label className="rounded-md text-sm font-semibold text-white shadow-sm mb-2 ">
+                Change avatar
+              </label>
+              <input
+                id="avatar"
+                name="avatar"
+                type="file"
+                onChange={(e) => handleSingleFileChange(e, setProfilePhoto)}
+                className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
+              />
+              <p className="mt-2 text-xs/5 text-gray-400">
+                JPG, GIF or PNG. 1MB max.
+              </p>
+            </div>
+            {/* remove btn */}
+            <div className="relative ">
+              <button
+                type="button"
+                onClick={() => setRemoveAvatar((prev) => !prev)}
+                className={`rounded-md capitalize w-32 md:w-40 px-3 py-2 mt-1 text-sm font-semibold text-white shadow-sm ${
+                  removeAvatar
+                    ? "bg-green-900  hover:bg-green-800 focus-visible:outline-green-900"
+                    : "bg-green-600  hover:bg-green-700 focus-visible:outline-green-600"
+                }  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}
+              >
+                {removeAvatar ? "keep avatar" : "remove avatar"}
+              </button>
+              {removeAvatar && (
+                <span className="text-white text-center absolute w-48 md:w-full right-1/2 translate-x-1/2 -top-16 md:translate-x-0 md:top-0 md:-right-48">
+                  avatar will be removed upon update
+                </span>
+              )}
+            </div>
           </div>
         </div>
 

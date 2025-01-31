@@ -12,12 +12,12 @@ const initialTestmonialData = {
   text: "No testimonial available.",
   createdAt: "",
   status: "pending",
+  admin_comment:''
 };
 const ShowTestimonial = () => {
   const [testimonial, setTestimonial] = useState<TestimonialDataManageView>(
     initialTestmonialData
   );
-
   const {
     error,
     setError,
@@ -29,7 +29,7 @@ const ShowTestimonial = () => {
     user,
     handleRejectTestimonial,
     handleApproveTestimonial,
-    handleCloseModalAndNavigate,
+    handleCloseModalAndNavigate,handleInputChange
   } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -55,9 +55,15 @@ const ShowTestimonial = () => {
   };
 
   useEffect(() => {
+console.log(testimonial.admin_comment, '==========\nadmin comment\n============')
+  },[testimonial])
+
+  useEffect(() => {
     if (testimonialId) fetchTestimonialById(testimonialId);
+
     scrollToTop(false);
   }, [testimonialId]);
+
   if (!testimonialId) return <span>cannot locate testimonial ID</span>;
   if (isLoading) return <DefaultLoader />;
   if (user?.id !== import.meta.env.VITE_ADMIN_ID)
@@ -104,6 +110,20 @@ const ShowTestimonial = () => {
           </div>
         </div>
       </div>
+      <div>
+        <label className="text-gray-300" htmlFor="adminComment">
+          Admin Comment
+        </label>
+      </div>
+      <input
+        name="admin_comment"
+        id="admin_comment"
+        type="textarea"
+        value={testimonial.admin_comment}
+        onChange={(e) => handleInputChange(e, setTestimonial)}
+        className="flex flex-col p-5 gap-y-4 justify-between items-center text-sm text-gray-200 bg-neutral-800 rounded-md min-h-20 mt-4"
+      />
+
       {/* Action Buttons */}
       <div className="flex justify-between p-4">
         <button
@@ -114,13 +134,13 @@ const ShowTestimonial = () => {
         </button>
         <div className="flex gap-4">
           <button
-            onClick={() => handleRejectTestimonial(testimonialId)}
+            onClick={() => handleRejectTestimonial(testimonialId, testimonial.admin_comment)}
             className="px-4 py-2 bg-red-600 text-white rounded-md font-semibold hover:bg-red-700 transition duration-300 focus:outline-none"
           >
             Reject
           </button>
           <button
-            onClick={() => handleApproveTestimonial(testimonialId)}
+            onClick={() => handleApproveTestimonial(testimonialId, testimonial.admin_comment)}
             className="px-4 py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
           >
             Approve

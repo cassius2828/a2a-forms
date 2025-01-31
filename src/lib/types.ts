@@ -83,8 +83,9 @@ export type UserInfoFormState = {
   firstName: string; // First name of the user
   lastName: string; // Last name of the user
   email: string; // Email address of the user
-  avatar?: File | null | string; // profile pic of the user
   phone: string | number | readonly string[] | undefined; // Phone number of the user
+  avatar?: File | null | string; // profile pic of the user
+  removeAvatar?: boolean;
 };
 
 // Represents the data structure for a register form's state
@@ -197,6 +198,7 @@ export type TestimonialDataManageView = {
   status: string;
   createdAt: string;
   text: string;
+  admin_comment?: string;
 };
 
 export type StatusType = "pending" | "approved" | "rejected";
