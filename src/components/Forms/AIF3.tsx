@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import {
   postAddSpotlight,
@@ -7,6 +7,7 @@ import {
 import {
   ImageUploadsProps,
   PhotoUpdateProps,
+  PrevAndSubmitBtnProps,
   SpotlightFormData,
 } from "../../lib/types";
 import { DefaultLoader } from "../Loaders";
@@ -27,11 +28,7 @@ const AIF3 = ({
     setIsLoading,
   } = useGlobalContext();
   // TODO: Figure out better way than to have spotlight form in a union with the file | null union
-  const [photos, setPhotos] = useState<(File | null | SpotlightFormData)[]>([
-    null,
-    null,
-    null,
-  ]);
+  const [photos, setPhotos] = useState<SpotlightFormData[]>([null, null, null]);
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
@@ -292,7 +289,7 @@ export const PhotoUpdateChoiceBox: React.FC<PhotoUpdateProps> = ({
   );
 };
 
-export const PrevAndSubmitBtn = ({
+export const PrevAndSubmitBtn: FC<PrevAndSubmitBtnProps> = ({
   handlePrevFormStep,
   ownedByCurrentUser,
   handleSubmit,
@@ -345,13 +342,19 @@ export const PrevAndSubmitBtn = ({
 
 const createFormData = (
   spotlightFormData: SpotlightFormData,
-  photos: (File | null | SpotlightFormData)[]
+  photos: (SpotlightFormData)[]
 ) => {
   const dataToSendToServer = new FormData();
   dataToSendToServer.append("firstName", spotlightFormData.firstName);
   dataToSendToServer.append("lastName", spotlightFormData.lastName);
   dataToSendToServer.append("sport", spotlightFormData.sport);
-  dataToSendToServer.append("graduationYear", spotlightFormData.graduationYear);
+  // to prevent type error of undefined possibility
+  if (spotlightFormData.graduationYear) {
+    dataToSendToServer.append(
+      "graduationYear",
+      spotlightFormData.graduationYear
+    );
+  }
   dataToSendToServer.append("location", spotlightFormData.location);
   dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
   dataToSendToServer.append("actionBio", spotlightFormData.actionBio);

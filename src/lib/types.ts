@@ -159,7 +159,7 @@ export interface GlobalContextType {
   handleFileChange: (
     e: React.ChangeEvent<HTMLInputElement>,
     setState: React.Dispatch<
-      React.SetStateAction<File | null | SpotlightFormData>
+      React.SetStateAction<(File | null | SpotlightFormData)[]>
     >
   ) => void;
   handleSingleFileChange: (
@@ -180,9 +180,7 @@ export interface GlobalContextType {
   setFormStep: React.Dispatch<React.SetStateAction<number>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
-  setSpotlightFormData: React.Dispatch<
-    React.SetStateAction<SpotlightFormData | File | null>
-  >;
+  setSpotlightFormData: React.Dispatch<React.SetStateAction<SpotlightFormData>>;
   setTestimonialForm: React.Dispatch<React.SetStateAction<TestimonialFormData>>;
   setUser: React.Dispatch<React.SetStateAction<UserTokenData | null>>;
   setUserTestimonials: React.Dispatch<
@@ -193,6 +191,28 @@ export interface GlobalContextType {
   testimonialForm: TestimonialFormData;
   user: UserTokenData | null;
   userTestimonials: TestimonialDisplayData[];
+  handleRejectTestimonial: (id: string, adminComment?: string) => Promise<void>;
+  handleApproveTestimonial: (
+    id: string,
+    adminComment?: string
+  ) => Promise<void>;
+  handleApproveSpotlight: (id: string, adminComment?: string) => Promise<void>;
+  handleRejectSpotlight: (id: string, adminComment?: string) => Promise<void>;
+  handleCloseModalAndNavigate: (fn?: () => void) => void;
+}
+
+export interface PrevAndSubmitBtnProps {
+  handleNextFormStep?: () => void;
+  handlePrevFormStep?: () => void;
+  handleResetForm: () => void;
+  handleUpdate:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | ((e: React.FormEvent<HTMLFormElement>) => Promise<void>);
+  handleSubmit:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | ((e: React.FormEvent<HTMLFormElement>) => Promise<void>);
+  photoDecisionMade: boolean;
+  ownedByCurrentUser: boolean;
 }
 
 // ✅ Component Props
@@ -200,16 +220,17 @@ export interface GlobalContextType {
 export interface ImageUploadsProps {
   handleFileChange: (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<
-      React.SetStateAction<File | null | SpotlightFormData>
-    >
+    setState: React.Dispatch<React.SetStateAction<SpotlightFormData>>
   ) => void;
 }
 
-// Defines props for photo update actions
 export interface PhotoUpdateProps {
-  handleAccept: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDecline: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAccept: (
+    e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>
+  ) => void;
+  handleDecline: (
+    e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>
+  ) => void;
 }
 
 // Represents props for the coming soon component

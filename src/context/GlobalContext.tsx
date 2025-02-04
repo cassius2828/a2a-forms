@@ -19,7 +19,7 @@ const initialSpotlightFormData: SpotlightFormData = {
   firstName: "",
   lastName: "",
   sport: "",
-  graduationYear: null,
+  graduationYear: "",
   location: "",
   generalBio: "",
   actionBio: "",
@@ -41,9 +41,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [spotlightFormData, setSpotlightFormData] = useState<
-    SpotlightFormData | File | null
-  >(initialSpotlightFormData);
+  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
+    initialSpotlightFormData
+  );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
   const [userTestimonials, setUserTestimonials] = useState<
     TestimonialDisplayData[]
@@ -158,10 +158,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to rejected"
-        );
+        setError("Unable to change testimonial status to rejected");
       } finally {
         setIsLoading(false);
       }
@@ -209,10 +206,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to rejected"
-        );
+        setError("Unable to change testimonial status to rejected");
       } finally {
         setIsLoading(false);
       }
@@ -239,10 +233,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to approved"
-        );
+        setError("Unable to change testimonial status to approved");
       } finally {
         setIsLoading(false);
       }

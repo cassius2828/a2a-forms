@@ -5,7 +5,7 @@ import { DefaultLoader } from "../../Loaders";
 import { useNavigate, useParams } from "react-router-dom";
 import { getSpotlightBySpotlightId } from "../../../services/formService";
 import SimpleModal from "../../Modals/SimpleModal";
-
+import MissingItems from "../../PlaceholderPages/MissingItems";
 const initialSpotlight: SpotlightFormDataFromServer = {
   first_name: "",
   last_name: "",
@@ -39,6 +39,7 @@ const ShowSpotlight = () => {
   } = useGlobalContext();
   const { spotlightId } = useParams();
   const navigate = useNavigate();
+
   const fetchSpotlightById = async (id: string) => {
     setIsLoading(true);
     try {
@@ -64,6 +65,7 @@ const ShowSpotlight = () => {
   }, [spotlightId]);
 
   if (isLoading) return <DefaultLoader />;
+  if (!spotlightId) return <MissingItems item="Spotlight ID" />;
   return (
     <div className="w-full md:w-3/4 lg:w-1/2 mx-auto mt-24 bg-neutral-900 shadow-lg rounded-lg p-8 border text-gray-100">
       <h2 className="text-2xl font-semibold text-gray-200 text-center mb-6">

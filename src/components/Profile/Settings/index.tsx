@@ -311,7 +311,7 @@ export const UpdatePasswordFormSection = () => {
       }
     } catch (err) {
       console.error(err);
-      if (typeof err === "string") setError(err.response || err);
+      setError("Unable to update password");
     }
   };
 
