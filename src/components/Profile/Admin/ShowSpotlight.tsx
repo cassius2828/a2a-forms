@@ -11,7 +11,7 @@ const initialSpotlight: SpotlightFormDataFromServer = {
   last_name: "",
   sport: "",
   location: "",
-  grad_year: null,
+  grad_year: "",
   general_bio: "",
   action_bio: "",
   community_bio: "",

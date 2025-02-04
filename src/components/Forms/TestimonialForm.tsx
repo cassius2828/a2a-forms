@@ -52,7 +52,7 @@ const TestimonialForm = () => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError("Unable to add testimonial");
     }
   };
   const handleUpdateTestimonial = async (id: string) => {
@@ -69,7 +69,7 @@ const TestimonialForm = () => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError("Unable to update testimonial");
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +99,7 @@ const TestimonialForm = () => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError("Unable to fetch testimonial");
     }
   };
 
@@ -127,6 +127,8 @@ const TestimonialForm = () => {
           setMessage={setMessage}
           error={error}
           message={message}
+          willNavigate={false}
+          navigateFn={() => null}
         />
       )}
       {/* signed in user and confirmation modal is triggered */}
@@ -162,8 +164,8 @@ const TestimonialForm = () => {
       </h2>
       {id && (
         <span className="text-sm text-gray-100 italic">
-          Updating the testimonial will cause the status to go back to "pending" and
-          it will be removed from the website until approved by an admin.
+          Updating the testimonial will cause the status to go back to "pending"
+          and it will be removed from the website until approved by an admin.
         </span>
       )}
       <div className="my-4">

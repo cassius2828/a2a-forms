@@ -15,11 +15,7 @@ const ConfirmationModal = ({
   title: string;
   info: string;
   greenAction: () => void;
-  redAction: (
-    id: string | null
-  ) =>
-    | Promise<BackendDeleteResponseType>
-    | void;
+  redAction: (id: string | null) => Promise<BackendDeleteResponseType>;
   greenActionText: string;
   redActionText: string;
 }) => {
@@ -46,8 +42,9 @@ const ConfirmationModal = ({
       } else {
         redAction(null);
       }
-    } catch (err: any) {
-      setError(err.response?.data?.error || "An unexpected error occurred.");
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred.");
     }
   };
 

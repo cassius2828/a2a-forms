@@ -31,7 +31,7 @@ export type RegisterFormState = {
   firstName: string;
   lastName: string;
   password: string;
-  phone: string | undefined;
+  phone?: string;
 };
 
 // Represents the data structure for a user's token data
@@ -42,7 +42,7 @@ export type UserTokenData = {
   first_name: string;
   id: string;
   last_name: string;
-  phone: string | undefined;
+  phone?: string;
   role: string;
   updatedAt: string;
 };
@@ -61,7 +61,7 @@ export type SpotlightFormData = {
   lastName: string;
   sport: string;
   location: string;
-  graduationYear: number | null;
+  graduationYear?: string;
   actionBio: string;
   generalBio: string;
   communityBio: string;
@@ -76,7 +76,7 @@ export type SpotlightFormDataFromServer = {
   last_name: string;
   sport: string;
   location: string;
-  grad_year: number | null;
+  grad_year?: string;
   action_bio: string;
   general_bio: string;
   community_bio: string;
@@ -95,7 +95,7 @@ export type AthleteSpotlightSubmission = {
   status: StatusType;
   first_name: string;
   last_name: string;
-  grad_year: string | number;
+  grad_year: string;
   createdAt: string;
 };
 
@@ -208,8 +208,8 @@ export interface ImageUploadsProps {
 
 // Defines props for photo update actions
 export interface PhotoUpdateProps {
-  handleAccept: (e: React.FormEvent | React.MouseEvent) => void;
-  handleDecline: (e: React.FormEvent | React.MouseEvent) => void;
+  handleAccept: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDecline: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 // Represents props for the coming soon component

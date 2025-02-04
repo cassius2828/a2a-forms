@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import {
   postAddSpotlight,
