@@ -9,7 +9,7 @@ const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
 ///////////////////////////
 export const postAddSpotlight = async (
   userId: string,
-  formData: SpotlightFormData
+  formData: FormData
 ) => {
   try {
     const response = await axios.post(
@@ -26,7 +26,7 @@ export const postAddSpotlight = async (
 
 export const putUpdateSpotlight = async (
   userId: string,
-  formData: SpotlightFormData
+  formData: FormData
 ) => {
   console.log("running update spotlight");
   try {

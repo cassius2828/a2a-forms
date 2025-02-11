@@ -53,7 +53,9 @@ export type UpdatePasswordFormData = {
   newPassword: string;
   confirmPassword: string;
 };
-
+export type SpotlightFormDataPhoto = {
+  photo: File;
+} | null;
 // ✅ Spotlight Form & Submission Data
 // Represents the data structure for a spotlight form submission
 export type SpotlightFormData = {
@@ -65,9 +67,9 @@ export type SpotlightFormData = {
   actionBio: string;
   generalBio: string;
   communityBio: string;
-  profileImage?: File | null;
-  actionImage1?: File | null;
-  actionImage2?: File | null;
+  profileImage?: SpotlightFormDataPhoto;
+  actionImage1?: SpotlightFormDataPhoto;
+  actionImage2?: SpotlightFormDataPhoto;
 };
 
 // Represents the data structure for a spotlight form submission from the server
@@ -158,9 +160,7 @@ export interface GlobalContextType {
   formStep: number;
   handleFileChange: (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<
-      React.SetStateAction<(File | null | SpotlightFormData)[]>
-    >
+    setState: React.Dispatch<React.SetStateAction<SpotlightFormData>>
   ) => void;
   handleSingleFileChange: (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -205,12 +205,9 @@ export interface PrevAndSubmitBtnProps {
   handleNextFormStep?: () => void;
   handlePrevFormStep?: () => void;
   handleResetForm: () => void;
-  handleUpdate:
-    | React.MouseEventHandler<HTMLButtonElement>
-    | ((e: React.FormEvent<HTMLFormElement>) => Promise<void>);
-  handleSubmit:
-    | React.MouseEventHandler<HTMLButtonElement>
-    | ((e: React.FormEvent<HTMLFormElement>) => Promise<void>);
+  handleUpdate: React.MouseEventHandler<HTMLButtonElement>;
+
+  handleSubmit: React.FormEventHandler<HTMLFormElement>;
   photoDecisionMade: boolean;
   ownedByCurrentUser: boolean;
 }
@@ -225,12 +222,8 @@ export interface ImageUploadsProps {
 }
 
 export interface PhotoUpdateProps {
-  handleAccept: (
-    e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>
-  ) => void;
-  handleDecline: (
-    e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>
-  ) => void;
+  handleAccept: () => void;
+  handleDecline: () => void;
 }
 
 // Represents props for the coming soon component

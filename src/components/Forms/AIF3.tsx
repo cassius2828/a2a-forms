@@ -9,6 +9,7 @@ import {
   PhotoUpdateProps,
   PrevAndSubmitBtnProps,
   SpotlightFormData,
+  SpotlightFormDataPhoto,
 } from "../../lib/types";
 import { DefaultLoader } from "../Loaders";
 
@@ -28,7 +29,11 @@ const AIF3 = ({
     setIsLoading,
   } = useGlobalContext();
   // TODO: Figure out better way than to have spotlight form in a union with the file | null union
-  const [photos, setPhotos] = useState<SpotlightFormData[]>([null, null, null]);
+  const [photos, setPhotos] = useState<SpotlightFormDataPhoto[]>([
+    null,
+    null,
+    null,
+  ]);
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
@@ -66,7 +71,7 @@ const AIF3 = ({
     spotlightFormData.actionImage2,
   ]);
 
-  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const dataToSendToServer = createFormData(spotlightFormData, photos);
@@ -114,16 +119,11 @@ const AIF3 = ({
       console.log("ran");
     }
   };
-  const handleAcceptUpdatePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
+  const handleAcceptUpdatePhotos = () => {
     setPhotoDecisionMade(true);
     setAcceptUpdate(true);
   };
-  const handleDeclineUpdatePhotos = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    e.preventDefault();
+  const handleDeclineUpdatePhotos = () => {
     setPhotoDecisionMade(true);
     setAcceptUpdate(false);
   };
@@ -321,13 +321,12 @@ export const PrevAndSubmitBtn: FC<PrevAndSubmitBtnProps> = ({
             {isLoading && <DefaultLoader className={"loader-sm"} />}
           </button>
         ) : (
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center"
-          >
-            Submit
-            {isLoading && <DefaultLoader className={"loader-sm"} />}
-          </button>
+          <form onSubmit={handleSubmit}>
+            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center">
+              Submit
+              {isLoading && <DefaultLoader className={"loader-sm"} />}
+            </button>
+          </form>
         )}
       </div>
       <span
@@ -342,7 +341,7 @@ export const PrevAndSubmitBtn: FC<PrevAndSubmitBtnProps> = ({
 
 const createFormData = (
   spotlightFormData: SpotlightFormData,
-  photos: (SpotlightFormData)[]
+  photos: SpotlightFormDataPhoto[]
 ) => {
   const dataToSendToServer = new FormData();
   dataToSendToServer.append("firstName", spotlightFormData.firstName);
@@ -360,7 +359,7 @@ const createFormData = (
   dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
   dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
   if (photos && photos.length > 0) {
-    photos.forEach((photo) => {
+    photos.forEach((photo: any) => {
       dataToSendToServer.append("photos", photo);
     });
   }

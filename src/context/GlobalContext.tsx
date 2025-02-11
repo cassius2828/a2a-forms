@@ -81,7 +81,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setState: React.Dispatch<
-      React.SetStateAction<(File | null | SpotlightFormData)[]>
+      React.SetStateAction<(SpotlightFormData)[]>
     >
   ) => {
     const { name, files } = e.target;
