@@ -1,4 +1,4 @@
-import { StatusType } from "./types";
+import { ClassesRestOp, StatusType } from "./types";
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString); // Convert the string to a Date object
@@ -18,7 +18,7 @@ export const getStatusClass = (status: StatusType) => {
   }
 };
 
-export function classNames(...classes) {
+export function classNames(...classes: ClassesRestOp) {
   return classes.filter(Boolean).join(" ");
 }
 

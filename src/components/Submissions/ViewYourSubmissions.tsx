@@ -9,13 +9,12 @@ import {
 import { formatDate, getStatusClass } from "../../lib/utils";
 import {
   AthleteSpotlightSubmissionDisplay,
-  StatusType,
   TestimonialDisplayData,
 } from "../../lib/types";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
 const ViewYourSubmissions = () => {
-  const { user, error, setError } = useGlobalContext();
+  const { user, setError } = useGlobalContext();
   const { userId } = useParams();
   const [spotlightSubmission, setSpotlightSubmission] =
     useState<AthleteSpotlightSubmissionDisplay>({
@@ -43,11 +42,12 @@ const ViewYourSubmissions = () => {
           status: data.status,
           date: formatDate(data.createdAt),
           type: "spotlight",
+          admin_comment: data.admin_comment,
         });
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError("Error: Unable to get your spotlight");
     }
   };
   const fetchUserTestimonialSubmissions = async (userId: string) => {
@@ -60,7 +60,7 @@ const ViewYourSubmissions = () => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError('Error: Unable to get your testimonials');
     }
   };
   useEffect(() => {
@@ -162,7 +162,7 @@ export const TestimonailSubmissions = ({
           to={`/submissions/testimonials/${user?.id}`}
           className="text-sm text-gray-100 hover:underline w-full flex justify-center"
         >
-          View All {testimonialSubmissions.length } Testimonial Submissions
+          View All {testimonialSubmissions.length} Testimonial Submissions
         </Link>
       ) : (
         <Link

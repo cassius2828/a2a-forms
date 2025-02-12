@@ -5,13 +5,13 @@ import { DefaultLoader } from "../../Loaders";
 import { useNavigate, useParams } from "react-router-dom";
 import { getSpotlightBySpotlightId } from "../../../services/formService";
 import SimpleModal from "../../Modals/SimpleModal";
-
-const initialSpotlight = {
+import MissingItems from "../../PlaceholderPages/MissingItems";
+const initialSpotlight: SpotlightFormDataFromServer = {
   first_name: "",
   last_name: "",
   sport: "",
   location: "",
-  grad_year: null,
+  grad_year: "",
   general_bio: "",
   action_bio: "",
   community_bio: "",
@@ -22,7 +22,7 @@ const initialSpotlight = {
   admin_comment: "",
 };
 
-const ShowSpotlight = ({ data, onApprove, onReject }) => {
+const ShowSpotlight = () => {
   const [spotlight, setSpotlight] =
     useState<SpotlightFormDataFromServer>(initialSpotlight);
   const [isApproved, setIsApproved] = useState<boolean>(false);
@@ -39,6 +39,7 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
   } = useGlobalContext();
   const { spotlightId } = useParams();
   const navigate = useNavigate();
+
   const fetchSpotlightById = async (id: string) => {
     setIsLoading(true);
     try {
@@ -53,7 +54,7 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.response.data.error);
+      setError("Unable to get spotlight");
     } finally {
       setIsLoading(false);
     }
@@ -64,6 +65,7 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
   }, [spotlightId]);
 
   if (isLoading) return <DefaultLoader />;
+  if (!spotlightId) return <MissingItems item="Spotlight ID" />;
   return (
     <div className="w-full md:w-3/4 lg:w-1/2 mx-auto mt-24 bg-neutral-900 shadow-lg rounded-lg p-8 border text-gray-100">
       <h2 className="text-2xl font-semibold text-gray-200 text-center mb-6">
@@ -231,7 +233,7 @@ const ShowSpotlight = ({ data, onApprove, onReject }) => {
           title={message ? message : error}
           isError={Boolean(error)}
           closeModal={() =>
-            handleCloseModalAndNavigate(
+            handleCloseModalAndNavigate(() =>
               navigate(`/submissions/${user?.id}/manage`)
             )
           }

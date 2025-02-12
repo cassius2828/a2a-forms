@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SpotlightFormData, TestimonialFormData } from "../lib/types";
+import { TestimonialFormData } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const SPOTLIGHT_BASE_URL = BASE_URL + "/forms/spotlights";
 const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
@@ -7,10 +7,7 @@ const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
 ///////////////////////////
 // Athlete Spotlights
 ///////////////////////////
-export const postAddSpotlight = async (
-  userId: string,
-  formData: SpotlightFormData
-) => {
+export const postAddSpotlight = async (userId: string, formData: FormData) => {
   try {
     const response = await axios.post(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
@@ -26,7 +23,7 @@ export const postAddSpotlight = async (
 
 export const putUpdateSpotlight = async (
   userId: string,
-  formData: SpotlightFormData
+  formData: FormData
 ) => {
   console.log("running update spotlight");
   try {
@@ -104,8 +101,10 @@ export const getSpotlightByUserId = async (userId: string) => {
 
 export const getSpotlightBySpotlightId = async (spotlightId: string) => {
   try {
-    const response = await axios.get(`${SPOTLIGHT_BASE_URL}/${spotlightId}/spotlight-id`);
-    console.log(response.data)
+    const response = await axios.get(
+      `${SPOTLIGHT_BASE_URL}/${spotlightId}/spotlight-id`
+    );
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -231,7 +230,7 @@ export const putChangeTestimonialStatus = async (
   adminComment?: string
 ) => {
   try {
-    console.log(adminComment)
+    console.log(adminComment);
     const response = await axios.put(
       `${TESTIMONIALS_BASE_URL}/${id}/status`,
       {

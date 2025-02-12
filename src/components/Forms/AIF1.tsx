@@ -26,8 +26,8 @@ const AIF1 = () => {
           className="mt-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-neutral-500 focus:outline focus:outline-2 focus:outline-gray-300 outline outline-gray-300/30 sm:text-sm"
         />
       </div>
-  {/* Last Name Input */}
-  <div>
+      {/* Last Name Input */}
+      <div>
         <label htmlFor="name" className="block text-sm font-medium text-white">
           Last Name
         </label>
@@ -68,7 +68,7 @@ const AIF1 = () => {
         <input
           id="graduationYear"
           name="graduationYear"
-          type="number"
+          type="text"
           value={spotlightFormData.graduationYear}
           min={1980}
           max={2999}

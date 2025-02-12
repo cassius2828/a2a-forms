@@ -1,28 +1,14 @@
-import { Fragment, useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/react";
+import { Fragment } from "react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
   ArrowDownCircleIcon,
   ArrowPathIcon,
   ArrowUpCircleIcon,
-  Bars3Icon,
   EllipsisHorizontalIcon,
   PlusSmallIcon,
 } from "@heroicons/react/20/solid";
-import { BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ClassesRestOp } from "../../lib/types";
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Invoices", href: "#" },
-  { name: "Clients", href: "#" },
-  { name: "Expenses", href: "#" },
-];
 const secondaryNavigation = [
   { name: "Last 7 days", href: "#", current: true },
   { name: "Last 30 days", href: "#", current: false },
@@ -54,7 +40,9 @@ const stats = [
     changeType: "negative",
   },
 ];
-const statuses = {
+type StatusKey = "Paid" | "Withdraw" | "Overdue";
+
+const statuses: Record<StatusKey, string> = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20",
   Withdraw: "text-gray-600 bg-gray-50 ring-gray-500/10",
   Overdue: "text-red-700 bg-red-50 ring-red-600/10",
@@ -152,13 +140,11 @@ const clients = [
   },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: ClassesRestOp) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function MainDashboard() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <>
       <main>
@@ -289,10 +275,11 @@ export default function MainDashboard() {
                                         {transaction.amount}
                                       </div>
                                       <div
-                                        className={classNames(
-                                          statuses[transaction.status],
-                                          "rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
-                                        )}
+                                        className={`${
+                                          statuses[transaction.status]
+                                        }
+                                        rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset
+                                        `}
                                       >
                                         {transaction.status}
                                       </div>

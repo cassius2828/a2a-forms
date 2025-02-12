@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 
 import { LoginFormState } from "../../lib/types";
@@ -95,7 +95,10 @@ const Login = () => {
         >
           Login
         </button>
-        <Link to={'/register'} className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2">
+        <Link
+          to={"/register"}
+          className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2"
+        >
           register
         </Link>
       </form>

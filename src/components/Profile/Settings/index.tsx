@@ -16,6 +16,7 @@ import {
 
 import { useGlobalContext } from "../../../context/useGlobalContext";
 import {
+  ClassesRestOp,
   SideBarNavMenu,
   UpdatePasswordFormData,
   UserInfoFormState,
@@ -31,14 +32,14 @@ import PromptLoginOrRegister from "../../Auth/PromptLoginOrRegister";
 import NoAccessPage from "../../PlaceholderPages/NoAccessPage";
 import ConfirmationModalWithPasswordInput from "../../Modals/ConfirmationModalWithPasswordInput";
 
-const initialFormState = {
+const initialFormState: UserInfoFormState = {
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
 };
 
-function classNames(...classes) {
+function classNames(...classes: ClassesRestOp) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -94,6 +95,9 @@ export default function ProfileSettings() {
             setMessage={setMessage}
             error={error}
             message={message}
+            willNavigate={false}
+            // TODO: Check for best practices on this situation
+            navigateFn={() => null}
           />
         )}
         <Dialog
@@ -308,7 +312,7 @@ export const UpdatePasswordFormSection = () => {
       }
     } catch (err) {
       console.error(err);
-      if (typeof err === "string") setError(err.response || err);
+      setError("Unable to update password");
     }
   };
 
@@ -453,7 +457,7 @@ export const UserInfoForm = () => {
         }
       }
       if (removeAvatar) {
-        dataToSendToServer.append("removeAvatar", removeAvatar);
+        dataToSendToServer.append("removeAvatar", "removeAvatar");
       }
 
       if (user) {

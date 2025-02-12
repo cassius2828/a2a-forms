@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useGlobalContext } from "../../context/useGlobalContext";
 
 export default function FormModal({
   title,
@@ -22,7 +21,6 @@ export default function FormModal({
   willNavigate: boolean;
   navigateFn: () => void;
 }) {
-  const { handleResetForm } = useGlobalContext();
   const [open, setOpen] = useState(true);
 
   const closeModal = () => {

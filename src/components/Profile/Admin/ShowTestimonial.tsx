@@ -24,7 +24,6 @@ const ShowTestimonial = () => {
     error,
     setError,
     message,
-    setMessage,
     isLoading,
     setIsLoading,
     scrollToTop,
@@ -52,18 +51,11 @@ const ShowTestimonial = () => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.response.data.error);
+      setError("Unable to get testimonial");
     } finally {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(
-      testimonial.admin_comment,
-      "==========\nadmin comment\n============"
-    );
-  }, [testimonial]);
 
   useEffect(() => {
     if (testimonialId) fetchTestimonialById(testimonialId);
@@ -176,7 +168,7 @@ const ShowTestimonial = () => {
           title={message ? message : error}
           isError={Boolean(error)}
           closeModal={() =>
-            handleCloseModalAndNavigate(
+            handleCloseModalAndNavigate(() =>
               navigate(`/submissions/${user?.id}/manage`)
             )
           }

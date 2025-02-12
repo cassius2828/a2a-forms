@@ -19,7 +19,7 @@ const initialSpotlightFormData: SpotlightFormData = {
   firstName: "",
   lastName: "",
   sport: "",
-  graduationYear: null,
+  graduationYear: "",
   location: "",
   generalBio: "",
   actionBio: "",
@@ -41,15 +41,14 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [spotlightFormData, setSpotlightFormData] = useState<
-    SpotlightFormData | File | null
-  >(initialSpotlightFormData);
+  const [spotlightFormData, setSpotlightFormData] = useState<SpotlightFormData>(
+    initialSpotlightFormData
+  );
   const [user, setUser] = useState<UserTokenData | null>(getUser());
   const [userTestimonials, setUserTestimonials] = useState<
     TestimonialDisplayData[]
   >([]);
 
-  // const { setError } = useGlobalContext();
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
       const data = await getAllUserTestimonials(userId);
@@ -61,7 +60,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.error);
+      setError("Error: Unable to get user testimonials");
     }
   };
 
@@ -79,11 +78,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   };
 
   // Handle multiple file input changes
-  const handleFileChange = <T extends object>(
+  const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<
-      React.SetStateAction<(File | null | SpotlightFormData)[]>
-    >
+    setState: React.Dispatch<React.SetStateAction<SpotlightFormData>>
   ) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
@@ -141,7 +138,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       setUser(null);
     }
   };
-  
+
   // admin actions on spotlights
   const handleRejectSpotlight = async (id: string, adminComment?: string) => {
     setIsLoading(true);
@@ -159,10 +156,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to rejected"
-        );
+        setError("Unable to change testimonial status to rejected");
       } finally {
         setIsLoading(false);
       }
@@ -186,10 +180,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change Spotlight status to approved"
-        );
+        setError("Unable to change Spotlight status to approved");
       } finally {
         setIsLoading(false);
       }
@@ -213,10 +204,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to rejected"
-        );
+        setError("Unable to change testimonial status to rejected");
       } finally {
         setIsLoading(false);
       }
@@ -243,10 +231,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         }
       } catch (err) {
         console.error(err);
-        setError(
-          err.response.data.error ||
-            "Unable to change testimonial status to approved"
-        );
+        setError("Unable to change testimonial status to approved");
       } finally {
         setIsLoading(false);
       }

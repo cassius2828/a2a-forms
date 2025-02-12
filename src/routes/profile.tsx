@@ -3,7 +3,6 @@ import ConfirmEmailChange from "../components/Profile/Settings/ConfirmEmailChang
 
 // Lazy imports
 const ProfileSettings = lazy(() => import("../components/Profile/Settings"));
-const MainDashboard = lazy(() => import("../components/Profile/MainDashboard"));
 const ComingSoon = lazy(
   () => import("../components/PlaceholderPages/ComingSoon")
 );

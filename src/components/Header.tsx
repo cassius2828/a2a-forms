@@ -10,11 +10,10 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "../lib/utils";
 import {
   NavigationMenu,
-  NavigationType,
   UserNavigationMenu,
 } from "../lib/types";
 const Header = () => {

@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import {
   postAddSpotlight,
@@ -7,7 +7,9 @@ import {
 import {
   ImageUploadsProps,
   PhotoUpdateProps,
+  PrevAndSubmitBtnProps,
   SpotlightFormData,
+  SpotlightFormDataPhoto,
 } from "../../lib/types";
 import { DefaultLoader } from "../Loaders";
 
@@ -24,11 +26,10 @@ const AIF3 = ({
     user,
     setError,
     setMessage,
-    error,
     setIsLoading,
   } = useGlobalContext();
   // TODO: Figure out better way than to have spotlight form in a union with the file | null union
-  const [photos, setPhotos] = useState<(File | null | SpotlightFormData)[]>([
+  const [photos, setPhotos] = useState<SpotlightFormDataPhoto[]>([
     null,
     null,
     null,
@@ -36,10 +37,6 @@ const AIF3 = ({
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
-  const handleAcceptUpdate = () => {
-    setAcceptUpdate(true); // User accepts to update photos
-    // You can handle further logic here for the form submission if needed
-  };
   useEffect(() => {
     // If profileImage exists, replace the 0th index
     if (spotlightFormData.profileImage) {
@@ -74,7 +71,7 @@ const AIF3 = ({
     spotlightFormData.actionImage2,
   ]);
 
-  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const dataToSendToServer = createFormData(spotlightFormData, photos);
@@ -92,7 +89,7 @@ const AIF3 = ({
     } catch (err) {
       console.error(err);
       console.log(`Unable to submit form data to server `);
-      setError(err.error);
+      setError("Unable to submit form");
     } finally {
       setIsLoading(false);
       console.log("ran");
@@ -106,7 +103,6 @@ const AIF3 = ({
     try {
       if (user) {
         const data = await postAddSpotlight(user.id, dataToSendToServer);
-        console.log(dataToSendToServer, " <-- DTSTS");
 
         if (data.error) {
           setError(data.error);
@@ -117,22 +113,17 @@ const AIF3 = ({
     } catch (err) {
       console.error(err);
       console.log(`Unable to submit form data to server `);
-      setError(err.error);
+      setError("Unable to submit form");
     } finally {
       setIsLoading(false);
       console.log("ran");
     }
   };
-  const handleAcceptUpdatePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
+  const handleAcceptUpdatePhotos = () => {
     setPhotoDecisionMade(true);
     setAcceptUpdate(true);
   };
-  const handleDeclineUpdatePhotos = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    e.preventDefault();
+  const handleDeclineUpdatePhotos = () => {
     setPhotoDecisionMade(true);
     setAcceptUpdate(false);
   };
@@ -298,7 +289,7 @@ export const PhotoUpdateChoiceBox: React.FC<PhotoUpdateProps> = ({
   );
 };
 
-export const PrevAndSubmitBtn = ({
+export const PrevAndSubmitBtn: FC<PrevAndSubmitBtnProps> = ({
   handlePrevFormStep,
   ownedByCurrentUser,
   handleSubmit,
@@ -330,13 +321,12 @@ export const PrevAndSubmitBtn = ({
             {isLoading && <DefaultLoader className={"loader-sm"} />}
           </button>
         ) : (
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center"
-          >
-            Submit
-            {isLoading && <DefaultLoader className={"loader-sm"} />}
-          </button>
+          <form onSubmit={handleSubmit}>
+            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md flex justify-center gap-4 items-center">
+              Submit
+              {isLoading && <DefaultLoader className={"loader-sm"} />}
+            </button>
+          </form>
         )}
       </div>
       <span
@@ -351,20 +341,28 @@ export const PrevAndSubmitBtn = ({
 
 const createFormData = (
   spotlightFormData: SpotlightFormData,
-  photos: (File | null | SpotlightFormData)[]
+  photos: SpotlightFormDataPhoto[]
 ) => {
   const dataToSendToServer = new FormData();
   dataToSendToServer.append("firstName", spotlightFormData.firstName);
   dataToSendToServer.append("lastName", spotlightFormData.lastName);
   dataToSendToServer.append("sport", spotlightFormData.sport);
-  dataToSendToServer.append("graduationYear", spotlightFormData.graduationYear);
+  // to prevent type error of undefined possibility
+  if (spotlightFormData.graduationYear) {
+    dataToSendToServer.append(
+      "graduationYear",
+      spotlightFormData.graduationYear
+    );
+  }
   dataToSendToServer.append("location", spotlightFormData.location);
   dataToSendToServer.append("generalBio", spotlightFormData.generalBio);
   dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
   dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
   if (photos && photos.length > 0) {
     photos.forEach((photo) => {
-      dataToSendToServer.append("photos", photo);
+      if (photo) {
+        dataToSendToServer.append("photos", photo.photo);
+      }
     });
   }
 
