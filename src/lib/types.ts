@@ -267,3 +267,16 @@ export type SideBarNavMenu = {
 export type StatusType = "pending" | "approved" | "rejected";
 
 export type ClassesRestOp = (string | undefined | null)[];
+
+export type Client = {
+  id: number;
+  name: string;
+  imageUrl: string;
+  lastInvoice: {
+    date: string;
+    dateTime: string;
+    amount: string;
+    status: StatusKey; // ✅ Make sure this matches StatusKey
+  };
+};
+export type StatusKey = "Paid" | "Withdraw" | "Overdue";
