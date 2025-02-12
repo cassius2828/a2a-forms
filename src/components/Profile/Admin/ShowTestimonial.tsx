@@ -168,7 +168,7 @@ const ShowTestimonial = () => {
           title={message ? message : error}
           isError={Boolean(error)}
           closeModal={() =>
-            handleCloseModalAndNavigate(
+            handleCloseModalAndNavigate(() =>
               navigate(`/submissions/${user?.id}/manage`)
             )
           }

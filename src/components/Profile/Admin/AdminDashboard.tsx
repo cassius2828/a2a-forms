@@ -7,13 +7,12 @@ import {
 } from "../../../services/formService";
 import {
   AthleteSpotlightSubmission,
+  ClassesRestOp,
   StatusType,
   TestimonialSubmission,
 } from "../../../lib/types";
 import { Link } from "react-router-dom";
 import SimpleModal from "../../Modals/SimpleModal";
-
-
 
 const stats = [
   {
@@ -42,8 +41,7 @@ const stats = [
   },
 ];
 
-
-function classNames(...classes) {
+function classNames(...classes: ClassesRestOp) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -192,7 +190,7 @@ export default function AdminDashboard() {
             title={message ? message : error}
             isError={Boolean(error)}
             closeModal={() =>
-              handleCloseModalAndNavigate(window.location.reload())
+              handleCloseModalAndNavigate(() => window.location.reload())
             }
           />
         )}

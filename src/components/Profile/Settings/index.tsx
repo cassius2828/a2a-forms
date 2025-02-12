@@ -16,6 +16,7 @@ import {
 
 import { useGlobalContext } from "../../../context/useGlobalContext";
 import {
+  ClassesRestOp,
   SideBarNavMenu,
   UpdatePasswordFormData,
   UserInfoFormState,
@@ -38,7 +39,7 @@ const initialFormState: UserInfoFormState = {
   phone: "",
 };
 
-function classNames(...classes) {
+function classNames(...classes: ClassesRestOp) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -456,7 +457,7 @@ export const UserInfoForm = () => {
         }
       }
       if (removeAvatar) {
-        dataToSendToServer.append("removeAvatar", removeAvatar);
+        dataToSendToServer.append("removeAvatar", "removeAvatar");
       }
 
       if (user) {

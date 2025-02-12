@@ -3,7 +3,6 @@ import {
   LoginFormState,
   RegisterFormState,
   UpdatePasswordFormData,
-  UserInfoFormState,
 } from "../lib/types";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -79,10 +78,7 @@ export function getUser() {
 ///////////////////////////
 // * PUT  | Update User Info
 ///////////////////////////
-export const putUpdateUserInfo = async (
-  userId: string,
-  formData: UserInfoFormState
-) => {
+export const putUpdateUserInfo = async (userId: string, formData: FormData) => {
   try {
     const token = localStorage.getItem("token"); // Retrieve the JWT token from localStorage or any other storage
     const response = await axios.put(`${BASE_URL}/auth/${userId}`, formData, {

@@ -80,9 +80,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   // Handle multiple file input changes
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<
-      React.SetStateAction<(SpotlightFormData)[]>
-    >
+    setState: React.Dispatch<React.SetStateAction<SpotlightFormData>>
   ) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {

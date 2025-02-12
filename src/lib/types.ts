@@ -1,4 +1,9 @@
-import { ReactElement, ReactNode } from "react";
+import {
+  ForwardRefExoticComponent,
+  SVGProps,
+  ReactElement,
+  ReactNode,
+} from "react";
 
 // ✅ Backend Response Types
 // Represents the response type for a backend delete request
@@ -248,14 +253,17 @@ export type UserNavigationMenu = {
   href: string;
 };
 
-// Represents the keys for the sidebar navigation menu
 export type SideBarNavMenu = {
   name: string;
   href: string;
   current?: boolean;
-  icon: (props: React.SVGProps<SVGSVGElement>) => ReactElement;
+  icon:
+    | ((props: React.SVGProps<SVGSVGElement>) => ReactElement) // ✅ Supports normal function components
+    | ForwardRefExoticComponent<SVGProps<SVGSVGElement>>; // ✅ Supports forward-ref SVG components
 };
 
 // ✅ Other Utility Types
 // Represents the status type used across submissions
 export type StatusType = "pending" | "approved" | "rejected";
+
+export type ClassesRestOp = (string | undefined | null)[];

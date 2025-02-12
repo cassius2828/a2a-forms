@@ -55,6 +55,7 @@ const TestimonialForm = () => {
       setError("Unable to add testimonial");
     }
   };
+
   const handleUpdateTestimonial = async (id: string) => {
     setIsLoading(true);
     try {
@@ -86,6 +87,7 @@ const TestimonialForm = () => {
   const handleResetForm = () => {
     setTestimonialForm(initialTestimonialFormState);
   };
+  
   const fetchSingleTestimonial = async (id: string) => {
     console.log("running");
     try {

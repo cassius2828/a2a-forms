@@ -359,8 +359,10 @@ const createFormData = (
   dataToSendToServer.append("actionBio", spotlightFormData.actionBio);
   dataToSendToServer.append("communityBio", spotlightFormData.communityBio);
   if (photos && photos.length > 0) {
-    photos.forEach((photo: any) => {
-      dataToSendToServer.append("photos", photo);
+    photos.forEach((photo) => {
+      if (photo) {
+        dataToSendToServer.append("photos", photo.photo);
+      }
     });
   }
 
