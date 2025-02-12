@@ -267,3 +267,36 @@ export type SideBarNavMenu = {
 export type StatusType = "pending" | "approved" | "rejected";
 
 export type ClassesRestOp = (string | undefined | null)[];
+
+export type Client = {
+  id: number;
+  name: string;
+  imageUrl: string;
+  lastInvoice: {
+    date: string;
+    dateTime: string;
+    amount: string;
+    status: StatusKey;
+  };
+};
+export type Day = {
+  date: string;
+  dateTime: string;
+  transactions: Transaction[];
+};
+
+export type Days = Day[];
+
+export type Transaction = {
+  id: number;
+  invoiceNumber: string;
+  href: string;
+  amount: string;
+  tax?: string;
+  status: StatusKey;
+  client: string;
+  description: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+};
+
+export type StatusKey = "Paid" | "Withdraw" | "Overdue";
