@@ -7,7 +7,7 @@ import {
   EllipsisHorizontalIcon,
   PlusSmallIcon,
 } from "@heroicons/react/20/solid";
-import { ClassesRestOp, Client, StatusKey } from "../../lib/types";
+import { ClassesRestOp, Client, Days, StatusKey } from "../../lib/types";
 
 const secondaryNavigation = [
   { name: "Last 7 days", href: "#", current: true },
@@ -46,7 +46,7 @@ const statuses: Record<StatusKey, string> = {
   Withdraw: "text-gray-600 bg-gray-50 ring-gray-500/10",
   Overdue: "text-red-700 bg-red-50 ring-red-600/10",
 };
-const days = [
+const days: Days = [
   {
     date: "Today",
     dateTime: "2023-03-22",
