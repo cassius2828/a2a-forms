@@ -57,7 +57,7 @@ const ConfirmationModalWithPasswordInput = ({
       }
     } catch (err) {
       console.error(err);
-      setError(typeof err === "string" ? err : "Unable to delete user");
+      setError("Unable to delete user");
     }
   };
   return (

@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
   const [registerForm, setRegisterForm] =
     useState<RegisterFormState>(initialFormState);
-  const { handleInputChange, setUser, error } = useGlobalContext();
+  const { handleInputChange, setUser, error, setError } = useGlobalContext();
   const navigate = useNavigate();
   const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +28,7 @@ const Register = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
+      setError(err.error || "Unknown error submitting form. Please try again or contact support for assistance.");
     }
   };
   return (
