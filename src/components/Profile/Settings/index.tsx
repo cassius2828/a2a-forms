@@ -82,7 +82,7 @@ export default function ProfileSettings() {
   ];
 
   if (!user) return <PromptLoginOrRegister />;
-  if (userId !== user.id) return <NoAccessPage />;
+  if (userId !== String(user.id)) return <NoAccessPage />;
   return (
     <>
       <div className="w-full">
