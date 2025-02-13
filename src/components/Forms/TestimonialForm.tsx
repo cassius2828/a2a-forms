@@ -87,17 +87,14 @@ const TestimonialForm = () => {
   const handleResetForm = () => {
     setTestimonialForm(initialTestimonialFormState);
   };
-  
+
   const fetchSingleTestimonial = async (id: string) => {
-    console.log("running");
     try {
       const data = await getSingleTestimonial(id);
       if (data.error) {
         setError(data.error);
       } else {
-        console.log("got the data", data);
         setTestimonialForm(data);
-        console.log("Retrieved form data \n", data);
       }
     } catch (err) {
       console.error(err);

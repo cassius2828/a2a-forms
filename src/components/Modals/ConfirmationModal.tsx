@@ -33,7 +33,6 @@ const ConfirmationModal = ({
     try {
       if (id) {
         const data = await redAction(id);
-        console.log(data, " <-- data");
         if (data?.error) {
           setError(data.error || "Unexpected error occurred");
         } else {

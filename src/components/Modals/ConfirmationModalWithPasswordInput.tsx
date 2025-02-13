@@ -36,7 +36,6 @@ const ConfirmationModalWithPasswordInput = ({
   const handleDelete = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
-    console.log("click");
     e.preventDefault();
     try {
       if (id && password) {
@@ -61,9 +60,6 @@ const ConfirmationModalWithPasswordInput = ({
       setError(typeof err === "string" ? err : "Unable to delete user");
     }
   };
-  useEffect(() => {
-    console.log(id, password);
-  }, [id, password]);
   return (
     <>
       {/* Backdrop */}

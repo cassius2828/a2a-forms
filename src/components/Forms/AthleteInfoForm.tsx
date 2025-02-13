@@ -51,9 +51,7 @@ export default function AthleteInfoForm() {
             });
 
             setOwnedByCurrentUser(user?.id == data.created_by);
-            console.log(user?.id, " <-- user.id");
           }
-          console.log(spotlightFormData);
         } catch (err) {
           console.error(err);
         }

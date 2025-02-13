@@ -61,7 +61,6 @@ const ShowSpotlight = () => {
   };
   useEffect(() => {
     if (spotlightId) fetchSpotlightById(spotlightId);
-    console.log(import.meta.env.VITE_NO_IMG_AVAILABLE);
   }, [spotlightId]);
 
   if (isLoading) return <DefaultLoader />;

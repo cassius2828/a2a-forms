@@ -52,7 +52,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
       const data = await getAllUserTestimonials(userId);
-      console.log(data);
       if (data.error) {
         setError(data.error);
       } else {
@@ -74,7 +73,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
       ...prevState,
       [name]: value,
     }));
-    console.log(name, value);
   };
 
   // Handle multiple file input changes
@@ -99,10 +97,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     const file = e.target.files?.[0]; // Access the first file in the list
     if (file) {
       setFile(file);
-      console.log(
-        "Selected file:",
-        file instanceof File ? file : "Not a valid File"
-      );
     } else {
       console.error("No file selected");
       setFile(null);
@@ -163,8 +157,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     }
   };
   const handleApproveSpotlight = async (id: string, adminComment?: string) => {
-    console.log(id, " <-- id");
-    console.log(adminComment, " <-- hat");
     setIsLoading(true);
     if (id) {
       try {
@@ -214,8 +206,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     id: string,
     adminComment?: string
   ) => {
-    console.log(id, " <-- id");
-    console.log(adminComment, " <-- hat");
     setIsLoading(true);
     if (id) {
       try {

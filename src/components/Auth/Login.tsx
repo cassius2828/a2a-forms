@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 
-import { LoginFormState } from "../../lib/types";
+import { BackendError, LoginFormState } from "../../lib/types";
 import { Link, useNavigate } from "react-router-dom";
 import { getUser, login } from "../../services/authService";
 const initialLoginFormState = {
@@ -23,19 +23,15 @@ const Login = () => {
         setError("A user is already signed in");
         return;
       }
-
       const data = await login(loginForm);
 
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setUser(data);
-        getUser();
-        navigate("/");
-      }
-    } catch (err) {
+      setUser(data);
+      getUser();
+      navigate("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(err);
-      setError("Could not communicate with services to log in user");
+      setError(err.response.data.error);
     }
   };
 
