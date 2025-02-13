@@ -31,7 +31,7 @@ const Login = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
-      setError(err.response.data.error);
+      setError(err.error);
     }
   };
 

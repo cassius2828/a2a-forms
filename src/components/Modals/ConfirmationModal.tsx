@@ -41,9 +41,10 @@ const ConfirmationModal = ({
       } else {
         redAction(null);
       }
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err:any) {
       console.error(err);
-      setError("An unexpected error occurred.");
+      setError(err.error || "An unexpected error occurred.");
     }
   };
 

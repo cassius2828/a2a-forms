@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState } from "react";
 
 import { useGlobalContext } from "../../../context/useGlobalContext";
@@ -70,11 +71,9 @@ export default function AdminDashboard() {
       } else {
         setAthleteSpotlightSubmissions(data);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError(
-        typeof err === "string" ? err : "Unable to set spotlight submissions"
-      );
+      setError(err.error || "Unable to set spotlight submissions");
     }
   };
 
@@ -86,10 +85,10 @@ export default function AdminDashboard() {
       } else {
         setTestimonialSubmissions(data);
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
       setError(
-        typeof err === "string" ? err : "Unable to set testimonial submissions"
+        err.error || "Unable to set testimonial submissions"
       );
     }
   };
