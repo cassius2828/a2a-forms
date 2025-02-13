@@ -18,7 +18,6 @@ export default function AthleteInfoForm() {
     setError,
     setMessage,
     user,
-    spotlightFormData,
   } = useGlobalContext();
   const navigate = useNavigate();
   const [ownedByCurrentUser, setOwnedByCurrentUser] = useState<boolean>(false);

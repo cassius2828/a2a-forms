@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGlobalContext } from "../../context/useGlobalContext";
 
-import { BackendError, LoginFormState } from "../../lib/types";
+import { LoginFormState } from "../../lib/types";
 import { Link, useNavigate } from "react-router-dom";
 import { getUser, login } from "../../services/authService";
 const initialLoginFormState = {
