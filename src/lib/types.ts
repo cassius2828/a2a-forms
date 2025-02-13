@@ -173,6 +173,7 @@ export interface GlobalContextType {
   ) => void;
   handleInputChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setState: React.Dispatch<React.SetStateAction<any>>
   ) => void;
   handleNextFormStep: () => void;
