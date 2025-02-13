@@ -60,7 +60,7 @@ const ViewYourSubmissions = () => {
       }
     } catch (err) {
       console.error(err);
-      setError('Error: Unable to get your testimonials');
+      setError("Error: Unable to get your testimonials");
     }
   };
   useEffect(() => {
@@ -68,7 +68,6 @@ const ViewYourSubmissions = () => {
       fetchUserSpotlightSubmission(userId);
       fetchUserTestimonialSubmissions(userId);
     }
-    console.log(spotlightSubmission);
   }, [userId]);
 
   return (

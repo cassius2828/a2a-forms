@@ -58,7 +58,6 @@ const ConfirmEmailChange = () => {
   const handleConfirmEmail = async () => {
     try {
       if (userId && email && token && password) {
-        console.log("click");
         const data = await confirmEmailChange(userId, email, token, password);
         // Update feedback state based on response
         if (data.message) {
@@ -73,7 +72,7 @@ const ConfirmEmailChange = () => {
       }
     } catch (err) {
       console.error(err);
-      console.log(`Could not use service file to confirm email change`);
+
       setError("Could not confirm email change");
     }
   };

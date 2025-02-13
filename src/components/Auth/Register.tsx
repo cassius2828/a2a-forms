@@ -14,37 +14,32 @@ import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
   const [registerForm, setRegisterForm] =
     useState<RegisterFormState>(initialFormState);
-  const { handleInputChange, setError, setUser, error } = useGlobalContext();
+  const { handleInputChange, setUser, error } = useGlobalContext();
   const navigate = useNavigate();
   const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add validation logic
     try {
       const data = await signup(registerForm);
-         if (data.error) {
-              setError(data.error);
-            } else {
-              setUser(data);
-              getUser();
-              navigate("/");
-            }
-    
-    } catch (err) {
+
+      setUser(data);
+      getUser();
+      navigate("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(err);
-      console.log(`Unable to communciate with server to register user`);
     }
-    console.log("Register Form Submitted:", registerForm);
   };
   return (
     <form
       onSubmit={handleRegisterSubmit}
       className="w-full md:w-1/2 lg:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
     >
-       {error && (
-          <span className="text-red-500 text-xl flex justify-center">
-            {error}
-          </span>
-        )}
+      {error && (
+        <span className="text-red-500 text-xl flex justify-center">
+          {error}
+        </span>
+      )}
       <h2 className="text-xl font-semibold text-white mb-4">Sign Up</h2>
 
       <div className="mb-4">
@@ -55,7 +50,7 @@ const Register = () => {
           First Name
         </label>
         <input
-        required
+          required
           type="text"
           id="firstName"
           name="firstName"
@@ -74,7 +69,7 @@ const Register = () => {
           Last Name
         </label>
         <input
-        required
+          required
           type="text"
           id="lastName"
           name="lastName"
@@ -90,7 +85,7 @@ const Register = () => {
           Email Address
         </label>
         <input
-        required
+          required
           type="email"
           id="email"
           name="email"
@@ -124,7 +119,7 @@ const Register = () => {
           Password
         </label>
         <input
-        required
+          required
           type="password"
           id="password"
           name="password"
@@ -143,7 +138,7 @@ const Register = () => {
           Confirm Password
         </label>
         <input
-        required
+          required
           type="password"
           id="confirmPassword"
           name="confirmPassword"

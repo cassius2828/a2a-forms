@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BackendDeleteResponseType } from "../../lib/types";
 import { useNavigate } from "react-router-dom";
 import {
@@ -36,7 +36,6 @@ const ConfirmationModalWithPasswordInput = ({
   const handleDelete = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
-    console.log("click");
     e.preventDefault();
     try {
       if (id && password) {
@@ -61,9 +60,6 @@ const ConfirmationModalWithPasswordInput = ({
       setError(typeof err === "string" ? err : "Unable to delete user");
     }
   };
-  useEffect(() => {
-    console.log(id, password);
-  }, [id, password]);
   return (
     <>
       {/* Backdrop */}

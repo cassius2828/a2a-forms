@@ -26,8 +26,8 @@ export async function signup(formData: RegisterFormState) {
       return user.user;
     }
   } catch (err) {
-    console.log(err);
-    return err;
+    console.error(err);
+    throw err;
   }
 }
 
@@ -58,9 +58,9 @@ export async function login(userCredentials: LoginFormState) {
       return user.user;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
 
-    return err;
+    throw err;
   }
 }
 
@@ -86,7 +86,6 @@ export const putUpdateUserInfo = async (userId: string, formData: FormData) => {
         Authorization: `Bearer ${token}`, // Include the token in the Authorization header
       },
     });
-    console.log(response.data, ",,- respn dadta");
     return response.data;
   } catch (err) {
     console.error(err);
@@ -112,7 +111,6 @@ export const putUpdatePassword = async (
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Unable to communicate with server to update password`);
     return err;
   }
 };
@@ -172,7 +170,6 @@ export const confirmEmailChange = async (
     return data;
   } catch (err) {
     console.error(err);
-    console.log(`Unable to communicate with backend to confirm email change`);
     return err;
   }
 };
@@ -189,7 +186,6 @@ export const deleteUserById = async (userId: string) => {
         Authorization: `Bearer ${token}`, // Include the token in the Authorization header
       },
     });
-    console.log(response.data, " <-- response data ");
     localStorage.removeItem("token");
     return response.data;
   } catch (err) {

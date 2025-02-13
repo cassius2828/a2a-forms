@@ -16,7 +16,6 @@ export const postAddSpotlight = async (userId: string, formData: FormData) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to create a new athlete spotlight.");
     throw err;
   }
 };
@@ -25,17 +24,14 @@ export const putUpdateSpotlight = async (
   userId: string,
   formData: FormData
 ) => {
-  console.log("running update spotlight");
   try {
     const response = await axios.put(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
       formData
     );
-    console.log(response.data, " <-- response data");
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to update athlete spotlight for user ID: ${userId}`);
     throw err;
   }
 };
@@ -61,7 +57,6 @@ export const putChangeSpotlightStatus = async (
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to change spotlight status to ${status}`);
     throw err;
   }
 };
@@ -72,7 +67,6 @@ export const deleteSpotlight = async (id: string | null) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to remove athlete spotlight for user ID: ${id}`);
     throw err;
   }
 };
@@ -83,7 +77,6 @@ export const getAllSpotlights = async () => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to fetch all athlete spotlights.");
     throw err;
   }
 };
@@ -94,7 +87,6 @@ export const getSpotlightByUserId = async (userId: string) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to get spotlight with an id of: ", userId);
     throw err;
   }
 };
@@ -104,11 +96,9 @@ export const getSpotlightBySpotlightId = async (spotlightId: string) => {
     const response = await axios.get(
       `${SPOTLIGHT_BASE_URL}/${spotlightId}/spotlight-id`
     );
-    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to get spotlight with an id of: ", spotlightId);
     throw err;
   }
 };
@@ -126,7 +116,6 @@ export const getSpotlightSubmissionsByStatus = async (status: string) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to fetch ${status} athlete spotlights.`);
     throw err;
   }
 };
@@ -147,7 +136,6 @@ export const postAddTestimonial = async (
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to create a new client Testimonial.");
     throw err;
   }
 };
@@ -164,7 +152,6 @@ export const putUpdateTestimonial = async (
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to update testimonial with an id of ${id}`);
     throw err;
   }
 };
@@ -175,7 +162,6 @@ export const deleteTestimonial = async (id: string | null) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to remove athlete Testimonial with an id of: ${id}`);
     throw err;
   }
 };
@@ -186,7 +172,6 @@ export const getAllTestimonials = async () => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to fetch all athlete Testimonials.");
     throw err;
   }
 };
@@ -197,7 +182,6 @@ export const getApprovedTestimonials = async () => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to fetch approved athlete spotlights.");
     throw err;
   }
 };
@@ -208,7 +192,6 @@ export const getAllUserTestimonials = async (userId: string) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to fetch all user testimonials.");
     throw err;
   }
 };
@@ -219,7 +202,6 @@ export const getSingleTestimonial = async (id: string) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log("Failed to fetch targeted user testimonials.");
     throw err;
   }
 };
@@ -230,7 +212,6 @@ export const putChangeTestimonialStatus = async (
   adminComment?: string
 ) => {
   try {
-    console.log(adminComment);
     const response = await axios.put(
       `${TESTIMONIALS_BASE_URL}/${id}/status`,
       {
@@ -246,7 +227,6 @@ export const putChangeTestimonialStatus = async (
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(`Failed to change testimonial status to ${status}`);
     throw err;
   }
 };
@@ -264,9 +244,6 @@ export const getTestimonialSubmissionsByStatus = async (status: string) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    console.log(
-      `Failed to fetch ${status} athlete Testimonials.\n ERROR: ${err}`
-    );
     return err;
   }
 };

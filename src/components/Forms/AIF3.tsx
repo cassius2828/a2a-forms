@@ -64,7 +64,6 @@ const AIF3 = ({
         return updatedPhotos;
       });
     }
-    console.log(photos, " <-- photos state");
   }, [
     spotlightFormData.profileImage,
     spotlightFormData.actionImage1,
@@ -78,7 +77,6 @@ const AIF3 = ({
     try {
       if (user && ownedByCurrentUserProp) {
         const data = await putUpdateSpotlight(user.id, dataToSendToServer);
-        console.log(dataToSendToServer, " <-- DTSTS update");
 
         if (data.error) {
           setError(data.error);
@@ -88,11 +86,9 @@ const AIF3 = ({
       }
     } catch (err) {
       console.error(err);
-      console.log(`Unable to submit form data to server `);
       setError("Unable to submit form");
     } finally {
       setIsLoading(false);
-      console.log("ran");
     }
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -112,11 +108,9 @@ const AIF3 = ({
       }
     } catch (err) {
       console.error(err);
-      console.log(`Unable to submit form data to server `);
       setError("Unable to submit form");
     } finally {
       setIsLoading(false);
-      console.log("ran");
     }
   };
   const handleAcceptUpdatePhotos = () => {
@@ -364,10 +358,6 @@ const createFormData = (
         dataToSendToServer.append("photos", photo.photo);
       }
     });
-  }
-
-  for (const key of dataToSendToServer.entries()) {
-    console.log(key[0] + ", " + key[1]);
   }
   return dataToSendToServer;
 };

@@ -434,7 +434,6 @@ export const UserInfoForm = () => {
 
   // Handles form submission to update user info
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(profilePhoto, " pfp");
     e.preventDefault();
     try {
       const dataToSendToServer = new FormData();
@@ -446,15 +445,6 @@ export const UserInfoForm = () => {
       // Append profile photo if available
       if (profilePhoto) {
         dataToSendToServer.append("avatar", profilePhoto);
-        // Log FormData contents for debugging
-        for (const [key, value] of dataToSendToServer.entries()) {
-          console.log(
-            `${key}:`,
-            value instanceof File
-              ? { name: value.name, size: value.size, type: value.type }
-              : value + " FALSE"
-          );
-        }
       }
       if (removeAvatar) {
         dataToSendToServer.append("removeAvatar", "removeAvatar");
@@ -462,7 +452,6 @@ export const UserInfoForm = () => {
 
       if (user) {
         const data = await putUpdateUserInfo(user.id, dataToSendToServer);
-        console.log(data, "<-- fdsafdsa");
 
         if (data?.error) {
           setError(data.error);

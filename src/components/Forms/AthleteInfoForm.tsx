@@ -18,7 +18,6 @@ export default function AthleteInfoForm() {
     setError,
     setMessage,
     user,
-    spotlightFormData,
   } = useGlobalContext();
   const navigate = useNavigate();
   const [ownedByCurrentUser, setOwnedByCurrentUser] = useState<boolean>(false);
@@ -51,9 +50,7 @@ export default function AthleteInfoForm() {
             });
 
             setOwnedByCurrentUser(user?.id == data.created_by);
-            console.log(user?.id, " <-- user.id");
           }
-          console.log(spotlightFormData);
         } catch (err) {
           console.error(err);
         }
