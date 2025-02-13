@@ -76,7 +76,7 @@ const AIF3 = ({
     const dataToSendToServer = createFormData(spotlightFormData, photos);
     try {
       if (user && ownedByCurrentUserProp) {
-        const data = await putUpdateSpotlight(user.id, dataToSendToServer);
+        const data = await putUpdateSpotlight(String(user.id), dataToSendToServer);
 
         if (data.error) {
           setError(data.error);
@@ -98,7 +98,7 @@ const AIF3 = ({
 
     try {
       if (user) {
-        const data = await postAddSpotlight(user.id, dataToSendToServer);
+        const data = await postAddSpotlight(String(user.id), dataToSendToServer);
 
         if (data.error) {
           setError(data.error);

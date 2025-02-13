@@ -82,7 +82,7 @@ export default function ProfileSettings() {
   ];
 
   if (!user) return <PromptLoginOrRegister />;
-  if (userId !== user.id) return <NoAccessPage />;
+  if (userId !== String(user.id)) return <NoAccessPage />;
   return (
     <>
       <div className="w-full">
@@ -451,7 +451,7 @@ export const UserInfoForm = () => {
       }
 
       if (user) {
-        const data = await putUpdateUserInfo(user.id, dataToSendToServer);
+        const data = await putUpdateUserInfo(String(user.id), dataToSendToServer);
 
         if (data?.error) {
           setError(data.error);

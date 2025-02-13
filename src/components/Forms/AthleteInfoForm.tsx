@@ -25,7 +25,7 @@ export default function AthleteInfoForm() {
     const fetchUserSpotlightDetails = async () => {
       if (user) {
         try {
-          const data = await getSpotlightByUserId(user.id);
+          const data = await getSpotlightByUserId(String(user.id));
           if (data.error) {
             setSpotlightFormData((prevForm) => {
               return {

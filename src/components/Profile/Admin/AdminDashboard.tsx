@@ -165,13 +165,13 @@ export default function AdminDashboard() {
                     </thead>
                     {submissionsTypeIsSpotlight ? (
                       <AthleteSpotlightSubmissionsTableBody
-                        userId={user.id}
+                        userId={String(user.id)}
                         status={status}
                         submissions={athleteSpotlightSubmissions}
                       />
                     ) : (
                       <TestimonialSubmmisionsTableBody
-                        userId={user.id}
+                        userId={String(user.id)}
                         status={status}
                         submissions={testimonialSubmissions}
                       />
