@@ -451,7 +451,7 @@ export const UserInfoForm = () => {
       }
 
       if (user) {
-        const data = await putUpdateUserInfo(user.id, dataToSendToServer);
+        const data = await putUpdateUserInfo(String(user.id), dataToSendToServer);
 
         if (data?.error) {
           setError(data.error);
