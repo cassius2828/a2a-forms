@@ -451,7 +451,10 @@ export const UserInfoForm = () => {
       }
 
       if (user) {
-        const data = await putUpdateUserInfo(String(user.id), dataToSendToServer);
+        const data = await putUpdateUserInfo(
+          String(user.id),
+          dataToSendToServer
+        );
 
         if (data?.error) {
           setError(data.error);
@@ -646,8 +649,11 @@ export const UserInfoForm = () => {
 };
 
 export const DeleteAccountSection = ({ userId }: { userId: string }) => {
+  const { user } = useGlobalContext();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
+
+  if (user && user.role === "admin") return;
   return (
     <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
