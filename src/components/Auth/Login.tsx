@@ -4,6 +4,7 @@ import { useGlobalContext } from "../../context/useGlobalContext";
 import { LoginFormState } from "../../lib/types";
 import { Link, useNavigate } from "react-router-dom";
 import { getUser, login } from "../../services/authService";
+import { AuroraContainer } from "../Aurora";
 const initialLoginFormState = {
   email: "",
   password: "",
@@ -36,7 +37,7 @@ console.log(data)
   };
 
   return (
-    <>
+    <AuroraContainer>
       <form
         onSubmit={handleLoginSubmit}
         className="w-full md:w-1/2 lg:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
@@ -98,7 +99,7 @@ console.log(data)
           register
         </Link>
       </form>
-    </>
+    </AuroraContainer>
   );
 };
 export default Login;

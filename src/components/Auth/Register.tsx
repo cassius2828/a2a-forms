@@ -11,6 +11,7 @@ const initialFormState = {
 };
 import { getUser, signup } from "../../services/authService";
 import { Link, useNavigate } from "react-router-dom";
+import { AuroraContainer } from "../Aurora";
 const Register = () => {
   const [registerForm, setRegisterForm] =
     useState<RegisterFormState>(initialFormState);
@@ -28,141 +29,152 @@ const Register = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
-      setError(err.response.data.error || "Unknown error submitting form. Please try again or contact support for assistance.");
+      setError(
+        err.response.data.error ||
+          "Unknown error submitting form. Please try again or contact support for assistance."
+      );
     }
   };
   return (
-    <form
-      onSubmit={handleRegisterSubmit}
-      className="w-full md:w-1/2 lg:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
-    >
-      {error && (
-        <span className="text-red-500 text-xl flex justify-center">
-          {error}
-        </span>
-      )}
-      <h2 className="text-xl font-semibold text-white mb-4">Sign Up</h2>
-
-      <div className="mb-4">
-        <label
-          htmlFor="firstName"
-          className="block text-sm font-medium text-white"
-        >
-          First Name
-        </label>
-        <input
-          required
-          type="text"
-          id="firstName"
-          name="firstName"
-          value={registerForm.firstName}
-          onChange={(e) => handleInputChange(e, setRegisterForm)}
-          className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Enter your first name"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label
-          htmlFor="lastName"
-          className="block text-sm font-medium text-white"
-        >
-          Last Name
-        </label>
-        <input
-          required
-          type="text"
-          id="lastName"
-          name="lastName"
-          value={registerForm.lastName}
-          onChange={(e) => handleInputChange(e, setRegisterForm)}
-          className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Enter your last name"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="email" className="block text-sm font-medium text-white">
-          Email Address
-        </label>
-        <input
-          required
-          type="email"
-          id="email"
-          name="email"
-          value={registerForm.email}
-          onChange={(e) => handleInputChange(e, setRegisterForm)}
-          className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="example@gmail.com"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="phone" className="block text-sm font-medium text-white">
-          Phone Number
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={registerForm.phone}
-          onChange={(e) => handleInputChange(e, setRegisterForm)}
-          className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="555 555 5555"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-white"
-        >
-          Password
-        </label>
-        <input
-          required
-          type="password"
-          id="password"
-          name="password"
-          value={registerForm.password}
-          onChange={(e) => handleInputChange(e, setRegisterForm)}
-          className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Enter your password"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label
-          htmlFor="confirmPassword"
-          className="block text-sm font-medium text-white"
-        >
-          Confirm Password
-        </label>
-        <input
-          required
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          value={registerForm.confirmPassword}
-          onChange={(e) => handleInputChange(e, setRegisterForm)}
-          className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Confirm your password"
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="w-full py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
+    <AuroraContainer>
+      <form
+        onSubmit={handleRegisterSubmit}
+        className="w-full md:w-1/2 lg:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
       >
-        Sign Up
-      </button>
-      <Link
-        to={"/auth/login"}
-        className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2"
-      >
-        login
-      </Link>
-    </form>
+        {error && (
+          <span className="text-red-500 text-xl flex justify-center">
+            {error}
+          </span>
+        )}
+        <h2 className="text-xl font-semibold text-white mb-4">Sign Up</h2>
+
+        <div className="mb-4">
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-white"
+          >
+            First Name
+          </label>
+          <input
+            required
+            type="text"
+            id="firstName"
+            name="firstName"
+            value={registerForm.firstName}
+            onChange={(e) => handleInputChange(e, setRegisterForm)}
+            className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter your first name"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-white"
+          >
+            Last Name
+          </label>
+          <input
+            required
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={registerForm.lastName}
+            onChange={(e) => handleInputChange(e, setRegisterForm)}
+            className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter your last name"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-white"
+          >
+            Email Address
+          </label>
+          <input
+            required
+            type="email"
+            id="email"
+            name="email"
+            value={registerForm.email}
+            onChange={(e) => handleInputChange(e, setRegisterForm)}
+            className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="example@gmail.com"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-white"
+          >
+            Phone Number
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={registerForm.phone}
+            onChange={(e) => handleInputChange(e, setRegisterForm)}
+            className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="555 555 5555"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-white"
+          >
+            Password
+          </label>
+          <input
+            required
+            type="password"
+            id="password"
+            name="password"
+            value={registerForm.password}
+            onChange={(e) => handleInputChange(e, setRegisterForm)}
+            className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium text-white"
+          >
+            Confirm Password
+          </label>
+          <input
+            required
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={registerForm.confirmPassword}
+            onChange={(e) => handleInputChange(e, setRegisterForm)}
+            className="mt-2 block w-full rounded-md bg-white/5 text-white px-3 py-2 border border-neutral-700 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Confirm your password"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition duration-300 focus:outline-none"
+        >
+          Sign Up
+        </button>
+        <Link
+          to={"/auth/login"}
+          className="text-white absolute -bottom-10 left-1/2 -translate-x-1/2"
+        >
+          login
+        </Link>
+      </form>
+    </AuroraContainer>
   );
 };
 export default Register;
