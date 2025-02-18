@@ -12,6 +12,7 @@ import { TestimonialFormData } from "../../lib/types";
 import { useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 import { DefaultLoader } from "../Loaders";
+import { AuroraContainer } from "../Aurora";
 
 const initialTestimonialFormState: TestimonialFormData = {
   text: "",
@@ -113,6 +114,8 @@ const TestimonialForm = () => {
   }, [id]);
   if (isLoading) return <DefaultLoader />;
   return (
+    <AuroraContainer>
+
     <form
       onSubmit={handleSubmit}
       className="w-full md:w-1/3 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative"
@@ -244,6 +247,8 @@ const TestimonialForm = () => {
         reset form
       </button>
     </form>
+
+    </AuroraContainer>
   );
 };
 
