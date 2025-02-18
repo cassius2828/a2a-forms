@@ -7,6 +7,7 @@ import FormModal from "../Modals/FormModal";
 import { getSpotlightByUserId } from "../../services/formService";
 import { useNavigate } from "react-router-dom";
 import PromptLoginOrRegister from "../Auth/PromptLoginOrRegister";
+import { AuroraContainer } from "../Aurora";
 export default function AthleteInfoForm() {
   // Single state for the entire form
   const {
@@ -64,53 +65,55 @@ export default function AthleteInfoForm() {
     return <PromptLoginOrRegister />;
   }
   return (
-    <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-20 px-5 bg-neutral-900 ">
-      {(error || message) && (
-        <FormModal
-          isError={Boolean(error)}
-          title={error ? " Error: Could not submit form" : "Success!"}
-          text={error ? error : message}
-          setError={setError}
-          setMessage={setMessage}
-          error={error}
-          message={message}
-          willNavigate
-          navigateFn={() => navigate(`/submissions/${user?.id}`)}
-        />
-      )}
+    <AuroraContainer>
+      <form className="w-full md:w-4/5 xl:w-1/3  rounded-md mt-20 mx-auto px-5 py-1 bg-neutral-900 ">
+        {(error || message) && (
+          <FormModal
+            isError={Boolean(error)}
+            title={error ? " Error: Could not submit form" : "Success!"}
+            text={error ? error : message}
+            setError={setError}
+            setMessage={setMessage}
+            error={error}
+            message={message}
+            willNavigate
+            navigateFn={() => navigate(`/submissions/${user?.id}`)}
+          />
+        )}
 
-      <div className="pb-12 w-full ">
-        <div className="mt-10 flex flex-col w-full  mx-auto gap-8">
-          <div>
-            <h2 className="text-lg font-semibold text-white">
-              Athlete Spotlight Profile
-            </h2>
-            <p className="mt-1 text-sm text-neutral-400">
-              This information may be displayed publicly on{" "}
-              <a className="hover:text-green-600" href="a2aathletics.com">
-                a2aathletics.com
-              </a>
-            </p>
+        <div className="pb-12 w-full ">
+          <div className="mt-10 flex flex-col w-full  mx-auto gap-8">
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                Athlete Spotlight Profile
+              </h2>
+              <p className="mt-1 text-sm text-neutral-400">
+                This information may be displayed publicly on{" "}
+                <a className="hover:text-green-600" href="a2aathletics.com">
+                  a2aathletics.com
+                </a>
+              </p>
+            </div>
+            {ownedByCurrentUser && (
+              <span className="text-sm text-neutral-400 italic">
+                Updating the spotlight will cause the status to go back to
+                "pending" and it will be removed from the website until approved
+                by an admin.
+              </span>
+            )}
+            {/* 1: basic info */}
+            {/* 2: sport bios */}
+            {/* 3: images */}
+            {formStep === 1 ? (
+              <AIF1 />
+            ) : formStep === 2 ? (
+              <AIF2 />
+            ) : (
+              <AIF3 ownedByCurrentUserProp={ownedByCurrentUser} />
+            )}
           </div>
-          {ownedByCurrentUser && (
-            <span className="text-sm text-neutral-400 italic">
-              Updating the spotlight will cause the status to go back to
-              "pending" and it will be removed from the website until approved
-              by an admin.
-            </span>
-          )}
-          {/* 1: basic info */}
-          {/* 2: sport bios */}
-          {/* 3: images */}
-          {formStep === 1 ? (
-            <AIF1 />
-          ) : formStep === 2 ? (
-            <AIF2 />
-          ) : (
-            <AIF3 ownedByCurrentUserProp={ownedByCurrentUser} />
-          )}
         </div>
-      </div>
-    </form>
+      </form>
+    </AuroraContainer>
   );
 }
