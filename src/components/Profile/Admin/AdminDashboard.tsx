@@ -14,6 +14,7 @@ import {
 } from "../../../lib/types";
 import { Link } from "react-router-dom";
 import SimpleModal from "../../Modals/SimpleModal";
+import { AuroraContainer } from "../../Aurora";
 
 const stats = [
   {
@@ -111,7 +112,9 @@ export default function AdminDashboard() {
   if (user?.role !== "admin") return <h1>not authorized</h1>;
   return (
     <>
-      <main>
+    <AuroraContainer>
+
+         <main className=" max-w-2xl mx-auto">
         <div className="relative isolate overflow-hidden pt-16">
           {/* Secondary navigation */}
           <header className="pb-4 pt-6 sm:pb-6">
@@ -194,6 +197,8 @@ export default function AdminDashboard() {
           />
         )}
       </main>
+    </AuroraContainer>
+   
     </>
   );
 }
