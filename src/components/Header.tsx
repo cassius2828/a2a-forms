@@ -13,6 +13,12 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "../lib/utils";
 import { NavigationMenu, UserNavigationMenu } from "../lib/types";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { headerScrollBgColor } from "../lib/gsap";
+
+gsap.registerPlugin(ScrollTrigger);
 const Header = () => {
   const { user } = useGlobalContext();
 
@@ -85,14 +91,14 @@ export const HeaderV2 = () => {
     { name: "Settings", href: `/profile/${user?.id}/settings` },
     { name: "Sign out", href: "#" },
   ];
-
+  useGSAP(() => {
+    headerScrollBgColor();
+  }, {});
   return (
     <>
       <div className="w-full">
-        <Disclosure
-          as="nav"
-          className="header bg-neutral-950 shadow-sm shadow-green-900 fixed z-50 top-0 w-full"
-        >
+        <Disclosure as="nav" className="header  fixed z-50 top-0 w-full">
+          <div className="test"></div>
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
