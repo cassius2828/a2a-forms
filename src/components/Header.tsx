@@ -85,12 +85,13 @@ export const HeaderV2 = () => {
     { name: "Settings", href: `/profile/${user?.id}/settings` },
     { name: "Sign out", href: "#" },
   ];
+
   return (
     <>
       <div className="w-full">
         <Disclosure
           as="nav"
-          className="bg-neutral-950 shadow-sm shadow-green-900 fixed z-50 top-0 w-full"
+          className="header bg-neutral-950 shadow-sm shadow-green-900 fixed z-50 top-0 w-full"
         >
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">

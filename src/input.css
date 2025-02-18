@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import "./reset.css";
 
+
 /* loaders */
 .loader {
   width: 48px;

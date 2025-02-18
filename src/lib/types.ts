@@ -302,3 +302,8 @@ export type Transaction = {
 
 export type StatusKey = "Paid" | "Withdraw" | "Overdue";
 
+export type Feature = {
+  name:string,
+  description:string,
+  icon: React.ElementType;
+}
