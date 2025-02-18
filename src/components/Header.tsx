@@ -12,10 +12,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "../lib/utils";
-import {
-  NavigationMenu,
-  UserNavigationMenu,
-} from "../lib/types";
+import { NavigationMenu, UserNavigationMenu } from "../lib/types";
 const Header = () => {
   const { user } = useGlobalContext();
 
@@ -38,6 +35,11 @@ export const HeaderV2 = () => {
   const location = useLocation();
 
   const navigation = [
+    {
+      name: "Share Your Experience",
+      href: "/share-your-experience",
+      current: location.pathname === "/share-your-experience",
+    },
     {
       name: "Athlete Info Form",
       href: "/spotlight-form",
@@ -71,13 +73,6 @@ export const HeaderV2 = () => {
       href: "/auth/register",
       current: location.pathname === "/auth/register",
       condition: !user,
-    },
-    {
-      name: "Sign Out",
-      href: "/",
-      // current: location.pathname === "/",
-      condition: !!user, // Shows if user is logged in
-      action: handleSignOut, // Add the sign-out handler
     },
     // {
     //   name: "Website",

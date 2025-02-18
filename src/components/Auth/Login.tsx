@@ -24,14 +24,14 @@ const Login = () => {
         return;
       }
       const data = await login(loginForm);
-
+console.log(data)
       setUser(data);
       getUser();
       navigate("/");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
-      setError(err.error);
+      setError(err.response.data.error);
     }
   };
 

@@ -28,7 +28,7 @@ const Register = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
-      setError(err.error || "Unknown error submitting form. Please try again or contact support for assistance.");
+      setError(err.response.data.error || "Unknown error submitting form. Please try again or contact support for assistance.");
     }
   };
   return (
