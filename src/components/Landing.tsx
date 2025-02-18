@@ -80,7 +80,7 @@ const LandingContent = () => {
               Let’s push limits, break barriers, and achieve greatness—together.
               Book now and unlock your full potential today!
             </p>
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Link
                 to={`/book`}
                 className=" bg-green-600 hover:bg-green-700 text-white text-lg font-semibold py-3 px-6 rounded-md shadow-md transition-all duration-300"
