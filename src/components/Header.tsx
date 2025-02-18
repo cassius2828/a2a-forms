@@ -123,7 +123,6 @@ export const HeaderV2 = () => {
                         }}
                         key={item.name}
                         to={item.href}
-                        onClick={item.action && item.action}
                         aria-current={item.current ? "page" : undefined}
                         className={classNames(
                           item.current

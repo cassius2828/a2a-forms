@@ -1,4 +1,4 @@
-import { AuroraContainer, BottomAuroraGlow, TopAuroraGlow } from "./Aurora";
+import { AuroraContainer} from "./Aurora";
 import FormDescriptionCard from "./FormDescriptionCard";
 
 const ShareExp = () => {
