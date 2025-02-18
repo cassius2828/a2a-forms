@@ -1,70 +1,102 @@
-import FormDescriptionCard from "./FormDescriptionCard";
+import { Link } from "react-router-dom";
+import {
+  BoltIcon,
+  ChatBubbleLeftRightIcon,
+  SparklesIcon,
+} from "@heroicons/react/20/solid";
+import { Feature } from "../lib/types";
+import { AuroraContainer } from "./Aurora";
 
-const Landing = () => {
+export default function Landing() {
   return (
-    <div>
-      {/* Main Section with Background Image */}
-      <div
-        className="relative h-screen bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://clients-cr.s3.us-west-1.amazonaws.com/a2a/images/spotlights-home-aftergame.jpg')",
-        }}
-      >
-        <div className="absolute inset-0 bg-black opacity-80 w-full"></div>{" "}
-        {/* Dark overlay */}
-        <div className="relative z-10 mt-12 flex flex-col items-center justify-end gap-12 h-full text-center text-white px-4 sm:px-6 lg:px-8">
-          <div>
-            <h1 className="text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl mb-6">
-              Empowering Athletes. Inspiring Excellence.
-            </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl mb-6">
-              We appreciate every athlete or parent who would be willing to
-              either fill out an Athlete Spotlight story or leave a genuine
-              testimonial/review to support our community and continue to allow
-              us to chase greatness.
-            </p>
-            <br />
-            <p className="text-lg sm:text-xl lg:text-2xl mb-6">
-              {" "}
-              Please create an account to have your spotlight or testimonial
-              elgible to appear on the website.{" "}
-            </p>
-          </div>{" "}
-          <div>
-            {/* Cards Section */}
-            <div className="py-16  text-white">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  {/* Athlete Spotlight Card */}
-                  <FormDescriptionCard
-                    title="Athlete Spotlights"
-                    text="Athlete Spotlights are personal stories that showcase the hard work,
-        dedication, and success of athletes in our community. Share your
-        journey, highlight your achievements, and inspire others to chase
-        greatness."
-                    link="/spotlight-form"
-                    btnText="Spotlight Form"
-                  />
+    <div className=" mt-16 md:mt-0">
+      <AuroraContainer>
+        <LandingContent />
+      </AuroraContainer>
+    </div>
+  );
+}
 
-                  {/* Testimonials/Reviews Card */}
-                  <FormDescriptionCard
-                    title="Testimonials / Reviews"
-                    text="Testimonials and reviews are a great way to share your
-                      experience with A2A Athletics. Whether you’re an athlete,
-                      parent, or supporter, your feedback helps inspire others
-                      and strengthens our community."
-                    link="/testimonial-form"
-                    btnText=" Testimonial Form"
-                  />
-                </div>
-              </div>
+const Features = () => {
+  const features = [
+    {
+      name: "Elite Training.",
+      description:
+        "Maximize your potential with expert-led training programs designed to push your limits and enhance performance.",
+      icon: BoltIcon,
+    },
+    {
+      name: "Share Your Experience.",
+      description:
+        "Connect with fellow athletes by sharing testimonials, success stories, and feedback on your training journey.",
+      icon: ChatBubbleLeftRightIcon,
+    },
+    {
+      name: "New Features on the Way.",
+      description:
+        "Stay ahead with upcoming features like session tracking, subscriptions, and enhanced athlete profiles.",
+      icon: SparklesIcon,
+    },
+  ];
+  return (
+    <>
+      <hr />
+      <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base/7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16 my-12">
+        {features.map((feature: Feature) => (
+          <div key={feature.name} className="relative pl-9">
+            <dt className="inline font-semibold text-white">
+              <feature.icon
+                aria-hidden="true"
+                className="absolute left-1 top-1 size-5 text-green-500"
+              />
+              {feature.name}
+            </dt>{" "}
+            <dd className="inline">{feature.description}</dd>
+          </div>
+        ))}
+      </dl>
+      <hr />
+    </>
+  );
+};
+
+const LandingContent = () => {
+  return (
+    <>
+      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl pb-32 sm:pb-48 sm:pt-32 lg:pb-56">
+          <div className="text-center">
+            <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
+              Athlete 2 Athlete
+            </h1>
+            <p className="my-8 md:mb-16 text-pretty text-lg font-medium text-gray-400 sm:text-xl/8">
+              A2A is built for athletes, by athletes. Whether you’re training
+              for peak performance, tracking your progress, or looking for
+              expert guidance, our platform is designed to support your journey.
+            </p>
+            <Features />
+
+            <p className="my-6 md:mb-12 text-lg font-medium text-gray-400 sm:text-xl">
+              Let’s push limits, break barriers, and achieve greatness—together.
+              Book now and unlock your full potential today!
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Link
+                to={`/book`}
+                className=" bg-green-600 hover:bg-green-700 text-white text-lg font-semibold py-3 px-6 rounded-md shadow-md transition-all duration-300"
+              >
+                Book a Session
+              </Link>
+              <Link
+                to={`/share-your-experience`}
+                className=" bg-green-600 hover:bg-green-700 text-white text-lg font-semibold py-3 px-6 rounded-md shadow-md transition-all duration-300"
+              >
+                Share Your Experience
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
-
-export default Landing;

@@ -12,6 +12,7 @@ import {
   TestimonialDisplayData,
 } from "../../lib/types";
 import ConfirmationModal from "../Modals/ConfirmationModal";
+import { AuroraContainer } from "../Aurora";
 
 const ViewYourSubmissions = () => {
   const { user, setError } = useGlobalContext();
@@ -71,35 +72,37 @@ const ViewYourSubmissions = () => {
   }, [userId]);
 
   return (
-    <div className="p-8 space-y-6 mt-20 w-full">
-      {/* Dashboard Title */}
-      {showConfirmationModal && (
-        <ConfirmationModal
-          title="Delete your athlete spotlight?"
-          info="This is irreversable, your athlete spotlight will be removed from the website. Any new spotlights form submissions must be approved again by the admin."
-          id={spotlightSubmission.id}
-          greenAction={() => setShowConfirmationModal(false)}
-          greenActionText="Keep Spotlight"
-          redAction={deleteSpotlight}
-          redActionText="Delete"
-        />
-      )}
-      <h1 className="text-3xl font-semibold text-gray-200 text-center pb-12">
-        View Submissions
-      </h1>
-      <div className="flex flex-col gap-12 justify-around w-full md:w-3/4 mx-auto ">
-        {/* Spotlight Submissions Section */}
-        <SpotlightSubmission
-          spotlightSubmission={spotlightSubmission}
-          setShowConfirmationModal={setShowConfirmationModal}
-        />
+    <AuroraContainer>
+      <div className="p-8 space-y-6 mt-20 w-full">
+        {/* Dashboard Title */}
+        {showConfirmationModal && (
+          <ConfirmationModal
+            title="Delete your athlete spotlight?"
+            info="This is irreversable, your athlete spotlight will be removed from the website. Any new spotlights form submissions must be approved again by the admin."
+            id={spotlightSubmission.id}
+            greenAction={() => setShowConfirmationModal(false)}
+            greenActionText="Keep Spotlight"
+            redAction={deleteSpotlight}
+            redActionText="Delete"
+          />
+        )}
+        <h1 className="text-3xl font-semibold text-gray-200 text-center pb-12">
+          View Submissions
+        </h1>
+        <div className="flex flex-col gap-12 justify-around w-full md:w-3/4 mx-auto ">
+          {/* Spotlight Submissions Section */}
+          <SpotlightSubmission
+            spotlightSubmission={spotlightSubmission}
+            setShowConfirmationModal={setShowConfirmationModal}
+          />
 
-        {/* Testimonial Submissions Section */}
-        <TestimonailSubmissions
-          testimonialSubmissions={testimonialSubmissions}
-        />
+          {/* Testimonial Submissions Section */}
+          <TestimonailSubmissions
+            testimonialSubmissions={testimonialSubmissions}
+          />
+        </div>
       </div>
-    </div>
+    </AuroraContainer>
   );
 };
 
