@@ -86,11 +86,9 @@ export default function AdminDashboard() {
       } else {
         setTestimonialSubmissions(data);
       }
-    } catch (err:any) {
+    } catch (err: any) {
       console.error(err);
-      setError(
-        err.error || "Unable to set testimonial submissions"
-      );
+      setError(err.error || "Unable to set testimonial submissions");
     }
   };
 
@@ -112,93 +110,91 @@ export default function AdminDashboard() {
   if (user?.role !== "admin") return <h1>not authorized</h1>;
   return (
     <>
-    <AuroraContainer>
-
-         <main className=" max-w-2xl mx-auto">
-        <div className="relative isolate overflow-hidden pt-16">
-          {/* Secondary navigation */}
-          <header className="pb-4 pt-6 sm:pb-6">
-            <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8 relative">
-              <h1 className="text-base/7 font-semibold text-gray-200">
-                {submissionsTypeIsSpotlight ? "Spotlights" : "Testimonials"}
-              </h1>
-              <div className="order-last flex w-full gap-x-8 text-sm/6 font-semibold sm:order-none sm:w-auto sm:border-l sm:border-gray-800 sm:pl-6 sm:text-sm/7">
-                {submissionStatusList.map((item) => (
-                  <button
-                    style={{ color: item.current ? item.color : "gray" }}
-                    key={item.status}
-                    onClick={() => handleStatusTypeChange(item.status)}
-                    className={`capitalize`}
-                  >
-                    {item.status}
-                  </button>
-                ))}
+      <AuroraContainer>
+        <main className=" max-w-2xl mx-auto">
+          <div className="relative isolate overflow-hidden pt-16">
+            {/* Secondary navigation */}
+            <header className="pb-4 pt-6 sm:pb-6">
+              <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8 relative">
+                <h1 className="text-base/7 font-semibold text-gray-200">
+                  {submissionsTypeIsSpotlight ? "Spotlights" : "Testimonials"}
+                </h1>
+                <div className="order-last flex w-full gap-x-8 text-sm/6 font-semibold sm:order-none sm:w-auto sm:border-l sm:border-gray-800 sm:pl-6 sm:text-sm/7">
+                  {submissionStatusList.map((item) => (
+                    <button
+                      style={{ color: item.current ? item.color : "gray" }}
+                      key={item.status}
+                      onClick={() => handleStatusTypeChange(item.status)}
+                      className={`capitalize`}
+                    >
+                      {item.status}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => setSubmissionTypeIsSpotlight((prev) => !prev)}
+                  className="ml-auto flex items-center gap-x-1 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                >
+                  {submissionsTypeIsSpotlight
+                    ? "View Testimonials"
+                    : "View Spotlights"}
+                </button>
               </div>
-              <button
-                onClick={() => setSubmissionTypeIsSpotlight((prev) => !prev)}
-                className="ml-auto flex items-center gap-x-1 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-              >
-                {submissionsTypeIsSpotlight
-                  ? "View Testimonials"
-                  : "View Spotlights"}
-              </button>
-            </div>
-          </header>
-        </div>
+            </header>
+          </div>
 
-        <div className="space-y-16 py-16 xl:space-y-20  w-full md:w-[50rem] ">
-          {/* Recent activity table */}
-          <div>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h2 className="mx-auto max-w-2xl text-base font-semibold text-gray-200 lg:mx-0 lg:max-w-none">
-                Submissions
-              </h2>
-            </div>
-            <div className="mt-6 overflow-hidden border-t border-gray-100">
+          <div className="space-y-16 py-16 xl:space-y-20  w-full md:w-[50rem] ">
+            {/* Recent activity table */}
+            <div>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-                  <table className="w-full text-left">
-                    <thead className="sr-only">
-                      <tr>
-                        <th>Amount</th>
-                        <th className="hidden sm:table-cell">Client</th>
-                        <th>More details</th>
-                      </tr>
-                    </thead>
-                    {submissionsTypeIsSpotlight ? (
-                      <AthleteSpotlightSubmissionsTableBody
-                        userId={String(user.id)}
-                        status={status}
-                        submissions={athleteSpotlightSubmissions}
-                      />
-                    ) : (
-                      <TestimonialSubmmisionsTableBody
-                        userId={String(user.id)}
-                        status={status}
-                        submissions={testimonialSubmissions}
-                      />
-                    )}
-                  </table>
+                <h2 className="mx-auto max-w-2xl text-base font-semibold text-gray-200 lg:mx-0 lg:max-w-none">
+                  Submissions
+                </h2>
+              </div>
+              <div className="mt-6 overflow-hidden border-t border-gray-100">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+                    <table className="w-full text-left">
+                      <thead className="sr-only">
+                        <tr>
+                          <th>Amount</th>
+                          <th className="hidden sm:table-cell">Client</th>
+                          <th>More details</th>
+                        </tr>
+                      </thead>
+                      {submissionsTypeIsSpotlight ? (
+                        <AthleteSpotlightSubmissionsTableBody
+                          userId={String(user.id)}
+                          status={status}
+                          submissions={athleteSpotlightSubmissions}
+                        />
+                      ) : (
+                        <TestimonialSubmmisionsTableBody
+                          userId={String(user.id)}
+                          status={status}
+                          submissions={testimonialSubmissions}
+                        />
+                      )}
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        {(message || error) && (
-          <SimpleModal
-            text={`Attemp to update the status was ${
-              error ? "unsuccessful" : "successful"
-            }`}
-            title={message ? message : error}
-            isError={Boolean(error)}
-            closeModal={() =>
-              handleCloseModalAndNavigate(() => window.location.reload())
-            }
-          />
-        )}
-      </main>
-    </AuroraContainer>
-   
+          {(message || error) && (
+            <SimpleModal
+              text={`Attemp to update the status was ${
+                error ? "unsuccessful" : "successful"
+              }`}
+              title={message ? message : error}
+              isError={Boolean(error)}
+              closeModal={() =>
+                handleCloseModalAndNavigate(() => window.location.reload())
+              }
+            />
+          )}
+        </main>
+      </AuroraContainer>
     </>
   );
 }
