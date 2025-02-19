@@ -1032,6 +1032,10 @@ video {
   height: 100vh;
 }
 
+.h-96{
+  height: 24rem;
+}
+
 .min-h-48{
   min-height: 12rem;
 }
@@ -1928,11 +1932,6 @@ video {
   line-height: 1.75rem;
 }
 
-.text-xl\/8{
-  font-size: 1.25rem;
-  line-height: 2rem;
-}
-
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
@@ -2092,7 +2091,7 @@ video {
   opacity: 0.3;
 }
 
-.opacity-60 {
+.opacity-60{
   opacity: 0.6;
 }
 
@@ -2825,11 +2824,6 @@ h1, h2, h3 {
     padding-top: 8rem;
   }
 
-  .sm\:text-2xl\/9{
-    font-size: 1.5rem;
-    line-height: 2.25rem;
-  }
-
   .sm\:text-5xl{
     font-size: 3rem;
     line-height: 1;
@@ -2994,6 +2988,11 @@ h1, h2, h3 {
 
   .md\:text-8xl{
     font-size: 6rem;
+    line-height: 1;
+  }
+
+  .md\:text-5xl{
+    font-size: 3rem;
     line-height: 1;
   }
 }

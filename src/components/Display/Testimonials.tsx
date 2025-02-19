@@ -14,7 +14,7 @@ const testimonials = [
   {
     text: "The coaching and community support are unmatched!",
     name: "Athlete C",
-    img: "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
+    img: "https://w0.peakpx.com/wallpaper/318/928/HD-wallpaper-midnight-green-dark-dark-iphone-iphone-11-pro-max-midnight-green-prime-thumbnail.jpg",
   },
 ];
 
@@ -33,7 +33,13 @@ const TestimonialCarousel = () => {
 
   return (
     <div className="relative flex flex-col items-center w-full  mx-auto p-6 text-white rounded-lg shadow-md">
-      <Testimonial img="" name="Carly Sand" text="" />
+      <h2 className="text-4xl md:text-5xl">Testimonials</h2>
+
+      <Testimonial
+        img={testimonials[currentIndex].img}
+        name={testimonials[currentIndex].name}
+        text={testimonials[currentIndex].text}
+      />
       {/* Navigation Controls */}
       <div className="mt-6 flex gap-4  w-full justify-between absolute top-1/2 -translate-y-1/2">
         <button
@@ -66,7 +72,7 @@ function Testimonial({
 }) {
   return (
     <div className=" pb-16 pt-24 sm:pb-24 sm:pt-32 xl:pb-32">
-      <div className="bg-green-950 pb-20 sm:pb-24 xl:pb-0">
+      <div className="bg-green-950  pb-20 sm:pb-24 xl:pb-0">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch">
           <div className="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
             <div className="relative aspect-[2/1] h-full md:-mx-8 xl:mx-0 xl:aspect-auto">
@@ -75,7 +81,7 @@ function Testimonial({
                 src={
                   img
                     ? img
-                    : `"https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"`
+                    : `https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80`
                 }
                 className="absolute inset-0 size-full rounded-2xl bg-gray-800 object-cover shadow-2xl"
               />
@@ -95,10 +101,8 @@ function Testimonial({
                 />
                 <use x={86} href="#b56e9dab-6ccb-4d32-ad02-6b4bb5d9bbeb" />
               </svg>
-              <blockquote className="text-xl/8 font-semibold text-white sm:text-2xl/9">
-                <p>
-               {text}
-                </p>
+              <blockquote className="text-lg font-semibold text-white ">
+                <p>{text}</p>
               </blockquote>
               <figcaption className="mt-8 text-base">
                 <div className="font-semibold text-white">{name}</div>
