@@ -119,7 +119,15 @@ export const getSpotlightSubmissionsByStatus = async (status: string) => {
     throw err;
   }
 };
-
+export const getApprovedSpotlights = async () => {
+  try {
+    const response = await axios.get(`${SPOTLIGHT_BASE_URL}/approved`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
 ///////////////////////////
 // Testimonials
 ///////////////////////////
@@ -179,6 +187,7 @@ export const getAllTestimonials = async () => {
 export const getApprovedTestimonials = async () => {
   try {
     const response = await axios.get(`${TESTIMONIALS_BASE_URL}/approved`);
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error(err);
