@@ -8,11 +8,15 @@ const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
 // Athlete Spotlights
 ///////////////////////////
 export const postAddSpotlight = async (userId: string, formData: FormData) => {
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
   try {
     const response = await axios.post(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
       formData
     );
+
     return response.data;
   } catch (err) {
     console.error(err);
@@ -119,7 +123,15 @@ export const getSpotlightSubmissionsByStatus = async (status: string) => {
     throw err;
   }
 };
-
+export const getApprovedSpotlights = async () => {
+  try {
+    const response = await axios.get(`${SPOTLIGHT_BASE_URL}/approved`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
 ///////////////////////////
 // Testimonials
 ///////////////////////////
@@ -179,6 +191,7 @@ export const getAllTestimonials = async () => {
 export const getApprovedTestimonials = async () => {
   try {
     const response = await axios.get(`${TESTIMONIALS_BASE_URL}/approved`);
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error(err);
