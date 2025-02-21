@@ -32,33 +32,25 @@ const AIF3 = ({
   const [acceptUpdate, setAcceptUpdate] = useState<boolean>(false);
   const [photoDecisionMade, setPhotoDecisionMade] = useState<boolean>(false);
 
+  const handleUpdatePhotos = (imageToAdd: File, idx: number) => {
+    setPhotos((prev) => {
+      const updatedPhotos = [...prev];
+      updatedPhotos[idx] = imageToAdd;
+      return updatedPhotos;
+    });
+  };
   useEffect(() => {
     // If profileImage exists, replace the 0th index
-    if (spotlightFormData.profileImage) {
-      setPhotos((prev) => {
-        const updatedPhotos = [...prev];
-        updatedPhotos[0] = spotlightFormData.profileImage || null;
-        return updatedPhotos;
-      });
-    }
+    if (spotlightFormData.profileImage)
+      handleUpdatePhotos(spotlightFormData.profileImage, 0);
 
     // If actionImage1 exists, replace the 1st index
-    if (spotlightFormData.actionImage1) {
-      setPhotos((prev) => {
-        const updatedPhotos = [...prev];
-        updatedPhotos[1] = spotlightFormData.actionImage1 || null;
-        return updatedPhotos;
-      });
-    }
+    if (spotlightFormData.actionImage1)
+      handleUpdatePhotos(spotlightFormData.actionImage1, 1);
 
     // If actionImage2 exists, replace the 2nd index
-    if (spotlightFormData.actionImage2) {
-      setPhotos((prev) => {
-        const updatedPhotos = [...prev];
-        updatedPhotos[2] = spotlightFormData.actionImage2 || null;
-        return updatedPhotos;
-      });
-    }
+    if (spotlightFormData.actionImage2)
+      handleUpdatePhotos(spotlightFormData.actionImage2, 2);
   }, [
     spotlightFormData.profileImage,
     spotlightFormData.actionImage1,
@@ -76,11 +68,7 @@ const AIF3 = ({
           dataToSendToServer
         );
 
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setMessage(data.message);
-        }
+        setMessage(data.message);
       }
     } catch (err) {
       console.error(err);
