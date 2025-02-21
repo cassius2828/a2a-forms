@@ -77,13 +77,13 @@ export type SpotlightFormData = {
 
 export type SpotlightFormDataGridItem = {
   id: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   sport: string;
   location: string;
-  graduationYear?: string;
-  generalBio: string;
-  profileImage?: string;
+  grad_year?: string;
+  general_bio: string;
+  profile_image?: string;
 };
 
 // Represents the data structure for a spotlight form submission from the server

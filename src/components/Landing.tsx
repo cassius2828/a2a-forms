@@ -7,6 +7,7 @@ import {
 import { Feature } from "../lib/types";
 import { AuroraContainer } from "./Aurora";
 import TestimonialCarousel from "./Display/Testimonials";
+import AthleteSpotlightPage from "./Display/Spotlights";
 
 export default function Landing() {
   return (
@@ -99,6 +100,7 @@ const LandingContent = () => {
           </div>
         </div>
         <TestimonialCarousel/>
+        <AthleteSpotlightPage/>
       </div>
     </>
   );
