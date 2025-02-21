@@ -1,9 +1,14 @@
 // import { athletes } from '@/data/athletes' // Import the athletes array
 
 import { useEffect, useState } from "react";
-import { getApprovedSpotlights } from "../../services/formService";
+import {
+  getApprovedSpotlights,
+  getSpotlightBySpotlightId,
+} from "../../services/formService";
 import { SpotlightFormDataGridItem } from "../../lib/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useGlobalContext } from "../../context/useGlobalContext";
+import { AuroraContainer } from "../Aurora";
 
 export default function AthleteSpotlightPage() {
   const [spotlights, setSpotlights] = useState<SpotlightFormDataGridItem[]>([]);
@@ -110,9 +115,124 @@ export function AthleteGallery({
 }
 
 export const ShowSpotlight = () => {
+  const { error, setError } = useGlobalContext();
+  const navigate = useNavigate();
+  const [spotlight, setSpotlight] = useState();
+  const { spotlightId } = useParams();
+  const fetchSpotlight = async () => {
+    try {
+      if (spotlightId) {
+        const data = await getSpotlightBySpotlightId(spotlightId);
+        console.log(data);
+        setSpotlight(data);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Unable to fetch spotlight");
+    }
+  };
+
+  useEffect(() => {
+    fetchSpotlight();
+    console.log(spotlight, " spotlight");
+  }, [spotlightId]);
+  if (!spotlight) return <h1>No Spotlight found</h1>;
   return (
-    <div className="mt-80 text-white text-center w-full h-full">
-      ShowSpotlight
-    </div>
+    <AuroraContainer>
+      <div className="overflow-hidden py-24 sm:py-32 ">
+        <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+          <div className="max-w-4xl">
+            <p className="text-base/7 font-semibold text-green-500">{spotlight.first_name}&apos;s Spotlight</p>
+            <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              {`${spotlight.first_name} ${spotlight.last_name} class of ${spotlight.grad_year}`}
+            </h1>
+            <p className="mt-6 text-balance text-xl/8 text-gray-300">
+              {spotlight.general_bio}
+            </p>
+          </div>
+
+          <section className="mt-20 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-16">
+            <div className="lg:pr-8">
+              <h2 className="text-pretty text-2xl font-semibold tracking-tight text-white">
+                {spotlight.first_name}&apos;s Accomplishments
+              </h2>
+              <p className="mb-6 mt-3 text-base/7 text-gray-300">
+                {spotlight.action_bio}
+              </p>
+              <h2 className="text-pretty text-2xl font-semibold tracking-tight text-white">
+                Community Impact
+              </h2>
+              <p className=" mt-3 text-base/7 text-gray-300">
+                {spotlight.community_bio}
+              </p>
+            </div>
+
+            <div className="pt-16 lg:row-span-2 lg:-mr-16 xl:mr-auto">
+              <div className="-mx-8 grid grid-cols-2 gap-4 sm:-mx-16 sm:grid-cols-4 lg:mx-0 lg:grid-cols-2 lg:gap-4 xl:gap-8">
+                {[
+                  // third is null to keep the layout alternating, otherwise the last image will fall underneath the left most image
+                  spotlight.profile_image,
+                  spotlight.action_image_1,
+                  null,
+                  spotlight.action_image_2,
+                ].map((photo, idx) => {
+                  return photo ? (
+                    <div
+                      key={idx}
+                      className={`aspect-square overflow-hidden rounded-xl shadow-xl outline outline-1 -outline-offset-1 outline-black/10 ${
+                        idx % 2 !== 0 ? "-mt-8 lg:-mt-40" : ""
+                      }`}
+                    >
+                      <img
+                        alt=""
+                        src={photo}
+                        className="block size-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div key={idx}></div>
+                  );
+                })}
+              </div>
+            </div>
+{/* stats */}
+            {/* <div className="max-lg:mt-16 lg:col-span-1">
+              <p className="text-base/7 font-semibold text-gray-400">
+                The numbers
+              </p>
+              <hr className="mt-6 border-t border-gray-700" />
+              <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
+                {[
+                  { label: "Raised", value: "$150M" },
+                  { label: "Companies", value: "30K" },
+                  { label: "Deals Closed", value: "1.5M" },
+                  { label: "Leads Generated", value: "200M" },
+                ].map((stat, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex flex-col gap-y-2 ${
+                      idx < 3
+                        ? "border-b border-dotted border-gray-700 pb-4"
+                        : ""
+                    }`}
+                  >
+                    <dt className="text-sm/6 text-gray-400">{stat.label}</dt>
+                    <dd className="order-first text-6xl font-semibold tracking-tight text-white">
+                      {stat.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div> */}
+            <button
+              onClick={() => navigate(-1)}
+              className="w-48 text-center bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold  rounded-md shadow-md transition-all duration-300"
+            >
+              Back
+            </button>
+          </section>
+        </div>
+      </div>
+    </AuroraContainer>
   );
 };
