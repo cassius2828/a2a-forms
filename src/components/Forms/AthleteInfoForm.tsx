@@ -27,33 +27,28 @@ export default function AthleteInfoForm() {
       if (user) {
         try {
           const data = await getSpotlightByUserId(String(user.id));
-          if (data.error) {
-            setSpotlightFormData((prevForm) => {
-              return {
-                ...prevForm,
-                firstName: user.first_name,
-                lastName: user.last_name,
-              };
-            });
-          } else {
-            setSpotlightFormData({
-              firstName: data.first_name || "",
-              lastName: data.last_name || "",
-              sport: data.sport || "",
-              graduationYear: data.grad_year || "",
-              location: data.location || "",
-              generalBio: data.general_bio || "",
-              actionBio: data.action_bio || "",
-              communityBio: data.community_bio || "",
-              profileImage: null,
-              actionImage1: null,
-              actionImage2: null,
-            });
 
-            setOwnedByCurrentUser(user?.id == data.created_by);
-          }
+          setSpotlightFormData({
+            firstName: data.first_name || "",
+            lastName: data.last_name || "",
+            sport: data.sport || "",
+            graduationYear: data.grad_year || "",
+            location: data.location || "",
+            generalBio: data.general_bio || "",
+            actionBio: data.action_bio || "",
+            communityBio: data.community_bio || "",
+          });
+
+          setOwnedByCurrentUser(user?.id == data.created_by);
         } catch (err) {
           console.error(err);
+          setSpotlightFormData((prevForm) => {
+            return {
+              ...prevForm,
+              firstName: user.first_name,
+              lastName: user.last_name,
+            };
+          });
         }
       }
     };
@@ -70,7 +65,7 @@ export default function AthleteInfoForm() {
         {(error || message) && (
           <FormModal
             isError={Boolean(error)}
-            title={error ? " Error: Could not submit form" : "Success!"}
+            title={error ? " Error" : "Success!"}
             text={error ? error : message}
             setError={setError}
             setMessage={setMessage}

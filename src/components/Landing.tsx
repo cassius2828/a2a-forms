@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Feature } from "../lib/types";
 import { AuroraContainer } from "./Aurora";
+import TestimonialCarousel from "./Display/Testimonials";
 
 export default function Landing() {
   return (
@@ -80,6 +81,7 @@ const LandingContent = () => {
               Let’s push limits, break barriers, and achieve greatness—together.
               Book now and unlock your full potential today!
             </p>
+            {/* CTA btns */}
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Link
                 to={`/book`}
@@ -96,6 +98,7 @@ const LandingContent = () => {
             </div>
           </div>
         </div>
+        <TestimonialCarousel/>
       </div>
     </>
   );

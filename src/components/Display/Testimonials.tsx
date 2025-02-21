@@ -1,25 +1,12 @@
-import { useState } from "react";
-
-const testimonials = [
-  {
-    text: "This training has completely changed my performance!",
-    name: "Athlete A",
-    img: "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
-  },
-  {
-    text: "I feel stronger and more confident after every session!",
-    name: "Athlete B",
-    img: "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
-  },
-  {
-    text: "The coaching and community support are unmatched!",
-    name: "Athlete C",
-    img: "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
-  },
-];
+import { useEffect, useState } from "react";
+import { getApprovedTestimonials } from "../../services/formService";
+import { TestimonialCarouselType } from "../../lib/types";
 
 const TestimonialCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [testimonials, setTestimonials] = useState<TestimonialCarouselType[]>(
+    []
+  );
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -30,10 +17,28 @@ const TestimonialCarousel = () => {
       prev === 0 ? testimonials.length - 1 : prev - 1
     );
   };
-
+  useEffect(() => {
+    const fetchAcceptedTestimonials = async () => {
+      try {
+        const data = await getApprovedTestimonials();
+        console.log(data, " accepted testimonails data");
+        setTestimonials(data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error(err, err.response.data.error);
+      }
+    };
+    fetchAcceptedTestimonials();
+  }, []);
   return (
-    <div className="relative flex flex-col items-center w-full  mx-auto p-6 text-white rounded-lg shadow-md">
-      <Testimonial img="" name="Carly Sand" text="" />
+    <div className="relative flex flex-col items-center w-full  mx-auto p-6 text-white rounded-lg">
+      <h2 className="text-4xl md:text-5xl">Testimonials</h2>
+
+      <Testimonial
+        img={testimonials[currentIndex]?.img}
+        name={testimonials[currentIndex]?.name}
+        text={testimonials[currentIndex]?.text}
+      />
       {/* Navigation Controls */}
       <div className="mt-6 flex gap-4  w-full justify-between absolute top-1/2 -translate-y-1/2">
         <button
@@ -49,24 +54,19 @@ const TestimonialCarousel = () => {
           ▶
         </button>
       </div>
+      <span className="absolute bottom-24 md:bottom-20 text-white z-30 text-2xl">
+          {currentIndex + 1} / {testimonials.length}
+        </span>
     </div>
   );
 };
 
 export default TestimonialCarousel;
 
-function Testimonial({
-  name,
-  text,
-  img,
-}: {
-  name: string;
-  text: string;
-  img: string;
-}) {
+function Testimonial({ name, text, img }: TestimonialCarouselType) {
   return (
     <div className=" pb-16 pt-24 sm:pb-24 sm:pt-32 xl:pb-32">
-      <div className="bg-green-950 pb-20 sm:pb-24 xl:pb-0">
+      <div className="bg-green-950  pb-20 sm:pb-24 xl:pb-0">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch">
           <div className="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
             <div className="relative aspect-[2/1] h-full md:-mx-8 xl:mx-0 xl:aspect-auto">
@@ -75,9 +75,9 @@ function Testimonial({
                 src={
                   img
                     ? img
-                    : `"https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"`
+                    : `https://w0.peakpx.com/wallpaper/318/928/HD-wallpaper-midnight-green-dark-dark-iphone-iphone-11-pro-max-midnight-green-prime-thumbnail.jpg`
                 }
-                className="absolute inset-0 size-full rounded-2xl bg-gray-800 object-cover shadow-2xl"
+                className="absolute inset-0 size-full rounded-2xl bg-gray-800 object-cover"
               />
             </div>
           </div>
@@ -95,10 +95,8 @@ function Testimonial({
                 />
                 <use x={86} href="#b56e9dab-6ccb-4d32-ad02-6b4bb5d9bbeb" />
               </svg>
-              <blockquote className="text-xl/8 font-semibold text-white sm:text-2xl/9">
-                <p>
-               {text}
-                </p>
+              <blockquote className="text-lg font-semibold text-white ">
+                <p>{text}</p>
               </blockquote>
               <figcaption className="mt-8 text-base">
                 <div className="font-semibold text-white">{name}</div>
