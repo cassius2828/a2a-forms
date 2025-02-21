@@ -24,9 +24,7 @@ const initialSpotlightFormData: SpotlightFormData = {
   generalBio: "",
   actionBio: "",
   communityBio: "",
-  profileImage: null,
-  actionImage1: null,
-  actionImage2: null,
+
 };
 const initialTestimonialFormState: TestimonialFormData = {
   text: "",

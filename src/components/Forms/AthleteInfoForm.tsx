@@ -37,9 +37,6 @@ export default function AthleteInfoForm() {
             generalBio: data.general_bio || "",
             actionBio: data.action_bio || "",
             communityBio: data.community_bio || "",
-            profileImage: null,
-            actionImage1: null,
-            actionImage2: null,
           });
 
           setOwnedByCurrentUser(user?.id == data.created_by);
