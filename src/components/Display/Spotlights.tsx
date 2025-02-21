@@ -108,3 +108,11 @@ export function AthleteGallery({
     </div>
   );
 }
+
+export const ShowSpotlight = () => {
+  return (
+    <div className="mt-80 text-white text-center w-full h-full">
+      ShowSpotlight
+    </div>
+  );
+};
