@@ -58,9 +58,7 @@ export type UpdatePasswordFormData = {
   newPassword: string;
   confirmPassword: string;
 };
-export type SpotlightFormDataPhoto = {
-  photo: File;
-} | null;
+
 // ✅ Spotlight Form & Submission Data
 // Represents the data structure for a spotlight form submission
 export type SpotlightFormData = {
@@ -72,9 +70,20 @@ export type SpotlightFormData = {
   actionBio: string;
   generalBio: string;
   communityBio: string;
-  profileImage?: SpotlightFormDataPhoto;
-  actionImage1?: SpotlightFormDataPhoto;
-  actionImage2?: SpotlightFormDataPhoto;
+  profileImage?: File;
+  actionImage1?: File;
+  actionImage2?: File;
+};
+
+export type SpotlightFormDataGridItem = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  sport: string;
+  location: string;
+  graduationYear?: string;
+  generalBio: string;
+  profileImage?: string;
 };
 
 // Represents the data structure for a spotlight form submission from the server
@@ -213,7 +222,7 @@ export interface PrevAndSubmitBtnProps {
   handleResetForm: () => void;
   handleUpdate: React.MouseEventHandler<HTMLButtonElement>;
 
-  handleSubmit: React.FormEventHandler<HTMLFormElement>;
+  handleSubmit: React.MouseEventHandler<HTMLButtonElement>;
   photoDecisionMade: boolean;
   ownedByCurrentUser: boolean;
 }

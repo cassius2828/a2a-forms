@@ -8,11 +8,15 @@ const TESTIMONIALS_BASE_URL = BASE_URL + "/forms/testimonials";
 // Athlete Spotlights
 ///////////////////////////
 export const postAddSpotlight = async (userId: string, formData: FormData) => {
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
   try {
     const response = await axios.post(
       `${SPOTLIGHT_BASE_URL}/${userId}`,
       formData
     );
+
     return response.data;
   } catch (err) {
     console.error(err);

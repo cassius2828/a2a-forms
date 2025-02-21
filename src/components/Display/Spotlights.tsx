@@ -1,13 +1,26 @@
 // import { athletes } from '@/data/athletes' // Import the athletes array
 
 import { useEffect, useState } from "react";
-import { getSpotlightSubmissionsByStatus } from "../../services/formService";
+import { getApprovedSpotlights } from "../../services/formService";
+import { SpotlightFormDataGridItem } from "../../lib/types";
+import { Link } from "react-router-dom";
 
 export default function AthleteSpotlightPage() {
-  const [spotlights, setSpotlights] = useState([]);
+  const [spotlights, setSpotlights] = useState<SpotlightFormDataGridItem[]>([]);
 
   useEffect(() => {
-    getSpotlightSubmissionsByStatus("accepted");
+    const fetchApprovedSpotlights = async () => {
+      try {
+        const data = await getApprovedSpotlights();
+        console.log(data);
+        setSpotlights(data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error(err);
+        console.log(err.response.data.error);
+      }
+    };
+    fetchApprovedSpotlights();
   }, []);
 
   return (
@@ -39,21 +52,25 @@ export default function AthleteSpotlightPage() {
   );
 }
 
-export function AthleteGallery({ spotlights }) {
+export function AthleteGallery({
+  spotlights,
+}: {
+  spotlights: SpotlightFormDataGridItem[];
+}) {
   return (
     <div className="container mx-auto px-6 py-12">
       {/* Athlete Cards */}
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {spotlights.map((spotlight) => (
           <div
-            key={athlete.id}
+            key={spotlight.id}
             className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md"
           >
             {/* Profile Image */}
-            {athlete.profileImg ? (
+            {spotlight.profileImage ? (
               <img
-                src={athlete.profileImg}
-                alt={`${athlete.name} profile`}
+                src={spotlight.profileImage}
+                alt={`${spotlight.firstName} ${spotlight.lastName} profile`}
                 className="mb-4 h-64 w-full rounded-lg object-cover shadow-lg"
               />
             ) : (
@@ -62,23 +79,25 @@ export function AthleteGallery({ spotlights }) {
               </div>
             )}
 
-            {/* Athlete Info */}
+            {/* spotlight Info */}
             <h2 className="text-xl font-bold text-neutral-900">
-              {athlete.name}
+              {`${spotlight.firstName} ${spotlight.lastName}`}
             </h2>
             <p className="mb-2 text-sm text-neutral-600">
-              {athlete.sport + " | co. " + athlete.graduationYear}
+              {spotlight.sport + " | co. " + spotlight.graduationYear}
             </p>
-            <p className="mb-4 text-sm text-neutral-600">{athlete.location}</p>
+            <p className="mb-4 text-sm text-neutral-600">
+              {spotlight.location}
+            </p>
 
             {/* General Bio */}
             <p className="mb-6 text-sm text-neutral-700">
-              {athlete.generalBio}
+              {spotlight.generalBio}
             </p>
 
             {/* Link to Spotlight Page */}
             <Link
-              href={`/spotlights/${athlete.id}`}
+              to={`/spotlights/${spotlight.id}`}
               className="mt-auto rounded-lg bg-neutral-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-neutral-700"
             >
               View Spotlight
