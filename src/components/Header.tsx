@@ -34,6 +34,8 @@ export default Header;
 export const HeaderV2 = () => {
   const { user, signoutUser } = useGlobalContext();
   const navigate = useNavigate();
+const isMobile = window.innerWidth < 600;
+
   const handleSignOut = () => {
     signoutUser();
     navigate("/");
@@ -92,12 +94,12 @@ export const HeaderV2 = () => {
     { name: "Sign out", href: "#" },
   ];
   useGSAP(() => {
-    headerScrollBgColor();
+    headerScrollBgColor(isMobile);
   }, {});
   return (
     <>
       <div className="w-full">
-        <Disclosure as="nav" className="header  fixed z-50 top-0 w-full">
+        <Disclosure as="nav" className="header fixed z-50 top-0 w-full">
           <div className="test"></div>
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
