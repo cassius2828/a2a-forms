@@ -9,7 +9,7 @@ import { ShowSpotlightData, SpotlightFormDataGridItem } from "../../lib/types";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import { AuroraContainer } from "../Aurora";
-import NotFound404 from "../PlaceholderPages/MissingItems";
+import MissingItems from "../PlaceholderPages/MissingItems";
 
 export default function AthleteSpotlightPage() {
   const [spotlights, setSpotlights] = useState<SpotlightFormDataGridItem[]>([]);
@@ -134,7 +134,7 @@ export const ShowSpotlight = () => {
   useEffect(() => {
     fetchSpotlight();
   }, [spotlightId]);
-  if (!spotlight) return <NotFound404 item="" />;
+  if (!spotlight) return <MissingItems item="Spotlight" />;
   return (
     <AuroraContainer>
       <div className="overflow-hidden py-24 sm:py-32 ">
@@ -226,9 +226,9 @@ export const ShowSpotlight = () => {
             </div> */}
             <button
               onClick={() => navigate(-1)}
-              className="w-48 text-center bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold  rounded-md shadow-md transition-all duration-300"
+              className="w-20 mt-12 mx-auto md:mx-0 text-center bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold  rounded-md shadow-md transition-all duration-300"
             >
-              Back
+              &#8592; Back
             </button>
           </section>
         </div>
@@ -236,3 +236,4 @@ export const ShowSpotlight = () => {
     </AuroraContainer>
   );
 };
+ 
