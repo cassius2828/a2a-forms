@@ -48,11 +48,17 @@ function classNames(...classes: ClassesRestOp) {
 }
 
 export default function AdminDashboard() {
-  const [submissionsTypeIsSpotlight, setSubmissionTypeIsSpotlight] =
-    useState<boolean>(true);
-  const { user, error, message, setError, handleCloseModalAndNavigate } =
-    useGlobalContext();
-  const [status, setStatus] = useState<StatusType>("pending");
+  const {
+    user,
+    error,
+    message,
+    setError,
+    setMessage,
+    status,
+    setStatus,
+    isSubmissionTypeSpotlight,
+    setIsSubmissionTypeSpotlight,
+  } = useGlobalContext();
   const [athleteSpotlightSubmissions, setAthleteSpotlightSubmissions] =
     useState<AthleteSpotlightSubmission[]>([]);
   const [testimonialSubmissions, setTestimonialSubmissions] = useState<
@@ -102,11 +108,13 @@ export default function AdminDashboard() {
       setStatus("rejected");
     } else return;
   };
-  useEffect(() => {
-    fetchAthleteSpotlightSubmissions();
-    fetchTestimonialSubmissions();
-  }, [status]);
 
+  // fresh submission state after closing modals, changing status, and changing submission type
+  useEffect(() => {
+    if (isSubmissionTypeSpotlight) fetchAthleteSpotlightSubmissions();
+    else fetchTestimonialSubmissions();
+  }, [message, error, isSubmissionTypeSpotlight, status]);
+  
   if (user?.role !== "admin") return <h1>not authorized</h1>;
   return (
     <>
@@ -117,7 +125,7 @@ export default function AdminDashboard() {
             <header className="pb-4 pt-6 sm:pb-6">
               <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8 relative">
                 <h1 className="text-base/7 font-semibold text-gray-200">
-                  {submissionsTypeIsSpotlight ? "Spotlights" : "Testimonials"}
+                  {isSubmissionTypeSpotlight ? "Spotlights" : "Testimonials"}
                 </h1>
                 <div className="order-last flex w-full gap-x-8 text-sm/6 font-semibold sm:order-none sm:w-auto sm:border-l sm:border-gray-800 sm:pl-6 sm:text-sm/7">
                   {submissionStatusList.map((item) => (
@@ -132,10 +140,10 @@ export default function AdminDashboard() {
                   ))}
                 </div>
                 <button
-                  onClick={() => setSubmissionTypeIsSpotlight((prev) => !prev)}
+                  onClick={() => setIsSubmissionTypeSpotlight((prev) => !prev)}
                   className="ml-auto flex items-center gap-x-1 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                 >
-                  {submissionsTypeIsSpotlight
+                  {isSubmissionTypeSpotlight
                     ? "View Testimonials"
                     : "View Spotlights"}
                 </button>
@@ -162,7 +170,7 @@ export default function AdminDashboard() {
                           <th>More details</th>
                         </tr>
                       </thead>
-                      {submissionsTypeIsSpotlight ? (
+                      {isSubmissionTypeSpotlight ? (
                         <AthleteSpotlightSubmissionsTableBody
                           userId={String(user.id)}
                           status={status}
@@ -188,9 +196,10 @@ export default function AdminDashboard() {
               }`}
               title={message ? message : error}
               isError={Boolean(error)}
-              closeModal={() =>
-                handleCloseModalAndNavigate(() => window.location.reload())
-              }
+              closeModal={() => {
+                setMessage("");
+                setError("");
+              }}
             />
           )}
         </main>

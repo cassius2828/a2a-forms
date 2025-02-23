@@ -6,6 +6,11 @@ import formRoutes from "./forms";
 import profileRoutes from "./profile";
 import submissionsRoutes from "./submissions";
 import ShareExp from "../components/ShareExp";
+const ShowSpotlight = React.lazy(() =>
+  import("../components/Display/Spotlights").then((module) => ({
+    default: module.ShowSpotlight,
+  }))
+);
 
 const routes = [
   {
@@ -33,6 +38,20 @@ const routes = [
         }
       >
         <ShareExp />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/spotlights/:spotlightId",
+    element: (
+      <Suspense
+        fallback={
+          <div className="w-screen h-screen flex justify-center items-center">
+            <span className="loader"></span>
+          </div>
+        }
+      >
+        <ShowSpotlight />
       </Suspense>
     ),
   },
