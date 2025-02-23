@@ -48,10 +48,17 @@ function classNames(...classes: ClassesRestOp) {
 }
 
 export default function AdminDashboard() {
-  const [isSubmissionTypeSpotlight, setIsSubmissionTypeSpotlight] =
-    useState<boolean>(true);
-  const { user, error, message, setError, setMessage } = useGlobalContext();
-  const [status, setStatus] = useState<StatusType>("pending");
+  const {
+    user,
+    error,
+    message,
+    setError,
+    setMessage,
+    status,
+    setStatus,
+    isSubmissionTypeSpotlight,
+    setIsSubmissionTypeSpotlight,
+  } = useGlobalContext();
   const [athleteSpotlightSubmissions, setAthleteSpotlightSubmissions] =
     useState<AthleteSpotlightSubmission[]>([]);
   const [testimonialSubmissions, setTestimonialSubmissions] = useState<
@@ -107,6 +114,7 @@ export default function AdminDashboard() {
     if (isSubmissionTypeSpotlight) fetchAthleteSpotlightSubmissions();
     else fetchTestimonialSubmissions();
   }, [message, error, isSubmissionTypeSpotlight, status]);
+  
   if (user?.role !== "admin") return <h1>not authorized</h1>;
   return (
     <>

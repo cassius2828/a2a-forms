@@ -214,6 +214,10 @@ export interface GlobalContextType {
   handleApproveSpotlight: (id: string, adminComment?: string) => Promise<void>;
   handleRejectSpotlight: (id: string, adminComment?: string) => Promise<void>;
   handleCloseModalAndNavigate: (fn?: () => void) => void;
+  status: StatusType;
+  setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
+  isSubmissionTypeSpotlight: boolean;
+  setIsSubmissionTypeSpotlight: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PrevAndSubmitBtnProps {
