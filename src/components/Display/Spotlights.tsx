@@ -9,7 +9,7 @@ import { ShowSpotlightData, SpotlightFormDataGridItem } from "../../lib/types";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import { AuroraContainer } from "../Aurora";
-import NotFound404 from "../PlaceholderPages/MissingItems";
+import MissingItems from "../PlaceholderPages/MissingItems";
 
 export default function AthleteSpotlightPage() {
   const [spotlights, setSpotlights] = useState<SpotlightFormDataGridItem[]>([]);
@@ -134,7 +134,7 @@ export const ShowSpotlight = () => {
   useEffect(() => {
     fetchSpotlight();
   }, [spotlightId]);
-  if (!spotlight) return <NotFound404 item="" />;
+  if (!spotlight) return <MissingItems item="Spotlight" />;
   return (
     <AuroraContainer>
       <div className="overflow-hidden py-24 sm:py-32 ">
