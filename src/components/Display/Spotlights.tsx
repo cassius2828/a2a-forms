@@ -226,9 +226,9 @@ export const ShowSpotlight = () => {
             </div> */}
             <button
               onClick={() => navigate(-1)}
-              className="w-48 text-center bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold  rounded-md shadow-md transition-all duration-300"
+              className="w-20 mt-12 mx-auto md:mx-0 text-center bg-gray-600 hover:bg-gray-700 text-white text-lg font-semibold  rounded-md shadow-md transition-all duration-300"
             >
-              Back
+              &#8592; Back
             </button>
           </section>
         </div>
@@ -236,3 +236,4 @@ export const ShowSpotlight = () => {
     </AuroraContainer>
   );
 };
+ 
