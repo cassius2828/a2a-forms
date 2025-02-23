@@ -5,10 +5,11 @@ import {
   getApprovedSpotlights,
   getSpotlightBySpotlightId,
 } from "../../services/formService";
-import { SpotlightFormDataGridItem } from "../../lib/types";
+import { ShowSpotlightData, SpotlightFormDataGridItem } from "../../lib/types";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/useGlobalContext";
 import { AuroraContainer } from "../Aurora";
+import NotFound404 from "../PlaceholderPages/MissingItems";
 
 export default function AthleteSpotlightPage() {
   const [spotlights, setSpotlights] = useState<SpotlightFormDataGridItem[]>([]);
@@ -115,9 +116,9 @@ export function AthleteGallery({
 }
 
 export const ShowSpotlight = () => {
-  const { error, setError } = useGlobalContext();
+  const { setError } = useGlobalContext();
   const navigate = useNavigate();
-  const [spotlight, setSpotlight] = useState();
+  const [spotlight, setSpotlight] = useState<ShowSpotlightData>();
   const { spotlightId } = useParams();
   const fetchSpotlight = async () => {
     try {
@@ -136,13 +137,15 @@ export const ShowSpotlight = () => {
     fetchSpotlight();
     console.log(spotlight, " spotlight");
   }, [spotlightId]);
-  if (!spotlight) return <h1>No Spotlight found</h1>;
+  if (!spotlight) return <NotFound404 item="" />;
   return (
     <AuroraContainer>
       <div className="overflow-hidden py-24 sm:py-32 ">
         <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
           <div className="max-w-4xl">
-            <p className="text-base/7 font-semibold text-green-500">{spotlight.first_name}&apos;s Spotlight</p>
+            <p className="text-base/7 font-semibold text-green-500">
+              {spotlight.first_name}&apos;s Spotlight
+            </p>
             <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl">
               {`${spotlight.first_name} ${spotlight.last_name} class of ${spotlight.grad_year}`}
             </h1>
@@ -195,7 +198,7 @@ export const ShowSpotlight = () => {
                 })}
               </div>
             </div>
-{/* stats */}
+            {/* stats */}
             {/* <div className="max-lg:mt-16 lg:col-span-1">
               <p className="text-base/7 font-semibold text-gray-400">
                 The numbers
