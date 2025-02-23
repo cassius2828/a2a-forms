@@ -18,7 +18,6 @@ export default function AthleteSpotlightPage() {
     const fetchApprovedSpotlights = async () => {
       try {
         const data = await getApprovedSpotlights();
-        console.log(data);
         setSpotlights(data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -124,7 +123,6 @@ export const ShowSpotlight = () => {
     try {
       if (spotlightId) {
         const data = await getSpotlightBySpotlightId(spotlightId);
-        console.log(data);
         setSpotlight(data);
       }
     } catch (err) {
@@ -135,7 +133,6 @@ export const ShowSpotlight = () => {
 
   useEffect(() => {
     fetchSpotlight();
-    console.log(spotlight, " spotlight");
   }, [spotlightId]);
   if (!spotlight) return <NotFound404 item="" />;
   return (

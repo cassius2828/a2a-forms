@@ -25,7 +25,6 @@ const Login = () => {
         return;
       }
       const data = await login(loginForm);
-console.log(data)
       setUser(data);
       getUser();
       navigate("/");
