@@ -3,6 +3,7 @@ import { getUser } from "../services/authService";
 import {
   GlobalProviderProps,
   SpotlightFormData,
+  StatusType,
   TestimonialDisplayData,
   TestimonialFormData,
   UserTokenData,
@@ -24,7 +25,6 @@ const initialSpotlightFormData: SpotlightFormData = {
   generalBio: "",
   actionBio: "",
   communityBio: "",
-
 };
 const initialTestimonialFormState: TestimonialFormData = {
   text: "",
@@ -46,6 +46,9 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [userTestimonials, setUserTestimonials] = useState<
     TestimonialDisplayData[]
   >([]);
+  const [isSubmissionTypeSpotlight, setIsSubmissionTypeSpotlight] =
+    useState<boolean>(true);
+  const [status, setStatus] = useState<StatusType>("pending");
 
   const fetchUserTestimonialSubmissions = async (userId: string) => {
     try {
@@ -280,6 +283,10 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         handleCloseModalAndNavigate,
         handleApproveSpotlight,
         handleRejectSpotlight,
+        status,
+        setStatus,
+        isSubmissionTypeSpotlight,
+        setIsSubmissionTypeSpotlight,
       }}
     >
       {children}

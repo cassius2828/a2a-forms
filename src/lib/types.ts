@@ -77,13 +77,13 @@ export type SpotlightFormData = {
 
 export type SpotlightFormDataGridItem = {
   id: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   sport: string;
   location: string;
-  graduationYear?: string;
-  generalBio: string;
-  profileImage?: string;
+  grad_year?: string;
+  general_bio: string;
+  profile_image?: string;
 };
 
 // Represents the data structure for a spotlight form submission from the server
@@ -214,6 +214,10 @@ export interface GlobalContextType {
   handleApproveSpotlight: (id: string, adminComment?: string) => Promise<void>;
   handleRejectSpotlight: (id: string, adminComment?: string) => Promise<void>;
   handleCloseModalAndNavigate: (fn?: () => void) => void;
+  status: StatusType;
+  setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
+  isSubmissionTypeSpotlight: boolean;
+  setIsSubmissionTypeSpotlight: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PrevAndSubmitBtnProps {
@@ -273,11 +277,13 @@ export type SideBarNavMenu = {
 };
 
 // ✅ Other Utility Types
-// Represents the status type used across submissions
+// Represents the status of an item (e.g., approval process)
 export type StatusType = "pending" | "approved" | "rejected";
 
+// Defines an array of optional class names for CSS styling
 export type ClassesRestOp = (string | undefined | null)[];
 
+// Represents a client with their last invoice details
 export type Client = {
   id: number;
   name: string;
@@ -289,14 +295,18 @@ export type Client = {
     status: StatusKey;
   };
 };
+
+// Represents a single day with associated transactions
 export type Day = {
   date: string;
   dateTime: string;
   transactions: Transaction[];
 };
 
+// Defines an array of days, each with its transactions
 export type Days = Day[];
 
+// Represents a financial transaction for an invoice
 export type Transaction = {
   id: number;
   invoiceNumber: string;
@@ -309,16 +319,32 @@ export type Transaction = {
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
 };
 
+// Defines the status options for transactions or invoices
 export type StatusKey = "Paid" | "Withdraw" | "Overdue";
 
+// Represents a feature with a name, description, and icon
 export type Feature = {
   name: string;
   description: string;
   icon: React.ElementType;
 };
 
+// Represents a testimonial with the user's name, text, and optional image
 export type TestimonialCarouselType = {
   name: string;
   text: string;
   img?: string;
+};
+
+// Represents spotlight data for an athlete profile
+export type ShowSpotlightData = {
+  first_name: string;
+  last_name: string;
+  grad_year: string;
+  general_bio: string;
+  action_bio: string;
+  community_bio: string;
+  profile_image?: string;
+  action_image_1?: string;
+  action_image_2?: string;
 };
