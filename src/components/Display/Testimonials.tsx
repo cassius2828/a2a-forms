@@ -21,7 +21,6 @@ const TestimonialCarousel = () => {
     const fetchAcceptedTestimonials = async () => {
       try {
         const data = await getApprovedTestimonials();
-        console.log(data, " accepted testimonails data");
         setTestimonials(data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
