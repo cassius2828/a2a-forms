@@ -63,7 +63,12 @@ const ShowSpotlight = () => {
     if (spotlightId) fetchSpotlightById(spotlightId);
   }, [spotlightId]);
 
-  if (isLoading) return <DefaultLoader />;
+  if (isLoading)
+    return (
+      <div className="h-screen w-screen flex justify-center items-center">
+        <DefaultLoader />
+      </div>
+    );
   if (!spotlightId) return <MissingItems item="Spotlight ID" />;
   if (String(user?.id) !== String(import.meta.env.VITE_ADMIN_ID))
     return (
