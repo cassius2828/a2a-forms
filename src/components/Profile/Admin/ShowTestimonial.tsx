@@ -69,7 +69,12 @@ const ShowTestimonial = () => {
         cannot locate testimonial ID
       </span>
     );
-  if (isLoading) return <DefaultLoader />;
+  if (isLoading)
+    return (
+      <div className="h-screen w-screen flex justify-center items-center">
+        <DefaultLoader />
+      </div>
+    );
   if (String(user?.id) !== String(import.meta.env.VITE_ADMIN_ID))
     return (
       <h1 className="mt-80 text-center w-full text-4xl">Not Authorized</h1>
