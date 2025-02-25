@@ -63,10 +63,17 @@ const ShowTestimonial = () => {
     scrollToTop(false);
   }, [testimonialId]);
 
-  if (!testimonialId) return <span>cannot locate testimonial ID</span>;
+  if (!testimonialId)
+    return (
+      <span className="mt-80 text-center w-full text-4xl">
+        cannot locate testimonial ID
+      </span>
+    );
   if (isLoading) return <DefaultLoader />;
-  if (user?.id !== import.meta.env.VITE_ADMIN_ID)
-    return <h1>Not Authorized</h1>;
+  if (String(user?.id) !== String(import.meta.env.VITE_ADMIN_ID))
+    return (
+      <h1 className="mt-80 text-center w-full text-4xl">Not Authorized</h1>
+    );
   return (
     <div className="flex flex-col justify-start w-full md:w-2/3 lg:w-1/2 mx-auto p-4 bg-neutral-900 rounded-lg shadow-md mt-20 relative">
       {/* Text Heading */}

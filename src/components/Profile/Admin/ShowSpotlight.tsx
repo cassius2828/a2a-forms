@@ -65,6 +65,10 @@ const ShowSpotlight = () => {
 
   if (isLoading) return <DefaultLoader />;
   if (!spotlightId) return <MissingItems item="Spotlight ID" />;
+  if (String(user?.id) !== String(import.meta.env.VITE_ADMIN_ID))
+    return (
+      <h1 className="mt-80 text-center w-full text-4xl">Not Authorized</h1>
+    );
   return (
     <div className="w-full md:w-3/4 lg:w-1/2 mx-auto mt-24 bg-neutral-900 shadow-lg rounded-lg p-8 border text-gray-100">
       <h2 className="text-2xl font-semibold text-gray-200 text-center mb-6">
